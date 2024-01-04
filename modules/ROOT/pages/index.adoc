@@ -1,0 +1,132 @@
+= Couchbase Power BI Connector
+:page-topic-type: guide
+:imagesdir: ../assets/images
+:description: The Couchbase Power BI Connector provides the integration between tabular views of your Capella columnar collections or query results and Microsoft's Power BI interactive data visualization platform.
+
+[abstract]
+{description}
+
+== Verify Power BI Version
+
+Before you proceed, verify that you have a supported version of Microsoft Power BI Desktop installed. 
+The Couchbase Power BI Connector requires Power BI Desktop version March 2017 or later. 
+
+If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US/download/details.aspx?id=58494[Microsoft downloads] page. 
+
+== Install the Couchbase Power BI Connector
+
+To install the Couchbase Power BI Connector you download it, load it into Power BI, and verify installation.
+
+=== Download the Power BI Connector
+
+. Download the *couchbase-powerbi-connector-1.0.101.mez* file from the https://janhavi0.s3.amazonaws.com/couchbase-powerbi-connector-1.0.101.mez[Private Preview Downloads site]. 
+
+. Move the *couchbase-powerbi-connector-1.0.101.mez* file to your `Documents\Power BI Desktop\Custom Connectors` directory.
+
+=== Load the Couchbase Connector in Power BI
+
+To load the Power BI Connector, follow the instructions for https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Custom connectors] in the Microsoft documentation. 
+
+To verify the installation, select menu:Get Data[More > Couchbase]. 
+The list should now include *Couchbase Connector*.
+
+== Install ODBC Drivers for Power BI
+
+The connection between a Capella columnar database and Power BI requires a Couchbase ODBC driver
+OpenSSL is a required dependency for the driver.
+
+=== Install OpenSSL
+
+. Download Win64OpenSSL_Light-1_1_1v.msi from the https://slproweb.com/products/Win32OpenSSL.html[Shining Light Productions site].
+
+. Install OpenSSL from the downloaded file.
+
+=== Install the Couchbase ODBC Driver
+
+. Download the *couchbase-odbc-0.0.0-win64.msi* driver from the https://janhavi0.s3.amazonaws.com/couchbase-odbc-0.0.0-win64.msi[Private Preview Downloads site].  
+
+. Double-click the file to open the *Couchbase ODBC Setup Wizard*.
+
+. Install the ODBC drivers from the downloaded file. 
+This installation provides both ANSI and Unicode drivers.
+
+[#configure-dsn]
+== Configure an ODBC Data Source
+
+You configure a data source name (DSN) for each Capella columnar database you want to use in Power BI. 
+
+=== Prerequisites
+
+To configure an ODBC DSN, you supply:
+
+* The connection string for your Capella columnar instance. 
+
+* An API key and secret to use as the DSN username and password. 
+
+To obtain these values, follow the steps for xref:dev:use-sdk.adoc#connectionstring[getting the connection string]. 
+After you copy the connection string from the Connection Information dialog, click *Generate API Key* to access a new key and its secret.
+
+=== Configure a User DSN in Power BI
+
+To configure the Couchbase ODBC driver as a *User DSN*, follow the instructions to https://support.microsoft.com/en-us/office/administer-odbc-data-sources-b19f856b-5b9b-48c9-8b93-07484bfab5a7#bm2[Add an ODBC data source] in the Microsoft documentation.
+
+You can install either *Couchbase ODBC Driver (ANSI)* or *Couchbase Unicode Driver (UNICODE)*. 
+If the data contains multibyte characters, select Unicode.
+
+When the *Create data source for Couchbase* dialog opens, you enter values as follows: 
+
+* *Name*: Enter an identifying name for the data source.
+
+* *Description*: Enter an optional description.
+
+* *URL*: Enter the connection string in `couchbases://<subdomain>.<instance_id>.<instance_region_name>.aws.omnistrate.cloud:16001` format.
+
+* *Database*: Enter the name of a Capella columnar database.
+
+* *User*: Enter the generated API key.
+
+* *Password*: Enter the secret for the API key.
+
+////
+TBD only with cert for private preview
+When the *Create data source for Couchbase* dialog opens, you enter values to connect with, or without, TLS as follows:
+
+[cols="20,~,27"]
+|==== 
+|Field|Connect with TLS |Connect without TLS  
+
+|Name 2+|Enter an identifying name for the data source.
+|Description 2+|Enter an optional description.
+|URL 2+|Leave blank.
+|Host 2+|Enter 127.0.0.1 or another remote IP address.
+|Port |11207 |8091
+|Bucket 2+|Enter the name of a database in Capella columnar.
+|SSLMode |Enter `require`. |Leave blank.
+|User 2+|Enter your Couchbase username.
+|Password 2+|Enter your Couchbase password.
+|CertificateFile |Use escaped backslash characters to enter the local path to your certificate file, such as `C:\\Users\\first.last\...`  |Leave blank.
+|====
+////
+
+[#use-connector]
+== Use the Couchbase Power BI Connector
+
+Business information tools rely on data that is organized into relational databases. 
+To use the Power BI connector, you must create tabular analytics views of the JSON documents in your Capella columnar collections. 
+See xref:query:workbench.adoc#TAV[Save Results as a Tabular View] or xref:sqlpp:5_ddl.adoc#TAV[Tabular Views].
+
+After you prepare tabular views and define DSNs in Power BI, you use the Couchbase Power BI Connector to load data into Power BI. 
+
+=== Use the Connector to Add Data to Power BI
+
+To add data from Capella columnar to Power BI, follow the instructions to https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connect-to-data[Connect to data sources in Power BI desktop] in the Microsoft documentation.
+
+*Couchbase Connector* appears on the menu:Get Data[] list of data sources. 
+When prompted for *Username* and *Password*, supply your Capella columnar credentials. 
+
+After you connect, a list of the tabular views in the database specified by the DSN appears. 
+btn:[Load] a view to use Power BI options.
+
+An example image of the `travel-sample` `airport_view` follows.
+
+image::visualization.png[A data visualization in Power BI]
