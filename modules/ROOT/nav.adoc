@@ -1,2 +1,3 @@
+* xref:index.adoc[Power BI Connector]
 
-.xref:index.adoc[Power BI Connector]
+// .xref:index.adoc[Power BI Connector]
