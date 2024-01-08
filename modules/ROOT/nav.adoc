@@ -1,3 +1,2 @@
 * xref:index.adoc[Power BI Connector]
-
-// .xref:index.adoc[Power BI Connector]
+** xref:release-notes.adoc[]

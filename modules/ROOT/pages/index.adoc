@@ -1,5 +1,4 @@
 = Couchbase Power BI Connector
-:page-topic-type: guide
 :description: The Couchbase Power BI Connector provides the integration between tabular views of your Capella columnar instance -- or Couchbase Analytics Service -- and Microsoft's Power BI interactive data visualization platform.
 
 [abstract]
@@ -7,6 +6,9 @@
 
 The Couchbase Power BI Connector provides integration between Microsoft's Power BI interactive data visualization platform 
 and either Couchbase Analytics Service (CBAS) or tabular views of your Capella columnar (currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]) collections or query results.
+
+TIP: For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
+
 
 
 == Verify Power BI Version
@@ -50,7 +52,7 @@ To configure an ODBC DSN, you supply:
 
 * The connection string for your https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[Capella columnar instance] or self-managed CBAS nodes. 
 
-* An API key and secret to use as the DSN username and password. 
+* (For Columnar) An API key and secret to use as the DSN username and password. 
 
 To obtain these values, follow the steps for xref:dev:use-sdk.adoc#connectionstring[getting the connection string]. 
 After you copy the connection string from the Connection Information dialog, click *Generate API Key* to access a new key and its secret.

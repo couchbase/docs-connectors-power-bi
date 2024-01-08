@@ -1,0 +1,17 @@
+= Release Notes
+:description: Release notes for the Couchbase Power BI Connector.
+
+[abstract]
+{description}
+
+The xref:index.adoc[Couchbase Power BI Connector] provides integration between Microsoft's Power BI interactive data visualization platform 
+and either Couchbase Analytics Service (CBAS) or tabular views of your Capella columnar (currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]) collections or query results.
+
+For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
+
+
+== Version 1.0.0 (2023-01-22)
+
+// https://packages.couchbase.com/releases/couchbase-tableau-connector/1.0.0/couchbase-tableau-connector-1.0.0.zip[Download]
+
+Initial release.
