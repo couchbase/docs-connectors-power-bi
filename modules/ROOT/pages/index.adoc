@@ -1,4 +1,5 @@
 = Couchbase Power BI Connector
+:page-toclevels: 2
 :description: The Couchbase Power BI Connector provides the integration between tabular views of your Capella columnar instance -- or Couchbase Analytics Service -- and Microsoft's Power BI interactive data visualization platform.
 
 [abstract]
@@ -23,7 +24,38 @@ for other platforms, consider our xref:tableau-connector::index.adoc[Tableau con
 
 == Install the Couchbase Power BI Connector
 
-The connection between a Couchbase Analytics instance (or a version of Capella columnar database -- currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]) and Power BI requires a Couchbase ODBC driver.
+. Download `couchbase-powerbi-connector-1.0.101.mez` from https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-powerbi-connector/1.0/
+
+. Move this downloaded file -- `couchbase-powerbi-connector-1.0.101.mez` --
+to `Documents\Power BI Desktop\Custom Connectors`
+
+
+=== Configure Power BI
+
+. Open *Power BI*
+
+. Go to *File > Options and settings > Options > Security* and tick the *(Not Recommended) Allow any extension to load without validation or warning option*
+
+. Click `OK`
+
+. Restart *Power BI*
+
+=== Verify the Connector is Loaded Successfully:
+
+. Open *Power BI*
+
+. Go to *Get Data -> More -> Couchbase*
+
+
+The Couchbase Power BI Connector is now correctly configured to work with the Power BI platform.
+Next, you need to configure a connection to Couchbase Analytics or an instance of the Capella columnar database.
+
+
+== ODBC and OpenSSL
+
+The connection between a Couchbase Analytics instance (or a version of Capella columnar database -- 
+currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]) 
+and Power BI requires a Couchbase ODBC driver.
 OpenSSL is a required dependency for the driver.
 
 === Install OpenSSL
@@ -34,7 +66,7 @@ OpenSSL is a required dependency for the driver.
 
 === Install the Couchbase ODBC Driver
 
-. Download the *couchbase-odbc-0.0.0-win64.msi* driver from the https://janhavi0.s3.amazonaws.com/couchbase-odbc-0.0.0-win64.msi[Private Preview Downloads site].  
+. Download the couchbase-odbc-0.0.0-win64.msi file from https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-odbc-driver/1.0[https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-odbc-driver/1.0]
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
 
