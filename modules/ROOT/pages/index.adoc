@@ -111,21 +111,21 @@ Couchbase Analytics Service (CBAS)::
 
 * *URL*: [Leave blank, and instead fill in host and port below]
 
-* *Host*: [IP address of Data (KV) node in Cuchbase cluster]
+* *Host*: [IP address of Data (KV) node in Couchbase cluster]
 
 * *Port*: 11207  
 
 * *Bucket*: Name of the bucket from which the data is being extracted
 
-* *SSLMode* = require
+* *SSLMode*: require
 
-* *User* = You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions should be used for deployment.
+* *User*: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions should be used for deployment.
 
-* *Password* = [Cluster Password]
+* *Password*: [Cluster Password]
 
-* *CertificateFile* = #path\\to\\certificateFile
+* *CertificateFile*: #path\\to\\certificateFile
 
-Note, for non-TLS (not supported in production) the port number is 8091.
+Note, for non-TLS (not recommended for production) the port number is 8091.
 --
 
 Capella columnar (Preview)::
@@ -144,27 +144,6 @@ Capella columnar (Preview)::
 * *Password*: Enter the secret for the API key.
 --
 ====
-
-////
-TBD only with cert for private preview
-When the *Create data source for Couchbase* dialog opens, you enter values to connect with, or without, TLS as follows:
-
-[cols="20,~,27"]
-|==== 
-|Field|Connect with TLS |Connect without TLS  
-
-|Name 2+|Enter an identifying name for the data source.
-|Description 2+|Enter an optional description.
-|URL 2+|Leave blank.
-|Host 2+|Enter 127.0.0.1 or another remote IP address.
-|Port |11207 |8091
-|Bucket 2+|Enter the name of a database in Capella columnar.
-|SSLMode |Enter `require`. |Leave blank.
-|User 2+|Enter your Couchbase username.
-|Password 2+|Enter your Couchbase password.
-|CertificateFile |Use escaped backslash characters to enter the local path to your certificate file, such as `C:\\Users\\first.last\...`  |Leave blank.
-|====
-////
 
 
 == Use the Couchbase Power BI Connector
