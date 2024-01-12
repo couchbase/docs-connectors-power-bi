@@ -98,6 +98,39 @@ If the data contains multibyte characters, select Unicode.
 
 When the *Create data source for Couchbase* dialog opens, you enter values as follows: 
 
+
+
+[{tabs}] 
+==== 
+Couchbase Analytics Service (CBAS)::
++
+--
+* *Name*: Enter an identifying name for the data source.
+
+* *Description*: Enter an optional description.
+
+* *URL*: [Leave blank, and instead fill in host and port below]
+
+* *Host*: [IP address of Data (KV) node in Cuchbase cluster]
+
+* *Port*: 11207  
+
+* *Bucket*: Name of the bucket from which the data is being extracted
+
+* *SSLMode* = require
+
+* *User* = You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions should be used for deployment.
+
+* *Password* = [Cluster Password]
+
+* *CertificateFile* = #path\\to\\certificateFile
+
+Note, for non-TLS (not supported in production) the port number is 8091.
+--
+
+Capella columnar (Preview)::
++ 
+-- 
 * *Name*: Enter an identifying name for the data source.
 
 * *Description*: Enter an optional description.
@@ -109,6 +142,8 @@ When the *Create data source for Couchbase* dialog opens, you enter values as fo
 * *User*: Enter the generated API key.
 
 * *Password*: Enter the secret for the API key.
+--
+====
 
 ////
 TBD only with cert for private preview
