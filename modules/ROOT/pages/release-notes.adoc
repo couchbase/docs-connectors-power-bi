@@ -1,4 +1,5 @@
 = Release Notes
+:page-toclevels: 2
 :description: Release notes for the Couchbase Power BI Connector.
 
 [abstract]
