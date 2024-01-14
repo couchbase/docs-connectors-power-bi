@@ -6,11 +6,15 @@
 {description}
 
 The Couchbase Power BI Connector provides integration between Microsoft's Power BI interactive data visualization platform 
-and either Couchbase Analytics Service (CBAS) or tabular views of your Capella columnar (currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]) collections or query results.
+and either:
 
+* Couchbase Analytics Service (CBAS)
++ 
 TIP: For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
 
-
+* Tabular views of your Capella columnar collections or query results.
++
+TIP: Capella columnar is currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]. 
 
 == Verify Power BI Version
 
@@ -18,7 +22,8 @@ Before you proceed, verify that you have a supported version of Microsoft Power 
 The Couchbase Power BI Connector requires Power BI Desktop version March 2017 or later. 
 
 If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US/download/details.aspx?id=58494[Microsoft downloads] page. 
-Note, this product is only available for the Microsoft Windows platform --
+
+NOTE: Power BI is only available for the Microsoft Windows platform --
 for other platforms, consider our xref:tableau-connector::index.adoc[Tableau connector].
 
 
@@ -32,41 +37,41 @@ to `Documents\Power BI Desktop\Custom Connectors`
 
 === Configure Power BI
 
-. Open *Power BI*
+. Open *Power BI*.
 
-. Go to *File > Options and settings > Options > Security* and tick the *(Not Recommended) Allow any extension to load without validation or warning option*
+. Go to *File > Options and settings > Options > Security* and select the *(Not Recommended) Allow any extension to load without validation or warning* option.
 
-. Click `OK`
+. Click btn:[OK].
 
-. Restart *Power BI*
+. Restart *Power BI*.
 
 === Verify the Connector is Loaded Successfully:
 
-. Open *Power BI*
+. Open *Power BI*.
 
 . Go to *Get Data -> More -> Couchbase*
 
 
 The Couchbase Power BI Connector is now correctly configured to work with the Power BI platform.
-Next, you need to configure a connection to Couchbase Analytics or an instance of the Capella columnar database.
+
+Next, you configure a connection to Couchbase Analytics or an instance of the Capella columnar database.
 
 
 == ODBC and OpenSSL
 
-The connection between a Couchbase Analytics instance (or a version of Capella columnar database -- 
-currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]) 
+The connection between a Couchbase Analytics instance or a Capella columnar database (currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]) 
 and Power BI requires a Couchbase ODBC driver.
 OpenSSL is a required dependency for the driver.
 
 === Install OpenSSL
 
-. Download Win64OpenSSL_Light-1_1_1v.msi from the https://slproweb.com/products/Win32OpenSSL.html[Shining Light Productions site].
+. Download `Win64OpenSSL_Light-1_1_1v.msi` from the https://slproweb.com/products/Win32OpenSSL.html[Shining Light Productions site].
 
 . Install OpenSSL from the downloaded file.
 
 === Install the Couchbase ODBC Driver
 
-. Download the couchbase-odbc-0.0.0-win64.msi file from https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-odbc-driver/1.0[https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-odbc-driver/1.0]
+. Download the `couchbase-odbc-0.0.0-win64.msi` file from https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-odbc-driver/1.0[https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-odbc-driver/1.0].
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
 
@@ -84,9 +89,11 @@ To configure an ODBC DSN, you supply:
 
 * The connection string for your https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[Capella columnar instance] or self-managed CBAS nodes. 
 
-* (For Columnar) An API key and secret to use as the DSN username and password. 
+* (For columnar) An API key and secret to use as the DSN username and password. 
 
 To obtain these values, follow the steps for xref:dev:use-sdk.adoc#connectionstring[getting the connection string]. 
+// Richard this link is to a columnar topic, not publicly available. Copy and paste in for now? See https://preview.docs-test.couchbase.com/trial/docs-columnar/current/dev/use-sdk.html#connectionstring Also, there is probably a different procedure for the salf-managed CBAS node
+
 After you copy the connection string from the Connection Information dialog, click *Generate API Key* to access a new key and its secret.
 
 === Configure a User DSN in Power BI
@@ -109,21 +116,23 @@ Couchbase Analytics Service (CBAS)::
 
 * *Description*: Enter an optional description.
 
-* *URL*: [Leave blank, and instead fill in host and port below]
+* *URL*: Leave blank, and instead fill in host and port below.
 
-* *Host*: [IP address of Data (KV) node in Couchbase cluster]
+* *Host*: Enter the IP address of Data (KV) node in Couchbase cluster.
 
 * *Port*: 11207  
 
-* *Bucket*: Name of the bucket from which the data is being extracted
+* *Bucket*: Name of the bucket from which the data is being extracted.
 
 * *SSLMode*: require
+// not sure what this should say
 
 * *User*: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions should be used for deployment.
 
-* *Password*: [Cluster Password]
+* *Password*: Enter the cluster password.
 
 * *CertificateFile*: #path\\to\\certificateFile
+//again not sure about this format/what should be here
 
 Note, for non-TLS (not recommended for production) the port number is 8091.
 --
@@ -137,7 +146,7 @@ Capella columnar (Preview)::
 
 * *URL*: Enter the connection string in `couchbases://<subdomain>.<instance_id>.<instance_region_name>.aws.omnistrate.cloud:16001` format.
 
-* *Database*: Enter the name of a Capella columnar database or CBAS instance.
+* *Database*: Enter the name of a Capella columnar database.
 
 * *User*: Enter the generated API key.
 
@@ -149,8 +158,9 @@ Capella columnar (Preview)::
 == Use the Couchbase Power BI Connector
 
 Business information tools rely on data that is organized into relational databases. 
-To use the Power BI connector, you must create tabular analytics views of the JSON documents in your Capella columnar collections. 
-See xref:query:workbench.adoc#TAV[Save Results as a Tabular View] or xref:sqlpp:5_ddl.adoc#TAV[Tabular Views].
+To use the Power BI connector, you must create tabular analytics views of your JSON documents. 
+For Capella columnar, see xref:query:workbench.adoc#TAV[Save Results as a Tabular View] or xref:sqlpp:5_ddl.adoc#TAV[Tabular Views].
+// again, these ^^ links won't work
 For self-managed CBAS, see xref:server:analytics:run-query.adoc#Using_analytics_workbench[the workbench docs] or 
 xref:server:analytics:5a_views.adoc#tabular-analytics-views[tabular views].
 
@@ -158,10 +168,10 @@ After you prepare tabular views and define DSNs in Power BI, you use the Couchba
 
 === Use the Connector to Add Data to Power BI
 
-To add data from Capella columnar to Power BI, follow the instructions to https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connect-to-data[Connect to data sources in Power BI desktop] in the Microsoft documentation.
+To add data from Capella columnar or CBAS to Power BI, follow the instructions to https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connect-to-data[Connect to data sources in Power BI desktop] in the Microsoft documentation.
 
 *Couchbase Connector* appears on the menu:Get Data[] list of data sources. 
-When prompted for *Username* and *Password*, supply your Capella columnar credentials. 
+When prompted for *Username* and *Password*, supply your Capella columnar or CBAS credentials. 
 
 After you connect, a list of the tabular views in the database specified by the DSN appears. 
 btn:[Load] a view to use Power BI options.
