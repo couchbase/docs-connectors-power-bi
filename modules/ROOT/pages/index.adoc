@@ -90,10 +90,9 @@ To configure an ODBC DSN, you supply:
 * The connection string for your https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[Capella columnar instance] or self-managed CBAS nodes. 
 
 * (For columnar) An API key and secret to use as the DSN username and password. 
-
-To obtain these values, follow the steps for xref:dev:use-sdk.adoc#connectionstring[getting the connection string]. 
-// Richard this link is to a columnar topic, not publicly available. Copy and paste in for now? See https://preview.docs-test.couchbase.com/trial/docs-columnar/current/dev/use-sdk.html#connectionstring Also, there is probably a different procedure for the salf-managed CBAS node
-
+// Uncomment once docs are public:
+// To obtain these values, follow the steps for xref:dev:use-sdk.adoc#connectionstring[getting the connection string]. 
+To obtain these values, follow the steps in the https://preview.docs-test.couchbase.com/trial/docs-columnar/current/dev/use-sdk.html#connectionstring[columnar private preview docs].
 After you copy the connection string from the Connection Information dialog, click *Generate API Key* to access a new key and its secret.
 
 === Configure a User DSN in Power BI
@@ -159,8 +158,7 @@ Capella columnar (Preview)::
 
 Business information tools rely on data that is organized into relational databases. 
 To use the Power BI connector, you must create tabular analytics views of your JSON documents. 
-For Capella columnar, see xref:query:workbench.adoc#TAV[Save Results as a Tabular View] or xref:sqlpp:5_ddl.adoc#TAV[Tabular Views].
-// again, these ^^ links won't work
+// For Capella columnar, see xref:query:workbench.adoc#TAV[Save Results as a Tabular View] or xref:sqlpp:5_ddl.adoc#TAV[Tabular Views].
 For self-managed CBAS, see xref:server:analytics:run-query.adoc#Using_analytics_workbench[the workbench docs] or 
 xref:server:analytics:5a_views.adoc#tabular-analytics-views[tabular views].
 
