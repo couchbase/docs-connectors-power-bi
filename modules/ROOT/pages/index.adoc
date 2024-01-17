@@ -109,7 +109,8 @@ If the data contains multibyte characters, select Unicode.
 [IMPORTANT]
 Be careful to use the *ODBC Data Source Administrator (64 bit)* -- there is an *ODBC Data Source Administrator (32 bit)* available, but this will not work with the connector.
 
-When the *Create data source for Couchbase* dialog opens, you enter values as follows: 
+When the *Create data source for Couchbase* dialog opens,
+select *Capella Columnar* or (for CBAS) *Couchbase Analytics* and enter values as follows: 
 
 
 
@@ -122,25 +123,21 @@ Couchbase Analytics Service (CBAS)::
 
 * *Description*: Enter an optional description.
 
-* *URL*: Leave blank, and instead fill in host and port below.
-
 * *Host*: Enter the IP address of Data (KV) node in Couchbase cluster.
 
 * *Port*: 11207  
 
-* *Bucket*: Name of the bucket from which the data is being extracted.
+* *Scope*: Name of the bucket from which the data is being extracted -- or name of bucket and scope, separated by a `/` -- as appropriate.
 
 * *SSLMode*: require
-// not sure what this should say
 
 * *User*: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions should be used for deployment.
 
 * *Password*: Enter the cluster password.
 
-* *CertificateFile*: #path\\to\\certificateFile
-//again not sure about this format/what should be here
+* *CertificateFile Path*: `path\\to\\certificateFile.pem`
 
-Note, for non-TLS (not recommended for production) the port number is 8091.
+Note, for non-TLS (not recommended for production) the port number is 8091, and a `CertificateFile` is not entered.
 --
 
 Capella columnar (Preview)::
