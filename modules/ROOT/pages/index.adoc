@@ -29,9 +29,11 @@ for other platforms, consider our xref:tableau-connector::index.adoc[Tableau con
 
 == Install the Couchbase Power BI Connector
 
-. Download `couchbase-powerbi-connector-1.0.101.mez` from https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-powerbi-connector/1.0/
+. Download `couchbase-powerbi-connector-1.0.101.mez` from https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-powerbi-connector/1.0/101/[https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-powerbi-connector/1.0/101/]
 
-. Move this downloaded file -- `couchbase-powerbi-connector-1.0.101.mez` --
+. Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector,
+////
+Move this downloaded file -- `couchbase-powerbi-connector-1.0.101.mez` --
 to `Documents\Power BI Desktop\Custom Connectors`
 
 
@@ -44,12 +46,14 @@ to `Documents\Power BI Desktop\Custom Connectors`
 . Click btn:[OK].
 
 . Restart *Power BI*.
+////
+
 
 === Verify the Connector is Loaded Successfully:
 
 . Open *Power BI*.
 
-. Go to *Get Data -> More -> Couchbase*
+. Go to *Get Data -> More -> Couchbase Connector*
 
 
 The Couchbase Power BI Connector is now correctly configured to work with the Power BI platform.
@@ -81,7 +85,7 @@ This installation provides both ANSI and Unicode drivers.
 
 == Configure an ODBC Data Source
 
-You configure a data source name (DSN) for each CBAS cluster or Capella columnar database you want to use in Power BI. 
+You configure a data source name (DSN) for each CBAS scope or Capella columnar database you want to use in Power BI. 
 
 === Prerequisites
 
@@ -101,6 +105,9 @@ To configure the Couchbase ODBC driver as a *User DSN*, follow the instructions 
 
 You can install either *Couchbase ODBC Driver (ANSI)* or *Couchbase Unicode Driver (UNICODE)*. 
 If the data contains multibyte characters, select Unicode.
+
+[IMPORTANT]
+Be careful to use the *ODBC Data Source Administrator (64 bit)* -- there is an *ODBC Data Source Administrator (32 bit)* available, but this will not work with the connector.
 
 When the *Create data source for Couchbase* dialog opens, you enter values as follows: 
 
