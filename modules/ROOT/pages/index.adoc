@@ -125,19 +125,21 @@ Couchbase Analytics Service (CBAS)::
 
 * *Host*: Enter the IP address of Data (KV) node in Couchbase cluster.
 
-* *Port*: 11207  
+* *Port*: `11207`  
 
-* *Scope*: Name of the bucket from which the data is being extracted -- or name of bucket and scope, separated by a `/` -- as appropriate.
+* *Scope*: Name of the scope from which the data is being extracted.
+If a two part scope -- such as `travel-sample.inventory` -- then the two parts must be separated by a `/` -- `travel-sample/inventory`.
 
-* *SSLMode*: require
+* *SSLMode*: `require`
 
-* *User*: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions should be used for deployment.
+* *User*: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions --
+xref:server:learn:security/roles.adoc#cluster-admin[Cluster Admin Role] -- should be used for deployment.
 
 * *Password*: Enter the cluster password.
 
 * *CertificateFile Path*: `path\\to\\certificateFile.pem`
 
-Note, for non-TLS (not recommended for production) the port number is 8091, and a `CertificateFile` is not entered.
+Note, for non-TLS (not recommended for production) the port number is `8091`, the *SSLMode* field left empty, and a *CertificateFile Path* is not entered.
 --
 
 Capella columnar (Preview)::
