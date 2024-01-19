@@ -13,7 +13,7 @@ For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or
 
 == Version 1.0.0 (2023-01-22)
 
-https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-powerbi-connector/1.0/[Power BI COnnector Download] | 
+https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-powerbi-connector/1.0/[Power BI Connector Download] | 
 https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-odbc-driver/1.0[ODBC Dependency Download].  
 
 
