@@ -29,24 +29,10 @@ for other platforms, consider our xref:tableau-connector::index.adoc[Tableau con
 
 == Install the Couchbase Power BI Connector
 
-. Download `couchbase-powerbi-connector-1.0.101.mez` from https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-powerbi-connector/1.0/101/[https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-powerbi-connector/1.0/101/]
+. Download `couchbase-powerbi-connector-1.0.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez] -- see the xref:release-notes.adoc[release notes page] for more details.
+or 
 
-. Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector,
-////
-Move this downloaded file -- `couchbase-powerbi-connector-1.0.101.mez` --
-to `Documents\Power BI Desktop\Custom Connectors`
-
-
-=== Configure Power BI
-
-. Open *Power BI*.
-
-. Go to *File > Options and settings > Options > Security* and select the *(Not Recommended) Allow any extension to load without validation or warning* option.
-
-. Click btn:[OK].
-
-. Restart *Power BI*.
-////
+. Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
 
 
 === Verify the Connector is Loaded Successfully:
@@ -75,7 +61,7 @@ OpenSSL is a required dependency for the driver.
 
 === Install the Couchbase ODBC Driver
 
-. Download the `couchbase-odbc-0.0.0-win64.msi` file from https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-odbc-driver/1.0[https://latestbuilds.service.couchbase.com/builds/latestbuilds/couchbase-odbc-driver/1.0].
+. Download the `couchbase-odbc-1.0-win64.msi` file from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.msi[https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.msi] -- see the xref:release-notes.adoc[release notes page] for more details.
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
 
