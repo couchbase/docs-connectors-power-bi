@@ -22,6 +22,6 @@ The supported and tested dependencies of this release are:
 * https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.msi[couchbase-odbc-1.0-win64.msi] | (https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.msi.sha256[SHA 256]) or
 * https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.zip[couchbase-odbc-1.0-win64.zip] | https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.zip.sha256[SHA 256]) 
 
-\+ https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-driver-1.0-notices.txt[Notices File] for ODBC Driver
++ https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-driver-1.0-notices.txt[Notices File] for ODBC Driver
 
 This is the initial release of the Couchbase Power BI Connector.
