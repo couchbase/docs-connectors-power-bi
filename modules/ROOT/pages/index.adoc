@@ -1,6 +1,6 @@
 = Couchbase Power BI Connector
 :page-toclevels: 2
-:description: The Couchbase Power BI Connector provides the integration between tabular views of your Capella columnar instance -- or Couchbase Analytics Service -- and Microsoft's Power BI interactive data visualization platform.
+:description: The Couchbase Power BI Connector provides the integration between tabular views of the Couchbase Analytics Service -- or your Capella columnar instance -- and Microsoft's Power BI interactive data visualization platform.
 
 [abstract]
 {description}
