@@ -59,6 +59,30 @@ OpenSSL is a required dependency for the driver.
 
 . Install OpenSSL from the downloaded file.
 
+. Verify that Windows has installed SSL, and registered the path of the binary.
+Open the command prompt (`cmd`), and enter the following:
++
+----
+openssl version
+----
+
+. If the output indicates OpenSSL is not installed, rather than returning the version that you installed, then you need to add the OpenSSL binary's path to the `env`:
+
+.. Check the `C:\Program Files` or use `Find` to locate the SSL binary -- usually the path will be something like:
++
+----
+C:\Program Files\OpenSSL-Win64\bin
+----
+
+.. Add this path to environmental variables list, found in menu:System variables[Path].
+
+.. Now verify that Windows has registered the path of the binary.
+Once again, open the command prompt (`cmd`) -- it must be a fresh command prompt, as the earlier one will not have loaded the newly-added environmental variables -- and enter the following:
++
+----
+openssl version
+----
+
 === Install the Couchbase ODBC Driver
 
 . Download the `couchbase-odbc-1.0-win64.msi` file from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.msi[https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.msi] -- see the xref:release-notes.adoc[release notes page] for more details.
