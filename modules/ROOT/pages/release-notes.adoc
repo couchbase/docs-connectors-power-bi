@@ -10,24 +10,30 @@ and either Couchbase Analytics Service (CBAS) or tabular views of your Capella c
 
 For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
 
+[#v-1-1]
+== Version 1.1 (2024-06-12)
+
+https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[Power BI Connector Download]
+
+The supported and tested dependencies of this release are:
+
+* https://packages.couchbase.com/releases/couchbase-odbc-driver/1.1/couchbase-odbc-1.1-win64.msi[couchbase-odbc-1.1-win64.msi]
+
+** See the https://packages.couchbase.com/releases/couchbase-odbc-driver/1.1/couchbase-odbc-driver-1.1-notices.txt[Notices File] for dependency licenses for the ODBC Driver.
+
+* https://slproweb.com/download/Win64OpenSSL_Light-3_3_1.msi[Win64 OpenSSL v3.3.x Light]
 
 [#v-1-0]
 == Version 1.0 (2024-01-25)
 
 https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[Power BI Connector Download]
 
-////
- | 
-https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez.sha256[SHA 256] |
-https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0-notices.txt[Notices File]
-////
-
 The supported and tested dependencies of this release are:
 
 * https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.msi[couchbase-odbc-1.0-win64.msi]
-// | (https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.msi.sha256[SHA 256]) 
-// or
-// * https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.zip[couchbase-odbc-1.0-win64.zip] | https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-1.0-win64.zip.sha256[SHA 256]) 
+
 ** See the https://packages.couchbase.com/releases/couchbase-odbc-driver/1.0/couchbase-odbc-driver-1.0-notices.txt[Notices File] for dependency licenses for the ODBC Driver.
+
+* Win64 Open SSL 1.1.1 Light
 
 This is the initial release of the Couchbase Power BI Connector.
