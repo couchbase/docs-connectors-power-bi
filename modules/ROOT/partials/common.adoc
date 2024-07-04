@@ -1,0 +1,30 @@
+// tag::extra-spaces-warning[]
+IMPORTANT: Ensure that you do not include extraneous spaces or tabs when you enter the scope name.
+// end::extra-spaces-warning[]
+
+// tag::windows-separators-warning[]
+[IMPORTANT]
+=====
+When entering the certificate path, use double slashes (`\\`) for the path separators.
+
+E.g., `C:\\Users\\user\\certificate.txt`
+=====
+// end::windows-separators-warning[]
+
+
+// tag::remove-prefix-warning[]
+[IMPORTANT]
+=====
+Remove the `couchbase:` prefix from the string when you enter it.
+
+For example, if the connection string is:
+
+`couchbases://cb.test.customsubdomain.couchbase.com`
+
+Then use:
+
+`cb.test.customsubdomain.couchbase.com`
+
+For the connection.
+=====
+// end::remove-prefix-warning[]

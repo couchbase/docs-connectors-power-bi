@@ -1,35 +1,237 @@
 = Couchbase Power BI Connector
+:page-topic-type: guide
 :page-toclevels: 2
-:description: The Couchbase Power BI Connector integrates the tabular views of the Couchbase Analytics Service, your Capella columnar instance, or Capella provisioned instance, with Microsoft's Power BI interactive data visualization platform.
+:description: The Couchbase Power BI Connector provides data visualization for the Couchbase platform, using Microsoft's data visualization software.
 
-[abstract]
+[abstract, subs="quotes"]
+--
 {description}
 
-The Couchbase Power BI Connector provides integration between Microsoft's Power BI interactive data visualization platform 
-and either:
+The Couchbase Power BI Connector integrates:
 
-* Couchbase Analytics Service (CBAS)
-+ 
-TIP: For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
-
-* Tabular views of your Capella columnar collections or query results.
+* Couchbase Analytics tabular views.
 +
-TIP: Capella columnar is currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]. 
+TIP: For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
+* Capella Columnar instances
++
+TIP: Capella columnar is currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview].
 
-== Verify Power BI Version
+* or Capella provisioned services
 
-Before you proceed, verify that you have a supported version of Microsoft Power BI Desktop installed. 
+with Microsoft's Power BI interactive data visualization platform.
+--
+
+== Prerequisites
+
+You can integrate the Power BI platform with Couchbase Capella, or the standalone version of Couchbase Server.
+You should also run the xref:server:analytics:1_intro.adoc[Couchbase Analytics service] on the target node.
+
+== Install Power BI
+
+Before you start, ensure  you have a supported version of Microsoft Power BI Desktop installed.
 The Couchbase Power BI Connector requires Power BI Desktop version March 2017 or later. 
 
 If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US/download/details.aspx?id=58494[Microsoft downloads] page. 
 
-NOTE: Power BI is only available for the Microsoft Windows platform --
+NOTE: Power BI is only available for the Microsoft Windows platform;
 for other platforms, consider our xref:tableau-connector::index.adoc[Tableau connector].
 
+== Install the Couchbase ODBC Driver
+
+. Download the `couchbase-odbc-1.1-win64.msi` file from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.1/couchbase-odbc-1.1-win64.msi[] -- see the xref:release-notes.adoc[release notes page] for more details.
+
+. Double-click the file to open the *Couchbase ODBC Setup Wizard*.
+
+. Install the ODBC drivers from the downloaded file.
+This installation provides both ANSI and Unicode drivers.
+
+IMPORTANT: Make sure that you have installed the 64-bit versions of the ODBC drivers.
+
+== Install OpenSSL
+
+The connection between a Couchbase Analytics instance or a Capella columnar database (currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview])
+and Power BI requires a Couchbase ODBC driver.
+OpenSSL is a required dependency for the driver.
+
+
+. Download `Win64 OpenSSL v3.3.1 Light` from the https://slproweb.com/products/Win32OpenSSL.html[Shining Light Productions site].
+
+. Install OpenSSL from the downloaded file.
+
+. Verify that Windows has installed SSL, and registered the path of the binary.
+Open the command prompt (`cmd`), and enter the following:
++
+[source, console]
+----
+openssl version
+----
+
+. If the output indicates OpenSSL is not installed, rather than returning the version that you installed, then you need to add the OpenSSL binary's path to the `env`:
+
+.. Check the `C:\Program Files` or use `Find` to locate the SSL binary -- usually the path will be something like:
++
+[source, console]
+----
+C:\Program Files\OpenSSL-Win64\bin
+----
+
+.. Add this path to the environmental variables list, found in menu:System variables[Path].
+
+.. Now verify that Windows has registered the path of the binary.
+Once again, open the command prompt (`cmd`) -- it must be a fresh command prompt, as the earlier one will not have loaded the newly added environmental variables -- and enter the following:
++
+[source, console]
+----
+openssl version
+----
+
+== Setting up a Secure Connection
+
+Couchbase *strongly* recommends that you secure your ODBC connection using SSL.
+This ensures encryption of the communication between Power BI and the Couchbase server/Capella.
+
+
+[tabs]
+====
+Couchbase Capella::
++
+--
+You will need to obtain a connection string for your database,
+and generate an API key to plug into the ODBC connector.
+
+[[copy-connection-string]] To obtain the `connection string`.
+
+. Sign in to your Capella instance as an Administrator.
+. Select the menu:Connect[] item from the top-level menu.
+. Make a copy of the `public connection string`.
++
+image::get-connection-string.png[copying connection string]
++
+. In the next section of the page, you will find the link to create a list of
+btn:[Allowed IP Addresses]. Click on the link to create an entry for the IP address of the machine upon which you're running Power BI.
++
+image::allowed-ip-addresses.png[creating-allowed-ip address]
++
+TIP: You can use the btn:[Add Current IP Address] button to fill in the address of the machine currently running the web console.
+
+. [[setup-database-access]] Return to the *Connect* screen and click on the btn:[Database Access] link.
+Create a new database access entry, setting values for `bucket`, and `scopes`.
++
+image::create-database-access.png[Creating database access]
+
+. To set up a secure connection, you will need to retrieve the root certificate for your Capella instance.
++
+[lowerroman]
+.. Click on btn:[Security Certificate] in the left menu.
+.. Click on btn:[Download] to transfer a copy of the root certificate to your local machine.
++
+image::download-root-certificate.png[]
+--
+
+Self-Managed Couchbase Server::
++
+--
+[[download-root-certificate]]
+To create a secure connection to a Couchbase standalone instance, you need to obtain a root certificate from the Administrator's Console.
+
+. Use your web browser to access the Admin console and log in as an Administrator.
+. Use the left-hand menu to access the menu:Security[] settings.
+. From the top menu, select menu:Certificates[]. This will take you to the page from which you can view the server's security certificates:
++
+image::access-root-certificate.png[]
++
+. Copy *all* the text in the Trusted *Root Certificates* section (start from `BEGIN CERTIFICATE` and include `END CERTIFICATE` ), and save the text to an accessible `PEM` file. (e.g., `C:\Users\user\certificate.pem`).
++
+You will use this file later when you create the ODBC connection.
+--
+
+====
+
+== Configure the ODBC Data Source
+
+You need to configure the data source parameters to connect your Power BI desktop to Couchbase.
+
+To configure the Couchbase ODBC driver as a *User DSN:*
+
+. Open the ODBC Administration tool.
+. Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
+. On the next window, select btn:[Couchbase Analytics].
+. Depending on whether you are connecting to *Couchbase Capella*, or a *standalone Couchbase instance*, fill in a set of parameters from the choices below:
++
+[tabs]
+====
+
+Couchbase Capella::
++
+--
+[horizontal]
+*Name:*:: Enter an identifying name for the data source.
+
+*Description:*:: Enter an optional description.
+
+*Host:*:: Fill in the connection string you copied <<copy-connection-string,here>>.
++
+include::partial$common.adoc[tag="remove-prefix-warning"]
+
+*Port:*:: Use `11207` for a secure connection.
+
+*Scope*:: Name of the scope from which the data is being extracted.
+If a two-part scope -- such as `travel-sample.inventory` -- then the two parts must be separated by a `/` -- `travel-sample/inventory`.
+
+*SSLMode:*:: Fill in `require` for SSL.
+
+*User:*:: Enter the user name that you created in the <<setup-database-access,Database Access section of Capella>>.
+
+*Password*:: Enter the password you created in the <<setup-database-access,Database Access section of Capella>>.
+
+*CertificateFile Path:*:: Fill in the location of the file you downloaded <<download-root-certificate,here>>.
++
+include::partial$common.adoc[tag="windows-separators-warning"]
+
+--
+
+Self-Managed Couchbase Server::
++
+--
+[horizontal]
+ *Name:*:: Enter an identifying name for the data source.
+
+*Description:*:: Enter an optional description.
+
+*Host:*:: Enter the IP address of the Data (KV) node in the Couchbase cluster.
+
+*Port:*:: Set to `11207` for an SSL connection.
+
+*Scope:*:: Name of the scope from which the data is being extracted.
+If a two-part scope -- such as `travel-sample.inventory` -- then the two parts must be separated by a `/` -- `travel-sample/inventory`.
++
+include::partial$common.adoc[tag="extra-spaces-warning"]
+
+
+
+*SSLMode:*:: Fill in `require` for SSL.
+
+*User:*:: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions --
+xref:server:learn:security/roles.adoc#cluster-admin[Cluster Admin Role] -- should be used for deployment.
+
+*Password:*:: Enter the cluster password.
+
+*CertificateFile Path:*:: Fill in the location of the file you downloaded <<download-root-certificate,here>>.
++
+include::partial$common.adoc[tag="windows-separators-warning"]
+--
+
+====
++
+[sidebar]
+====
+For information about adding an ODBC data source, see the https://support.microsoft.com/en-us/office/administer-odbc-data-sources-b19f856b-5b9b-48c9-8b93-07484bfab5a7#bm2[Microsoft support documentation].
+====
 
 == Install the Couchbase Power BI Connector
+You will need to install the connector that allows Power BI to communicate with Couchbase, using ODBC.
 
-. Download `couchbase-powerbi-connector-1.0.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez] -- 
+. Download `couchbase-powerbi-connector-1.0.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[] --
 see the xref:release-notes.adoc[release notes page] for more details.
 
 . Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
@@ -47,129 +249,23 @@ The Couchbase Power BI Connector is now correctly configured to work with the Po
 Next, you configure a connection to Couchbase Analytics or an instance of the Capella columnar database.
 
 
-== ODBC and OpenSSL
-
-The connection between a Couchbase Analytics instance or a Capella columnar database (currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]) 
-and Power BI requires a Couchbase ODBC driver.
-OpenSSL is a required dependency for the driver.
-
-=== Install OpenSSL
-
-. Download `Win64 OpenSSL v3.3.1 Light` from the https://slproweb.com/products/Win32OpenSSL.html[Shining Light Productions site].
-
-. Install OpenSSL from the downloaded file.
-
-. Verify that Windows has installed SSL, and registered the path of the binary.
-Open the command prompt (`cmd`), and enter the following:
-+
-----
-openssl version
-----
-
-. If the output indicates OpenSSL is not installed, rather than returning the version that you installed, then you need to add the OpenSSL binary's path to the `env`:
-
-.. Check the `C:\Program Files` or use `Find` to locate the SSL binary -- usually the path will be something like:
-+
-----
-C:\Program Files\OpenSSL-Win64\bin
-----
-
-.. Add this path to the environmental variables list, found in menu:System variables[Path].
-
-.. Now verify that Windows has registered the path of the binary.
-Once again, open the command prompt (`cmd`) -- it must be a fresh command prompt, as the earlier one will not have loaded the newly-added environmental variables -- and enter the following:
-+
-----
-openssl version
-----
-
-=== Install the Couchbase ODBC Driver
-
-. Download the `couchbase-odbc-1.1-win64.msi` file from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.1/couchbase-odbc-1.1-win64.msi[] -- see the xref:release-notes.adoc[release notes page] for more details.
-
-. Double-click the file to open the *Couchbase ODBC Setup Wizard*.
-
-. Install the ODBC drivers from the downloaded file. 
-This installation provides both ANSI and Unicode drivers.
-
-
 == Configure an ODBC Data Source
 
 You configure a data source name (DSN) for each CBAS scope or Capella columnar database you want to use in Power BI. 
 
-=== Prerequisites
 
-To configure an ODBC DSN, you supply:
-
-* The connection string for your https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[Capella columnar instance] or self-managed CBAS nodes. 
-
-* (For columnar) An API key and secret to use as the DSN username and password. 
-// Uncomment once docs are public:
-// To obtain these values, follow the steps for xref:dev:use-sdk.adoc#connectionstring[getting the connection string]. 
-To obtain these values, follow the steps in the https://preview.docs-test.couchbase.com/trial/docs-columnar/current/dev/use-sdk.html#connectionstring[columnar private preview docs].
-After you copy the connection string from the Connection Information dialog, click *Generate API Key* to access a new key and its secret.
 
 === Configure a User DSN in Power BI
-
-To configure the Couchbase ODBC driver as a *User DSN*, follow the instructions to https://support.microsoft.com/en-us/office/administer-odbc-data-sources-b19f856b-5b9b-48c9-8b93-07484bfab5a7#bm2[Add an ODBC data source] in the Microsoft documentation.
 
 You can install either *Couchbase ODBC Driver (ANSI)* or *Couchbase Unicode Driver (UNICODE)*. 
 If the data contains multibyte characters, select Unicode.
 
 [IMPORTANT]
-Be careful to use the *ODBC Data Source Administrator (64 bit)* -- there is an *ODBC Data Source Administrator (32 bit)* available, but this will not work with the connector.
+Be careful to use the *ODBC Data Source Administrator (64 bit)*; there is an *ODBC Data Source Administrator (32 bit)*
+available, but this will not work with the connector.
 
 When the *Create data source for Couchbase* dialog opens,
 select *Capella Columnar* or (for CBAS) *Couchbase Analytics* and enter values as follows: 
-
-
-
-[{tabs}] 
-==== 
-Couchbase Analytics Service (CBAS)::
-+
---
-* *Name*: Enter an identifying name for the data source.
-
-* *Description*: Enter an optional description.
-
-* *Host*: Enter the IP address of Data (KV) node in Couchbase cluster.
-
-* *Port*: `11207`  
-
-* *Scope*: Name of the scope from which the data is being extracted.
-If a two part scope -- such as `travel-sample.inventory` -- then the two parts must be separated by a `/` -- `travel-sample/inventory`.
-+
-IMPORTANT: Ensure that you do not include extraneous spaces or tabs when you enter the scope name.
-
-* *SSLMode*: `require`
-
-* *User*: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions --
-xref:server:learn:security/roles.adoc#cluster-admin[Cluster Admin Role] -- should be used for deployment.
-
-* *Password*: Enter the cluster password.
-
-* *CertificateFile Path*: `path\\to\\certificateFile.pem`
-
-NOTE: for non-TLS (not recommended for production) the port number is `8091`, the *SSLMode* field left empty, and a *CertificateFile Path* is not entered.
---
-
-Capella columnar (Preview)::
-+ 
--- 
-* *Name*: Enter an identifying name for the data source.
-
-* *Description*: Enter an optional description.
-
-* *URL*: Enter the connection string in `couchbases://<subdomain>.<instance_id>.<instance_region_name>.aws.omnistrate.cloud:16001` format.
-
-* *Database*: Enter the name of a Capella columnar database.
-
-* *User*: Enter the generated API key.
-
-* *Password*: Enter the secret for the API key.
---
-====
 
 
 == Use the Couchbase Power BI Connector
@@ -178,7 +274,7 @@ Business information tools rely on data that is organized into relational databa
 To use the Power BI connector, you must create tabular analytics views of your JSON documents. 
 // For Capella columnar, see xref:query:workbench.adoc#TAV[Save Results as a Tabular View] or xref:sqlpp:5_ddl.adoc#TAV[Tabular Views].
 For self-managed CBAS, see xref:server:analytics:run-query.adoc#Using_analytics_workbench[the workbench docs] or 
-xref:server:analytics:5a_views.adoc#tabular-analytics-views[tabular views].
+xref:server:analytics:5a_views.adoc[tabular views].
 
 After you prepare tabular views and define DSNs in Power BI, you use the Couchbase Power BI Connector to load data into Power BI. 
 
