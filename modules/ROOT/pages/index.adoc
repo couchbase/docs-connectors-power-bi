@@ -23,7 +23,7 @@ with Microsoft's Power BI interactive data visualization platform.
 
 == Prerequisites
 
-You can integrate the Power BI platform with Couchbase Capella, or the standalone version of Couchbase Server.
+You can integrate the Power BI platform with Couchbase Capella, or an instance of the self-managed Couchbase Server.
 You should also run the xref:server:analytics:1_intro.adoc[Couchbase Analytics service] on the target node.
 
 == Install Power BI
@@ -99,7 +99,7 @@ Couchbase Capella::
 You will need to obtain a connection string for your database,
 and generate an API key to plug into the ODBC connector.
 
-[[copy-connection-string]] To obtain the `connection string`.
+[#copy-connection-string]#To obtain the `connection string`.#
 
 . Sign in to your Capella instance as an Administrator.
 . Select the menu:Connect[] item from the top-level menu.
@@ -114,7 +114,7 @@ image::allowed-ip-addresses.png[creating-allowed-ip address]
 +
 TIP: You can use the btn:[Add Current IP Address] button to fill in the address of the machine currently running the web console.
 
-. [[setup-database-access]] Return to the *Connect* screen and click on the btn:[Database Access] link.
+. [#setup-database-access]#Return to the *Connect* screen and click on the btn:[Database Access] link.#
 Create a new database access entry, setting values for `bucket`, and `scopes`.
 +
 image::create-database-access.png[Creating database access]
@@ -131,8 +131,8 @@ image::download-root-certificate.png[]
 Self-Managed Couchbase Server::
 +
 --
-[[download-root-certificate]]
-To create a secure connection to a Couchbase standalone instance, you need to obtain a root certificate from the Administrator's Console.
+
+[#download-root-certificate]#To create a secure connection to a self-managed Couchbase Server instance, you need to get the root certificate from the Administrator's Console.#
 
 . Use your web browser to access the Admin console and log in as an Administrator.
 . Use the left-hand menu to access the menu:Security[] settings.
@@ -156,7 +156,7 @@ To configure the Couchbase ODBC driver as a *User DSN:*
 . Open the ODBC Administration tool.
 . Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
 . On the next window, select btn:[Couchbase Analytics].
-. Depending on whether you are connecting to *Couchbase Capella*, or a *standalone Couchbase instance*, fill in a set of parameters from the choices below:
+. Depending on whether you are connecting to Couchbase Capella or a self-managed Couchbase Server instance, fill in the parameters from the choices below:
 +
 [tabs]
 ====
@@ -180,7 +180,7 @@ If a two-part scope -- such as `travel-sample.inventory` -- then the two parts m
 
 *SSLMode:*:: Fill in `require` for SSL.
 
-*User:*:: Enter the user name that you created in the <<setup-database-access,Database Access section of Capella>>.
+*User:*:: Enter the username that you created in the <<setup-database-access,Database Access section of Capella>>.
 
 *Password*:: Enter the password you created in the <<setup-database-access,Database Access section of Capella>>.
 
