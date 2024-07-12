@@ -6,7 +6,7 @@
 {description}
 
 The xref:index.adoc[Couchbase Power BI Connector] provides integration between Microsoft's Power BI interactive data visualization platform 
-and either Couchbase Analytics Service (CBAS) or tabular views of your Capella columnar (currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview]) collections or query results.
+and either Couchbase Analytics Service (CBAS) or tabular views of your Capella columnar collections or query results.
 
 For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
 
