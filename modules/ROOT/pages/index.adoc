@@ -13,8 +13,6 @@ The Couchbase Power BI Connector integrates:
 +
 TIP: For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
 * Capella Columnar instances
-+
-TIP: Capella columnar is currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview].
 
 * or Capella provisioned services
 
@@ -49,8 +47,7 @@ IMPORTANT: Make sure that you have installed the 64-bit versions of the ODBC dri
 
 == Install OpenSSL
 
-The connection between a Couchbase Analytics instance or a Capella columnar database (currently in https://info.couchbase.com/CapellaColumnar_Private_Preview_SignUp_LP.html[private preview])
-and Power BI requires a Couchbase ODBC driver.
+The connection between a Couchbase Analytics instance or a Capella columnar database and Power BI requires a Couchbase ODBC driver.
 OpenSSL is a required dependency for the driver.
 
 
