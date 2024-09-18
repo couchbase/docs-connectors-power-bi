@@ -1,4 +1,4 @@
-= Couchbase Power BI Connector
+= Introduction
 :page-topic-type: guide
 :page-toclevels: 2
 :description: The Couchbase Power BI Connector provides data visualization for the Couchbase platform, using Microsoft's data visualization software.
