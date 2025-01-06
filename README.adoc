@@ -1,0 +1,7 @@
+= Couchbase Power BI Connector Documentation
+
+This docs repo is built at https://docs.couchbase.com/power-bi-connector/current/index.html[https://docs.couchbase.com/power-bi-connector/current/index.html].
+
+== Docs License
+
+©2025 Couchbase, Inc. This work is licensed under CC BY-NC-SA 4.0.
