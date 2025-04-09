@@ -131,10 +131,10 @@ image::allowed-ip-addresses.png[creating-allowed-ip address]
 +
 TIP: You can use the btn:[Add Current IP Address] button to fill in the address of the machine currently running the web console.
 
-. [#setup-database-access]#Return to the *Connect* screen and click on the btn:[Database Access] link.#
+. [#setup-database-access]#Return to the *Connect* screen and click on the btn:[Cluster Access] link.#
 Create a new database access entry, setting values for `bucket`, and `scopes`.
 +
-image::create-database-access.png[Creating database access]
+image::create-cluster-access.png[Creating cluster access]
 
 . To set up a secure connection, you will need to retrieve the root certificate for your Capella instance.
 +
