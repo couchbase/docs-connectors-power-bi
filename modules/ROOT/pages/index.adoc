@@ -27,7 +27,7 @@ You should also run the xref:server:analytics:1_intro.adoc[Couchbase Analytics s
 == Install Power BI
 
 Before you start, ensure  you have a supported version of Microsoft Power BI Desktop installed.
-The Couchbase Power BI Connector requires Power BI Desktop version March 2017 or later. 
+The Couchbase Power BI Connector requires the Power BI Desktop version March 2017 or later.
 
 If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US/download/details.aspx?id=58494[Microsoft downloads] page. 
 
@@ -51,7 +51,8 @@ The connection between a Couchbase Analytics instance or a Capella columnar data
 OpenSSL is a required dependency for the driver.
 
 
-. Download `Win64 OpenSSL v3.3.1 Light` from the https://slproweb.com/products/Win32OpenSSL.html[Shining Light Productions site].
+. Download OpenSSL 3.x for x64 (recommended version: OpenSSL 3.5.x Light -- the current LTS version)
+ from the link:https://slproweb.com/products/Win32OpenSSL.html[Shining Light Productions site].
 
 . Install OpenSSL from the downloaded file.
 
