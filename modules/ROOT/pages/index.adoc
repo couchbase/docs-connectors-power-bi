@@ -10,13 +10,13 @@
 The Couchbase Power BI Connector integrates:
 
 * Couchbase Analytics tabular views.
-+
-TIP: For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
 * Capella Columnar instances
-
-* or Capella provisioned services
+* Capella provisioned services
+* Enterprise Analytics 
 
 With Microsoft's Power BI interactive data visualization platform.
+
+TIP: For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
 --
 
 == Prerequisites
@@ -216,9 +216,12 @@ You will use this file later when you create the ODBC connection.
 == Configure an ODBC Data Source
 
 You configure an ODBC data source name (DSN) for each CBAS scope or Capella columnar database you want to use in Power BI.
+
+NOTE: ODBC drivers with versions 1.2 and later support client certificate authentication. 
+
 [IMPORTANT]
- Be careful to use the *ODBC Data Source Administrator (64 bit)*; there is an *ODBC Data Source Administrator (32 bit)*
- available, but this will not work with the connector.
+Be careful to use the *ODBC Data Source Administrator (64 bit)*; there is an *ODBC Data Source Administrator (32 bit)*
+available, but this will not work with the connector.
 
 [tabs]
 ====
@@ -259,7 +262,7 @@ include::partial$common.adoc[tag="windows-separators-warning"]
 
 *Client Private Key Path:*:: Enter the location of the client private key file.
 
-*Passphrase:* (Optional) If your private key is encrypted, enter the passphrase for the key.
+*Passphrase:*:: (Optional) If your private key is encrypted, enter the passphrase for the key.
 --
 
 Capella Columnar::
@@ -279,6 +282,10 @@ If a two-part scope -- such as `travel-sample.inventory` --
 then the two parts must be separated by a `/` -- `travel-sample/inventory`.
 *User*:: Enter the username you created in the <<capella-columnar-user-account,User Account section>>
 *Password*:: Enter the password you allocated to the user <<capella-columnar-user-account,here>>.
+*CertificateFile Path:*:: Enter the location of the root certificate file you downloaded <<download-root-certificate,here>>.
+*Trust Store Path:*:: Enter the path to the trust store. 
+*Client Private Key Path:*:: Enter the location of the client private key file.
+*Passphrase:*:: (Optional) If your private key is encrypted, enter the passphrase for the key.
 --
 
 Couchbase Server::
@@ -314,6 +321,11 @@ xref:server:learn:security/roles.adoc#cluster-admin[Cluster Admin Role] -- shoul
 *CertificateFile Path:*:: Fill in the location of the file you downloaded <<download-root-certificate,here>>.
 +
 include::partial$common.adoc[tag="windows-separators-warning"]
+
+*Trust Store Path:*:: Enter the path to the trust store. 
+*Client Private Key Path:*:: Enter the location of the client private key file.
+*Passphrase:*:: (Optional) If your private key is encrypted, enter the passphrase for the key.
+
 --
 
 Enterprise Analytics::
@@ -321,7 +333,7 @@ Enterprise Analytics::
 --
 . Open the ODBC Administration tool.
 . Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
-. On the next window, select btn:[Couchbase Analytics].
+. On the next window, select btn:[Enterprise Analytics??].
 . Fill in the parameters as follows:
 +
 [horizontal]
@@ -336,14 +348,11 @@ must be separated by a `/` -- `travel-sample/inventory`.
 *User:*:: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions --
 xref:server:learn:security/roles.adoc#cluster-admin[Cluster Admin Role] -- should be used for deployment.
 *Password:*:: Enter the cluster password.   
-*CertificateFile Path:*:: Fill in the location of the file you downloaded <<download-root-certificate,here>>.
+*CertificateFile Path:*:: Enter in the location of the root certificate file you downloaded <<download-root-certificate,here>>.
 *Trust Store Path:*:: Enter the path to the trust store. 
 *Client Private Key Path:*:: Enter the location of the client private key file.
-*Passphrase:* (Optional) If your private key is encrypted, enter the passphrase for the key.
-
-NOTE: You can either use standard credentials or client certificate authentication to set up the ODBC connection. If you choose to use client certificate authentication, then you must fill in the `CertificateFile Path`, `Trust Store Path`, and `Client Private Key Path` fields, and leave the `User` and `Password` fields blank.
+*Passphrase:*:: (Optional) If your private key is encrypted, enter the passphrase for the key.
 --
-
 ====
 
 [sidebar]
