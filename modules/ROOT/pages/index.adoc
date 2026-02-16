@@ -233,7 +233,7 @@ You will use this PEM file later when you create the ODBC connection.
 
 == Configure an ODBC Data Source
 
-You configure an ODBC data source name (DSN) for each CBAS scope or Capella columnar database you want to use in Power BI.
+You configure an ODBC data source name (DSN) for each Couchbase database you want to use in Power BI.
 
 NOTE: ODBC drivers with versions 1.2 and later support client certificate authentication. 
 
@@ -250,7 +250,7 @@ Capella Operational::
 . Open the ODBC Administration tool.
 . Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
 . On the next window, select btn:[Couchbase Analytics].
-. Depending on whether you are connecting to Couchbase Capella or a self-managed Couchbase Server instance, fill in the parameters from the choices below:
+. Enter the following details in the ODBC DSN dialog: 
 +
 [horizontal]
 *Name:*:: Enter an identifying name for the data source.
@@ -283,13 +283,13 @@ include::partial$common.adoc[tag="windows-separators-warning"]
 *Passphrase:*:: (Optional) If your private key is encrypted, enter the passphrase for the key.
 --
 
-Capella Columnar::
+Capella Analytics::
 +
 --
 . Open the ODBC Administration tool.
 . Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
 . On the next window, select btn:[Capella].
-. Enter the following details in the ODBC configuration dialog:
+. Enter the following details in the ODBC DSN dialog:
 +
 [horizontal]
 *Name:*:: Enter an identifying name for the data source.
@@ -312,8 +312,7 @@ Couchbase Server::
 . Open the ODBC Administration tool.
 . Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
 . On the next window, select btn:[Couchbase Analytics].
-. Depending on whether you are connecting to Couchbase Capella or a self-managed Couchbase Server instance,
- fill in the parameters from the choices below:
+. Enter the following details in the ODBC DSN dialog: 
 +
 [horizontal]
  *Name:*:: Enter an identifying name for the data source.
@@ -352,7 +351,7 @@ Enterprise Analytics::
 . Open the ODBC Administration tool.
 . Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
 . On the next window, select btn:[Enterprise Analytics??].
-. Fill in the parameters as follows:
+. Enter the following details in the ODBC DSN dialog: 
 +
 [horizontal]
 *Name:*:: Enter an identifying name for the data source.
