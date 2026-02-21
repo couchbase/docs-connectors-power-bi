@@ -10,16 +10,19 @@ The Couchbase Power BI Connector integrates Microsoft Power BI with the followin
 
 * Couchbase Server
 * Capella Operational
-* Capella Analytics (formerly Capella Columnar)
+* Capella Analytics
 * Enterprise Analytics
 
-To retrieve data from Couchbase Server and Capella Operational, the Power BI connector interacts with the xref:server:analytics:1_intro.adoc[Couchbase Analytics Service].
+The Power BI connector uses the Couchbase ODBC driver to connect to these data sources.
+Using the ODBC driver, you can create an ODBC Data Source Name (DSN) for each data source you want to use in Power BI.
+The DSN defines the connection details such as the host, port, authentication method, and SSL settings.
+For Couchbase Server and Capella Operational, the ODBC driver connects to the xref:server:analytics:1_intro.adoc[Couchbase Analytics Service], whereas for Capella Analytics and Enterprise Analytics, the driver connects directly to their analytical databases.
 
-Connecting Power BI to a Couchbase Analytics Service, Capella Analytics, or Enterprise Analytics database requires a Couchbase ODBC driver.
+Once the DSN is configured, the Power BI connector lets you import the data from the specified Couchbase data source into Power BI. 
 
 == Prerequisites
 
-For Couchbase Server and Capella Operational, ensure that the Analytics Service is running on the target node.
+If you're using Couchbase Server or Capella Operational as your data source, ensure that the Analytics Service is running on the target node.
 
 To connect with Analytics Service running on Couchbase Server, the Power BI connector requires Couchbase Server version 7.2.4 or later.
 
@@ -33,22 +36,20 @@ If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US
 NOTE: Power BI is only available for the Microsoft Windows platform;
 for other platforms, consider our xref:tableau-connector::index.adoc[Tableau connector].
 
-== Install the Couchbase ODBC Driver
+== Install the Couchbase Power BI Connector
 
-To install the Couchbase ODBC driver:
+To install the connector that allows Power BI to communicate with Couchbase (through ODBC): 
 
-. Download the `couchbase-odbc-1.1-win64.msi` file from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.1/couchbase-odbc-1.1-win64.msi[] -- see the xref:release-notes.adoc[release notes page] for more details.
+. Download `couchbase-powerbi-connector-1.0.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[] --
+see the xref:release-notes.adoc[release notes page] for more details.
 
-. Double-click the file to open the *Couchbase ODBC Setup Wizard*.
+. Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
 
-. Install the ODBC drivers from the downloaded file.
-This installation provides both ANSI and Unicode drivers.
-
-IMPORTANT: Make sure that you have installed the 64-bit versions of the ODBC drivers.
+TIP: To verify is the connector is installed correctly, open Power BI and go to menu:Get Data from Other Sources[Get data from another source]. Use the search box to find btn:[Couchbase Connector]. If the connector appears in the search results, then it is installed correctly.
 
 == Install OpenSSL
 
-The Couchbase ODBC driver requires OpenSSL to establish a secure connection. 
+Before install the Couchbase ODBC driver, ensure that OpenSSL is installed, as it is a required runtime dependency for the driver.
 
 To install OpenSSL:
 
@@ -84,30 +85,23 @@ Once again, open the command prompt (`cmd`) -- it must be a fresh command prompt
 openssl version
 ----
 
-== Install the Couchbase Power BI Connector
+== Install the Couchbase ODBC Driver
 
-To install the connector that allows Power BI to communicate with Couchbase (through ODBC): 
+To install the Couchbase ODBC driver:
 
-. Download `couchbase-powerbi-connector-1.0.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[] --
-see the xref:release-notes.adoc[release notes page] for more details.
+. Download the `couchbase-odbc-1.2-win64.msi` file from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.2/couchbase-odbc-1.2-win64.msi[] -- see the xref:release-notes.adoc[release notes page] for more details.
 
-. Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
+. Double-click the file to open the *Couchbase ODBC Setup Wizard*.
 
+. Install the ODBC drivers from the downloaded file.
+This installation provides both ANSI and Unicode drivers.
 
-== Verify the Connector is Loaded Successfully
-
-. Open *Power BI*.
-
-. Go to menu:Get Data from Other Sources[Get data from another source].
-
-. Use the search box to find btn:[Couchbase Connector].
-
+IMPORTANT: Make sure that you have installed the 64-bit versions of the ODBC drivers.
 
 == Setting up a Secure Connection
 
 Couchbase strongly recommends that you secure your ODBC connection using SSL.
 This ensures encryption of the communication between Power BI and Couchbase. 
-
 
 [tabs]
 ====
@@ -231,152 +225,220 @@ You will use this PEM file later when you create the ODBC connection.
 
 ====
 
-== Configure an ODBC Data Source
+== Create an ODBC Data Source
 
-You configure an ODBC data source name (DSN) for each Couchbase database you want to use in Power BI.
+This section explains how to set up an ODBC Data Source Name (DSN) a Couchbase data source using the Couchbase ODBC driver.
 
-NOTE: ODBC drivers with versions 1.2 and later support client certificate authentication. 
+You can create an ODBC data source for each Couchbase data source you want to use in Power BI. 
 
-[IMPORTANT]
-Be careful to use the *ODBC Data Source Administrator (64 bit)*; there is an *ODBC Data Source Administrator (32 bit)*
+For Couchbase Server and Capella Operational, the ODBC driver connects to the xref:server:analytics:1_intro.adoc[Couchbase Analytics Service]. 
+
+You can also enable logging for the ODBC driver. The logs are stored in <location>. 
+
+IMPORTANT: Be careful to use the *ODBC Data Source Administrator (64 bit)*; there is an *ODBC Data Source Administrator (32 bit)*
 available, but this will not work with the connector.
+
 
 [tabs]
 ====
 
-Capella Operational::
-+
---
-. Open the ODBC Administration tool.
-. Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
-. On the next window, select btn:[Couchbase Analytics].
-. Enter the following details in the ODBC DSN dialog: 
-+
-[horizontal]
-*Name:*:: Enter an identifying name for the data source.
-
-*Description:*:: Enter an optional description.
-
-*Host:*:: Fill in the connection string you copied <<copy-connection-string,here>>.
-+
-include::partial$common.adoc[tag="remove-prefix-warning"]
-
-*Port:*:: Use `11207` for a secure connection.
-
-*Scope*:: Name of the scope from which the data is being extracted.
-If a two-part scope -- such as `travel-sample.inventory` -- then the two parts must be separated by a `/` -- `travel-sample/inventory`.
-
-*SSLMode:*:: Fill in `require` for SSL.
-
-*User:*:: Enter the username that you created in the <<setup-database-access,Database Access section of Capella>>.
-
-*Password*:: Enter the password you created in the <<setup-database-access,Database Access section of Capella>>.
-
-*CertificateFile Path:*:: Fill in the location of the file you downloaded <<download-root-certificate,here>>.
-+
-include::partial$common.adoc[tag="windows-separators-warning"]
-
-*Trust Store Path:*:: Enter the path to the trust store. 
-
-*Client Private Key Path:*:: Enter the location of the client private key file.
-
-*Passphrase:*:: (Optional) If your private key is encrypted, enter the passphrase for the key.
---
-
 Capella Analytics::
 +
 --
-. Open the ODBC Administration tool.
-. Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
-. On the next window, select btn:[Capella].
-. Enter the following details in the ODBC DSN dialog:
+. Open the *ODBC Data Source Administration* tool.
+. Select the *User DSN* tab and click btn:[Add].
+. Select the *Couchbase ODBC Driver* (either ANSI or UNICODE) from the list, and then click btn:[Finish].
+. On the next window, select btn:[Capella Analytics] as the data source. 
+. (Optional) To enable logging, select btn:[Collect Logs].  
+. Click btn:[Next]. 
+. Enter the following DSN details:
 +
 [horizontal]
-*Name:*:: Enter an identifying name for the data source.
-*Description:*:: Enter an optional description.
-*URL:*:: Enter the connection string *exactly*  as copied <<capella-columnar-connection-string,here>>.
-*Database*:: Name of the database from which the data is being extracted. +
-If a two-part scope -- such as `travel-sample.inventory` --
-then the two parts must be separated by a `/` -- `travel-sample/inventory`.
-*User*:: Enter the username you created in the <<capella-columnar-user-account,User Account section>>
-*Password*:: Enter the password you allocated to the user <<capella-columnar-user-account,here>>.
-*CertificateFile Path:*:: Enter the location of the root certificate file you downloaded <<download-root-certificate,here>>.
-*Trust Store Path:*:: Enter the path to the trust store. 
-*Client Private Key Path:*:: Enter the location of the client private key file.
-*Passphrase:*:: (Optional) If your private key is encrypted, enter the passphrase for the key.
+*Name:*:: A unique name for your data source.
+*Description:*:: An optional description.
+*Connection String:*:: The exact connection string copied from <<capella-columnar-connection-string,here>>.
+*Database*:: The name of the database from which the data must be extracted.
+*Scope:*:: The specific scope from which the data must be extracted. +
+For two-part scopes, use a `/` to separate the two parts. 
+For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
+*User*:: The username created in the <<capella-columnar-user-account,User Account section>>
+*Password*:: The password created in the <<capella-columnar-user-account,here>>. +
+NOTE: For Power BI connections, the *Username* and *Password* fields are optional.
+However, in the Power BI tool, you must provide these credentials when prompted.
+. Click btn:[OK] to save the DSN and complete the setup.
+--
+
+Capella Operational::
++
+--
+. Open the *ODBC Data Source Administration* tool.
+. Select the *User DSN* tab and click btn:[Add].
+. Select the *Couchbase ODBC Driver* (either ANSI or UNICODE) from the list, and then click btn:[Finish].
+. On the next window, select btn:[Capella Operational (Analytics Service)] as the data source. 
+. (Optional) To enable logging, select btn:[Collect Logs].  
+. Click btn:[Next]. 
+. Enter the following DSN details:
++
+[horizontal]
+*Name:*:: A unique name for your data source.
+*Description:*:: An optional description.
+*Connection String:*:: The exact connection string copied from <<capella-columnar-connection-string,here>>.
+*Scope:*:: The scope from which the data must be extracted. +
+For two-part scopes, use a `/` to separate the two parts. 
+For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
+*User*:: The username created in the <<capella-columnar-user-account,User Account section>>
+*Password*:: The password created in the <<capella-columnar-user-account,here>>. +
+NOTE: For Power BI connections, the *Username* and *Password* fields are optional.
+However, in the Power BI tool, you must provide these credentials when prompted.
+. Click btn:[OK] to save the DSN and complete the setup.
 --
 
 Couchbase Server::
 +
 --
-. Open the ODBC Administration tool.
-. Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
-. On the next window, select btn:[Couchbase Analytics].
-. Enter the following details in the ODBC DSN dialog: 
+. Open the *ODBC Data Source Administration* tool.
+. Select the *User DSN* tab and click btn:[Add].
+. Select the *Couchbase ODBC Driver* (either ANSI or UNICODE) from the list, and then click btn:[Finish].
+. On the next window, select btn:[Couchbase Server (Analytics Service)] as the data source. 
+. (Optional) To enable logging, select btn:[Collect Logs].  
+. Click btn:[Next]. 
+. Enter the following DSN details:
 +
 [horizontal]
- *Name:*:: Enter an identifying name for the data source.
-
-*Description:*:: Enter an optional description.
-
-*Host:*:: Enter the IP address of the Data (KV) node in the Couchbase cluster.
-
-*Port:*:: Set to `11207` for an SSL connection.
-
-*Scope:*:: Name of the scope from which the data is being extracted.
-If a two-part scope -- such as `travel-sample.inventory` -- then the two parts must be separated by a `/` -- `travel-sample/inventory`.
+*Name:*:: A unique name for your data source.
+*Description:*:: An optional description.
+*Address*:: The host and port details.
+Enter the IP address of the Data (KV) node in the Couchbase cluster.
+If you're using an SSL connection, set the port to `11207`.
+*Scope:*:: The scope from which the data must be extracted. +
+For two-part scopes, use a `/` to separate the two parts. 
+For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
+*SSL Mode:*:: Select `Enable` or `Disable`. 
+*Authentication:*:: Depending on the SSL mode you select, the authentication method and required fields will differ.
 +
-include::partial$common.adoc[tag="extra-spaces-warning"]
+[cols="1a,1a,2a,3a", options="header"]
+|===
+| SSL Mode | Authentication | Fields | Description
 
-*SSLMode:*:: Fill in `require` for SSL.
+| `Disable`
+| `Basic`
+| * Username +
+  * Password
+| Your account credentials. 
 
-*User:*:: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions --
-xref:server:learn:security/roles.adoc#cluster-admin[Cluster Admin Role] -- should be used for deployment.
+| `Enable`
+| `Basic`
+| * Username +
+  * Password +
+  * Cluster Cert Path
+| Account credentials and the path to your downloaded root certificate.
 
-*Password:*:: Enter the cluster password.
+| `Disable`
+| `LDAP`
+| * Username +
+  * Password 
+| Your LDAP directory credentials. 
 
-*CertificateFile Path:*:: Fill in the location of the file you downloaded <<download-root-certificate,here>>.
-+
-include::partial$common.adoc[tag="windows-separators-warning"]
+| `Enable`
+| `LDAP`
+| * Username +
+  * Password +
+  * Cluster Cert Path 
+| LDAP credentials and the path to your downloaded root certificate.
 
-*Trust Store Path:*:: Enter the path to the trust store. 
-*Client Private Key Path:*:: Enter the location of the client private key file.
-*Passphrase:*:: (Optional) If your private key is encrypted, enter the passphrase for the key.
+| `Enable`
+| `Client Certificate`
+| * Client Cert Path +
+  * Client Key Path +
+  * Cluster Cert Path
+| Paths to your client certificate, private key, and root certificate.
 
+| `Enable`
+| `Client Certificate (Encrypted Key)`
+| * Client Cert Path +
+  * Client Key Path +
+  * Key Password +
+  * Cluster Cert Path +
+| Paths to your certificates and encrypted key, including the key passphrase.    
+|===
+*Advanced Parameters:*:: Additional parameters for the ODBC connection.
+. Click btn:[OK] to save the DSN and complete the setup.
 --
 
 Enterprise Analytics::
 +
 --
-. Open the ODBC Administration tool.
-. Create a new ODBC connection using one of the Couchbase drivers (either `ANSI` or `Unicode`), then select btn:[Finish]
-. On the next window, select btn:[Enterprise Analytics??].
-. Enter the following details in the ODBC DSN dialog: 
+. Open the *ODBC Data Source Administration* tool.
+. Select the *User DSN* tab and click btn:[Add].
+. Select the *Couchbase ODBC Driver* (either ANSI or UNICODE) from the list, and then click btn:[Finish].
+. On the next window, select btn:[Enterprise Analytics] as the data source. 
+. (Optional) To enable logging, select btn:[Collect Logs].  
+. Click btn:[Next]. 
+. Enter the following DSN details:
 +
 [horizontal]
-*Name:*:: Enter an identifying name for the data source.
-*Description:*:: Enter an optional description.
-*Host:*:: Enter the IP address of the Analytics node in the Couchbase cluster.
-*Port:*:: Set to `8095` for an SSL connection.
-*Scope:*:: Name of the scope from which the data is being extracted.
-If a two-part scope -- such as `travel-sample.inventory` -- then the two parts
-must be separated by a `/` -- `travel-sample/inventory`.
-*SSLMode:*:: Fill in `require` for SSL.
-*User:*:: You can use the Administrator user set up during installation for testing purposes, but a user restricted to only CBAS permissions --
-xref:server:learn:security/roles.adoc#cluster-admin[Cluster Admin Role] -- should be used for deployment.
-*Password:*:: Enter the cluster password.   
-*CertificateFile Path:*:: Enter in the location of the root certificate file you downloaded <<download-ea-root-certificate,here>>.
-*Trust Store Path:*:: Enter the path to the trust store. 
-*Client Private Key Path:*:: Enter the location of the client private key file.
-*Passphrase:*:: (Optional) If your private key is encrypted, enter the passphrase for the key.
+*Name:*:: A unique name for your data source.
+*Description:*:: An optional description.
+*Address*:: The host and port details.
+Enter the IP address of the Data (KV) node in the Couchbase cluster.
+If you're using an SSL connection, set the port to `11207`.
+*Database*:: The name of the database from which the data must be extracted.
+*Scope:*:: The scope from which the data must be extracted. +
+For two-part scopes, use a `/` to separate the two parts. 
+For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
+*SSL Mode:*:: Select `Enable` or `Disable`. 
+*Authentication:*:: Select the authentication method.
+Depending on the SSL mode you select, the authentication method and required fields will differ.
++
+[cols="1a,1a,2a,3a", options="header"]
+|===
+| SSL Mode | Authentication | Fields | Description
+
+| `Disable`
+| `Basic`
+| * Username +
+  * Password
+| Your account credentials. 
+
+| `Enable`
+| `Basic`
+| * Username +
+  * Password +
+  * Cluster Cert Path
+| Account credentials and the path to your downloaded root certificate.
+
+| `Disable`
+| `LDAP`
+| * Username +
+  * Password 
+| Your LDAP directory credentials. 
+
+| `Enable`
+| `LDAP`
+| * Username +
+  * Password +
+  * Cluster Cert Path 
+| LDAP credentials and the path to your downloaded root certificate.
+
+| `Enable`
+| `Client Certificate`
+| * Client Cert Path +
+  * Client Key Path +
+  * Cluster Cert Path
+| Paths to your client certificate, private key, and root certificate.
+
+| `Enable`
+| `Client Certificate (Encrypted Key)`
+| * Client Cert Path +
+  * Client Key Path +
+  * Key Password +
+  * Cluster Cert Path +
+| Paths to your certificates and encrypted key, including the key passphrase.    
+|===
+*Advanced Parameters:*:: Additional parameters for the ODBC connection.
+. Click btn:[OK] to save the DSN and complete the setup.
 --
 ====
-
-[sidebar]
-====
-For information about adding an ODBC data source, see the https://support.microsoft.com/en-us/office/administer-odbc-data-sources-b19f856b-5b9b-48c9-8b93-07484bfab5a7#bm2[Microsoft support documentation].
-====
-
 
 == Use the Couchbase Power BI Connector
 
@@ -394,13 +456,16 @@ To add data from Couchbase data sources to Power BI, follow the steps in the Mic
 
 . In Power BI Desktop, select menu:Get Data[].
 . Select *Couchbase Connector*.
-. When prompted for authentication, choose one of the following methods:
-* Username and password:
-** For Capella Operational and Capella Analytics, enter the account *Username* and *Password* you created for those services. 
-Ensure that they match the credentials configured in the ODBC DSN.
-** For Couchbase Server or Enterprise Analytics, enter credentials that have the appropriate data access permissions.
-* Client certificate:
-** Provide the *Client Certificate*, *Trust Store*, *Private Key*, and *Passphrase* (if the private key is encrypted) that you set up when you created the ODBC DSN.
+. In the *dsn* field, enter the name of the DSN you created. 
+. Select a *Data Connectivity mode* and click btn:[OK]. 
+. Select an authentication method based on your ODBC DSN configuration. 
+** Basic / LDAP / Capella Analytics / Capella Operational: Select `Basic` and enter your username and password.
+** Client Certificate: Select `Anonymous`. 
+It provides implicit authentication using your configured certificate. 
+** Client Certificate (Encrypted Key): Select `Basic` and enter your password. 
+You can leave the username field empty.
++
+You can also select `Windows` in Power BI to use your current Windows credentials. 
 
 After you connect, Power BI displays a list of the tabular views from the database specified by the DSN. 
 Select a view from the list and click btn:[Load] to import the view. 
