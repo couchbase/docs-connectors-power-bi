@@ -26,7 +26,7 @@ After you configure the DSN, you can use the Power BI connector to import data f
 == Prerequisites
 
 * Ensure that the Analytics Service is running on the target node when using Couchbase Server or Capella Operational as a data source.
-* To connect to Couchbase Server (Analytics Service), use Couchbase Server version 7.2.4 or later.
+* To connect to Couchbase Server, the Power BI connector requires Couchbase Server 7.2.4 or later.
 
 == Install Power BI
 
@@ -122,11 +122,12 @@ Capella Operational::
 You will need to get a connection string for your database
 and generate an API key to plug into the ODBC connector.
 
-[#copy-connection-string]#To obtain the `connection string`.#
+[#copy-connection-string]#To obtain the `connection string`:#
 
-. Sign in to your Capella instance as an Administrator.
-. Select the menu:Connect[] item from the top-level menu.
-. Make a copy of the `public connection string`.
+. Sign in to Capella as an `Organization Owner` or `Project Owner`.
+. Go to menu:Connect[].
+. Make a note of the *Public Connection String*.
+You'll need this to set up the ODBC connection. 
 +
 image::get-connection-string.png[copying connection string]
 +
@@ -156,13 +157,13 @@ Capella Analytics::
 --
 
 For details on creating a Capella Analytics instance,
-first see xref:columnar:admin:prepare-project.adoc[Creating a Capella Analytics Cluster].
+first see xref:analytics:admin:prepare-project.adoc[Creating a Capella Analytics Cluster].
 
-[#capella-columnar-connection-string]#You will need to access the Capella administration console to get the connection string for your analytics database.#
+[#capella-columnar-connection-string]#You will need to access the Capella web console to get the connection string for your analytics database.#
 
-. Sign in to your Capella instance as an `Organization owner` or `Project owner`.
-. Select menu:Columnar[] from the top-level page menu.
-. Select your Columnar cluster from the list.
+. Sign in to Capella as an `Organization Owner` or `Project Owner`.
+. Go to menu:Analytics[].
+. Select your Analytics cluster from the list.
 . Select menu:Settings[] from the top-level page menu.
 +
 image::select-columnar-cluster-settings.png[]
@@ -172,13 +173,10 @@ image::select-columnar-cluster-settings.png[]
 image::get-capella-columnar-connection-string.png[]
 +
 . Make a note of the connection string.
-
-Next, you need to add the IP address of the machine from which you are running Power BI,
+. Next, you need to add the IP address of the machine from which you are running Power BI,
  so that Capella will allow the machine to access the columnar data.
-
 . Click on menu:Allowed IP Addresses[] in the left-hand menu.
 . Click the btn:[Add Allowed IP] button.
-
 +
 image::capella-columnar-add-allowed-ip.png[]
 +
@@ -186,7 +184,7 @@ image::capella-columnar-add-allowed-ip.png[]
 +
 TIP: You can use the btn:[Add Current IP Address] button to fill in the address of the machine currently running the web console.
 
-[#capella-columnar-user-account]#Now, you will need to create a user account for Power BI to access the columnar data.#
+[#capella-columnar-user-account]#Now, you will need to create a user account for Power BI to access the analytics data.#
 
 . Return to the menu:Settings[] page, then click on menu:Access Control[] in the left-hand menu.
 . Click on btn:[Create Account].
@@ -201,19 +199,17 @@ image::capella-columnar-user-account.png[]
 Couchbase Server::
 +
 --
-
 [#download-root-certificate]#To create a secure connection to a self-managed Couchbase Server instance, you need to get the root certificate from the Administrator's Console.#
 
-. Use your web browser to access the Admin console and log in as an Administrator.
-. Use the left-hand menu to access the menu:Security[] settings.
-. From the top menu, select menu:Certificates[]. This will take you to the page from which you can view the server's security certificates:
+. Sign in to the Couchbase Server Web Console as an Administrator.
+. In the left-hand menu, select menu:Security[].
+. From the top menu, select menu:Certificates[] to view the security certificates.
 +
 image::access-root-certificate.png[]
 +
-. Copy *all* the text in the Trusted *Root Certificates* section (start from `BEGIN CERTIFICATE` and include `END CERTIFICATE` ),
-and save the text to an accessible `PEM` file.
-E.g., `C:\Users\user\certificate.pem`).
-+
+. In the *Trusted Root Certificates* section, copy the certificate text starting from `BEGIN CERTIFICATE` to `END CERTIFICATE`.
+. Save the text as a .pem file in an accessible location (for example, `C:\Users\user\certificate.pem`).
+
 You will use this file later when you create the ODBC connection.
 --
 
@@ -236,19 +232,15 @@ You will use this PEM file later when you create the ODBC connection.
 
 ====
 
-== Create an ODBC Data Source
+== Configure an ODBC Data Source 
 
-To connect Power BI to your Couchbase data source, you must configure an ODBC Data Source Name (DSN)
+To use a Couchbase data source in Power BI, you must configure an ODBC Data Source Name (DSN).
 
-This section explains how to set up an ODBC Data Source Name (DSN) a Couchbase data source using the Couchbase ODBC driver.
+During configuration, you can also enable logging for the ODBC driver. 
+The driver stores the logs in the following location: <location>.
 
-You can create an ODBC data source for each Couchbase data source you want to use in Power BI. 
-
-You can also enable logging for the ODBC driver. The logs are stored in <location>. 
-
-IMPORTANT: Be careful to use the *ODBC Data Source Administrator (64 bit)*; there is an *ODBC Data Source Administrator (32 bit)*
-available, but this will not work with the connector.
-
+IMPORTANT: Ensure that use the *ODBC Data Source Administrator (64 bit)*.
+The 32-bit version is incompatible with the connector and will not work correctly.
 
 [tabs]
 ====
@@ -257,9 +249,9 @@ Capella Analytics::
 +
 --
 . Open the *ODBC Data Source Administration* tool.
-. Select the *User DSN* tab and click btn:[Add].
-. Select the *Couchbase ODBC Driver* (either ANSI or UNICODE) from the list, and then click btn:[Finish].
-. On the next window, select btn:[Capella Analytics] as the data source. 
+. Go to the *User DSN* tab and click btn:[Add].
+. Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
+. Select btn:[Capella Analytics] as the data source. 
 . (Optional) To enable logging, select btn:[Collect Logs].  
 . Click btn:[Next]. 
 . Enter the following DSN details:
@@ -267,14 +259,14 @@ Capella Analytics::
 [horizontal]
 *Name:*:: A unique name for your data source.
 *Description:*:: An optional description.
-*Connection String:*:: The exact connection string copied from <<capella-columnar-connection-string,here>>.
-*Database*:: The name of the database from which the data must be extracted.
-*Scope:*:: The specific scope from which the data must be extracted. +
+*Connection String:*:: The connection string copied from <<capella-columnar-connection-string,here>>.
+*Database*:: The database from which the data must be extracted.
+*Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
-*User*:: The username created in the <<capella-columnar-user-account,User Account section>>
-*Password*:: The password created in the <<capella-columnar-user-account,here>>. +
-NOTE: For Power BI connections, the *Username* and *Password* fields are optional.
+*User*:: The username created in the <<capella-columnar-user-account,User Account section>>.
+*Password*:: The password created in the <<capella-columnar-user-account,User Account section>>. +
+NOTE: Providing the *Username* and *Password* here is optional.
 However, in the Power BI tool, you must provide these credentials when prompted.
 . Click btn:[OK] to save the DSN and complete the setup.
 --
@@ -284,7 +276,7 @@ Capella Operational::
 --
 . Open the *ODBC Data Source Administration* tool.
 . Select the *User DSN* tab and click btn:[Add].
-. Select the *Couchbase ODBC Driver* (either ANSI or UNICODE) from the list, and then click btn:[Finish].
+. Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
 . On the next window, select btn:[Capella Operational (Analytics Service)] as the data source. 
 . (Optional) To enable logging, select btn:[Collect Logs].  
 . Click btn:[Next]. 
@@ -294,12 +286,14 @@ Capella Operational::
 *Name:*:: A unique name for your data source.
 *Description:*:: An optional description.
 *Connection String:*:: The exact connection string copied from <<capella-columnar-connection-string,here>>.
++
+include::partial$common.adoc[tag="remove-prefix-warning"]
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
 *User*:: The username created in the <<capella-columnar-user-account,User Account section>>
-*Password*:: The password created in the <<capella-columnar-user-account,here>>. +
-NOTE: For Power BI connections, the *Username* and *Password* fields are optional.
+*Password*:: The password created in the <<capella-columnar-user-account,User Account section>>. +
+NOTE: Providing the *Username* and *Password* here is optional.
 However, in the Power BI tool, you must provide these credentials when prompted.
 . Click btn:[OK] to save the DSN and complete the setup.
 --
@@ -309,7 +303,7 @@ Couchbase Server::
 --
 . Open the *ODBC Data Source Administration* tool.
 . Select the *User DSN* tab and click btn:[Add].
-. Select the *Couchbase ODBC Driver* (either ANSI or UNICODE) from the list, and then click btn:[Finish].
+. Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
 . On the next window, select btn:[Couchbase Server (Analytics Service)] as the data source. 
 . (Optional) To enable logging, select btn:[Collect Logs].  
 . Click btn:[Next]. 
@@ -324,8 +318,12 @@ If you're using an SSL connection, set the port to `11207`.
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
++
+include::partial$common.adoc[tag="extra-spaces-warning"]
 *SSL Mode:*:: Select `Enable` or `Disable`. 
-*Authentication:*:: Depending on the SSL mode you select, the authentication method and required fields will differ.
+*Authentication:*:: Select an authentication method. +
++
+Based on the SSL mode and authentication method you select, the required fields differ.
 +
 [cols="1a,1a,2a,3a", options="header"]
 |===
@@ -333,45 +331,44 @@ For example, if the scope is `travel-sample.inventory`, enter it as `travel-samp
 
 | `Disable`
 | `Basic`
-| * Username +
-  * Password
-| Your account credentials. 
+| Username, Password
+| User credentials. 
 
 | `Enable`
 | `Basic`
-| * Username +
-  * Password +
-  * Cluster Cert Path
-| Account credentials and the path to your downloaded root certificate.
+| Username, Password, Cluster Cert Path
+| User credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
 
 | `Disable`
 | `LDAP`
-| * Username +
-  * Password 
-| Your LDAP directory credentials. 
+| Username, Password 
+| LDAP directory credentials. 
+
+For more information, see xref:server:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `LDAP`
-| * Username +
-  * Password +
-  * Cluster Cert Path 
-| LDAP credentials and the path to your downloaded root certificate.
+| Username, Password, Cluster Cert Path 
+| LDAP credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
+
+For more information, see xref:server:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `Client Certificate`
-| * Client Cert Path +
-  * Client Key Path +
-  * Cluster Cert Path
+| Client Cert Path, Client Key Path, Cluster Cert Path
 | Paths to your client certificate, private key, and root certificate.
+
+For more information, see xref:server:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
 | `Enable`
 | `Client Certificate (Encrypted Key)`
-| * Client Cert Path +
-  * Client Key Path +
-  * Key Password +
-  * Cluster Cert Path +
+| Client Cert Path, Client Key Path, Key Password, Cluster Cert Path 
 | Paths to your certificates and encrypted key, including the key passphrase.    
+
+For more information, see xref:server:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 |===
++
+include::partial$common.adoc[tag="windows-separators-warning"]
 *Advanced Parameters:*:: Additional parameters for the ODBC connection.
 . Click btn:[OK] to save the DSN and complete the setup.
 --
@@ -381,7 +378,7 @@ Enterprise Analytics::
 --
 . Open the *ODBC Data Source Administration* tool.
 . Select the *User DSN* tab and click btn:[Add].
-. Select the *Couchbase ODBC Driver* (either ANSI or UNICODE) from the list, and then click btn:[Finish].
+. Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
 . On the next window, select btn:[Enterprise Analytics] as the data source. 
 . (Optional) To enable logging, select btn:[Collect Logs].  
 . Click btn:[Next]. 
@@ -398,8 +395,9 @@ If you're using an SSL connection, set the port to `11207`.
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
 *SSL Mode:*:: Select `Enable` or `Disable`. 
-*Authentication:*:: Select the authentication method.
-Depending on the SSL mode you select, the authentication method and required fields will differ.
+*Authentication:*:: Select an authentication method. +
++
+Based on the SSL mode and authentication method you select, the required fields differ.
 +
 [cols="1a,1a,2a,3a", options="header"]
 |===
@@ -407,81 +405,90 @@ Depending on the SSL mode you select, the authentication method and required fie
 
 | `Disable`
 | `Basic`
-| * Username +
-  * Password
-| Your account credentials. 
+| Username, Password
+| User credentials. 
 
 | `Enable`
 | `Basic`
-| * Username +
-  * Password +
-  * Cluster Cert Path
-| Account credentials and the path to your downloaded root certificate.
+| Username, Password, Cluster Cert Path
+| User credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
 
 | `Disable`
 | `LDAP`
-| * Username +
-  * Password 
-| Your LDAP directory credentials. 
+| Username, Password 
+| LDAP directory credentials. 
+
+For more information, see xref:enterprise-analytics:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `LDAP`
-| * Username +
-  * Password +
-  * Cluster Cert Path 
-| LDAP credentials and the path to your downloaded root certificate.
+| Username, Password, Cluster Cert Path 
+| LDAP credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
+
+For more information, see xref:enterprise-analytics:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `Client Certificate`
-| * Client Cert Path +
-  * Client Key Path +
-  * Cluster Cert Path
+| Client Cert Path, Client Key Path, Cluster Cert Path
 | Paths to your client certificate, private key, and root certificate.
+
+For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
 | `Enable`
 | `Client Certificate (Encrypted Key)`
-| * Client Cert Path +
-  * Client Key Path +
-  * Key Password +
-  * Cluster Cert Path +
-| Paths to your certificates and encrypted key, including the key passphrase.    
+| Client Cert Path, Client Key Path, Key Password, Cluster Cert Path 
+| Paths to your certificates and encrypted key, including the key passphrase.   
+
+For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 |===
++
+include::partial$common.adoc[tag="windows-separators-warning"]
 *Advanced Parameters:*:: Additional parameters for the ODBC connection.
 . Click btn:[OK] to save the DSN and complete the setup.
 --
 ====
 
-== Use the Couchbase Power BI Connector
+== Connect and Add Data to Power BI
 
 Business information tools rely on data organized into relational databases.
 To use the Power BI Connector, you must create tabular analytics views of your JSON documents. 
-// For Capella columnar, see xref:query:workbench.adoc#TAV[Save Results as a Tabular View] or xref:sqlpp:5_ddl.adoc#TAV[Tabular Views].
-For self-managed CBAS, see xref:server:analytics:run-query.adoc#Using_analytics_workbench[the workbench docs] or 
-xref:server:analytics:5a_views.adoc[tabular views].
 
-After you prepare tabular views and define DSNs in Power BI, you use the Couchbase Power BI Connector to load data into Power BI. 
+* For Couchbase Server and Capella Operational, see xref:server:analytics:run-query.adoc#Using_analytics_workbench[Analytics Workbench] or 
+xref:server:analytics:5a_views.adoc[Tabular Views].
 
-=== Use the Connector to Add Data to Power BI
+* For Capella Analytics, see xref:analytics:query:views-tavs.adoc[Tabular Views] or xref:analytics/sqlpp/5a_views.html#TAV[Create a Tabular View].
 
-To add data from Couchbase data sources to Power BI, follow the steps in the Microsoft documentation on https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connect-to-data[Connecting to data sources in Power BI desktop].
+* For Enterprise Analytics, see xref:enterprise-analytics:sqlpp:5a_views.adoc[Tabular Views] or xref:enterprise-analytics:sqlpp:5a_views.adoc#TAV[Create a Tabular View].
+
+After you prepare tabular views and define DSNs, use the Couchbase Power BI Connector to load data into Power BI. 
+
+=== Add Data from Your Data Source
+
+To add data from Couchbase data sources to Power BI: 
 
 . In Power BI Desktop, select menu:Get Data[].
 . Select *Couchbase Connector*.
 . In the *dsn* field, enter the name of the DSN you created. 
 . Select a *Data Connectivity mode* and click btn:[OK]. 
 . Select an authentication method based on your ODBC DSN configuration. 
-** Basic / LDAP / Capella Analytics / Capella Operational: Select `Basic` and enter your username and password.
-** Client Certificate: Select `Anonymous`. 
-It provides implicit authentication using your configured certificate. 
-** Client Certificate (Encrypted Key): Select `Basic` and enter your password. 
-You can leave the username field empty.
-+
-You can also select `Windows` in Power BI to use your current Windows credentials. 
+** `Basic` - If your DSN uses `Basic` or `LDAP` authentication, or if you're connecting to Capella Analytics or Capella Operational.
+Enter your username and password.
+** `Basic` (password only) - If your DSN uses `Client Certificate (Encrypted Key)` authentication.
+Enter your password and leave the username field empty.
+** `Anonymous` - If your DSN uses `Client Certificate` authentication. 
+No certificate details required as this option provides implicit authentication.
+** `Windows` - If you want to authenticate with your Windows credentials.
+. Click btn:[Connect].
 
-After you connect, Power BI displays a list of the tabular views from the database specified by the DSN. 
-Select a view from the list and click btn:[Load] to import the view. 
-Once loaded, you can use Power BI options to analyze and visualize the data.
+After connecting, Power BI displays a list of the tabular views in the database specified by your DSN. 
+Select a view from the list and click btn:[Load] to import it. 
+You can then use various Power BI options to visualize the data.
 
-The following image shows an example of the `travel-sample` `airport_view`.
+An example image of the `travel-sample` `airport_view`: 
 
 image::visualization.png[A data visualization in Power BI]
+
+== Related Links
+
+* Microsoft documentation on https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connect-to-data[Connecting to data sources in Power BI desktop].
+* 
