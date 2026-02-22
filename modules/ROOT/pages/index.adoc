@@ -6,6 +6,8 @@
 [abstract]
 {description}
 
+== Overview
+
 The Couchbase Power BI Connector integrates Microsoft Power BI with the following Couchbase data sources:
 
 * Couchbase Server
@@ -13,18 +15,18 @@ The Couchbase Power BI Connector integrates Microsoft Power BI with the followin
 * Capella Analytics
 * Enterprise Analytics
 
-The Power BI connector uses the Couchbase ODBC driver to connect to these data sources.
-Using the ODBC driver, you can create an ODBC Data Source Name (DSN) for each data source you want to use in Power BI.
+The connector uses the Couchbase ODBC driver to connect to these data sources.
+
+To use the connector, you must first create an ODBC Data Source Name (DSN) for each data source you want to use in Power BI.
 The DSN defines the connection details such as the host, port, authentication method, and SSL settings.
 For Couchbase Server and Capella Operational, the ODBC driver connects to the xref:server:analytics:1_intro.adoc[Couchbase Analytics Service], whereas for Capella Analytics and Enterprise Analytics, the driver connects directly to their analytical databases.
 
-Once the DSN is configured, the Power BI connector lets you import the data from the specified Couchbase data source into Power BI. 
+After you configure the DSN, you can use the Power BI connector to import data from your Couchbase data source into Power BI.
 
 == Prerequisites
 
-If you're using Couchbase Server or Capella Operational as your data source, ensure that the Analytics Service is running on the target node.
-
-To connect with Analytics Service running on Couchbase Server, the Power BI connector requires Couchbase Server version 7.2.4 or later.
+* Ensure that the Analytics Service is running on the target node when using Couchbase Server or Capella Operational as a data source.
+* To connect to Couchbase Server (Analytics Service), use Couchbase Server version 7.2.4 or later.
 
 == Install Power BI
 
@@ -36,22 +38,11 @@ If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US
 NOTE: Power BI is only available for the Microsoft Windows platform;
 for other platforms, consider our xref:tableau-connector::index.adoc[Tableau connector].
 
-== Install the Couchbase Power BI Connector
-
-To install the connector that allows Power BI to communicate with Couchbase (through ODBC): 
-
-. Download `couchbase-powerbi-connector-1.0.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[] --
-see the xref:release-notes.adoc[release notes page] for more details.
-
-. Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
-
-TIP: To verify is the connector is installed correctly, open Power BI and go to menu:Get Data from Other Sources[Get data from another source]. Use the search box to find btn:[Couchbase Connector]. If the connector appears in the search results, then it is installed correctly.
-
 == Install OpenSSL
 
-Before install the Couchbase ODBC driver, ensure that OpenSSL is installed, as it is a required runtime dependency for the driver.
+OpenSSL is a required dependency for the Couchbase ODBC driver. 
 
-To install OpenSSL:
+To install OpenSSL: 
 
 . Download OpenSSL 3.x for x64 (recommended version: OpenSSL 3.5.x Light -- the current LTS version)
  from the link:https://slproweb.com/products/Win32OpenSSL.html[Shining Light Productions site].
@@ -97,6 +88,26 @@ To install the Couchbase ODBC driver:
 This installation provides both ANSI and Unicode drivers.
 
 IMPORTANT: Make sure that you have installed the 64-bit versions of the ODBC drivers.
+
+
+== Install the Couchbase Power BI Connector
+
+To install the Power BI Connector: 
+
+. Download `couchbase-powerbi-connector-1.0.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[] --
+see the xref:release-notes.adoc[release notes page] for more details.
+
+. Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
+
+== Verify the Connector Installation
+
+To verify if the Couchbase Power BI Connector is installed correctly:
+
+. Open *Power BI Desktop*.
+. Go to menu:Get Data[].
+. In the search box, enter `Couchbase Connector`.
+
+If the connector appears in the search results, it is installed correctly.
 
 == Setting up a Secure Connection
 
@@ -227,11 +238,11 @@ You will use this PEM file later when you create the ODBC connection.
 
 == Create an ODBC Data Source
 
+To connect Power BI to your Couchbase data source, you must configure an ODBC Data Source Name (DSN)
+
 This section explains how to set up an ODBC Data Source Name (DSN) a Couchbase data source using the Couchbase ODBC driver.
 
 You can create an ODBC data source for each Couchbase data source you want to use in Power BI. 
-
-For Couchbase Server and Capella Operational, the ODBC driver connects to the xref:server:analytics:1_intro.adoc[Couchbase Analytics Service]. 
 
 You can also enable logging for the ODBC driver. The logs are stored in <location>. 
 
@@ -443,7 +454,7 @@ Depending on the SSL mode you select, the authentication method and required fie
 == Use the Couchbase Power BI Connector
 
 Business information tools rely on data organized into relational databases.
-To use the Power BI connector, you must create tabular analytics views of your JSON documents. 
+To use the Power BI Connector, you must create tabular analytics views of your JSON documents. 
 // For Capella columnar, see xref:query:workbench.adoc#TAV[Save Results as a Tabular View] or xref:sqlpp:5_ddl.adoc#TAV[Tabular Views].
 For self-managed CBAS, see xref:server:analytics:run-query.adoc#Using_analytics_workbench[the workbench docs] or 
 xref:server:analytics:5a_views.adoc[tabular views].
