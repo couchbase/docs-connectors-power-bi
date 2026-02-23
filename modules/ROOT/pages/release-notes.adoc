@@ -26,7 +26,6 @@ The supported and tested dependencies of this release are:
 
 * https://slproweb.com/download/Win64OpenSSL_Light-3_3_1.msi[Win64 OpenSSL v3.3.x Light]
 
-
 [#v-1-1]
 == Version 1.1 (2024-06-12)
 

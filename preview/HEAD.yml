@@ -12,4 +12,11 @@ sources:
       branches: main  
 
     docs-devex:
-      branches: [release/8.0, capella]
+      branches: release/8.0, capella
+
+    docs-analytics:  
+      branches: release/7.6, release/8.0
+      start_path: .
+
+    docs-tableau:
+      branches: release/1.1  

@@ -21,7 +21,7 @@ To use the connector, you must first create an ODBC Data Source Name (DSN) for e
 The DSN defines the connection details such as the host, port, authentication method, and SSL settings.
 For Couchbase Server and Capella Operational, the ODBC driver connects to the xref:server:analytics:1_intro.adoc[Couchbase Analytics Service], whereas for Capella Analytics and Enterprise Analytics, the driver connects directly to their analytical databases.
 
-After you configure the DSN, you can use the Power BI connector to import data from your Couchbase data source into Power BI.
+After you configure the DSN, you can use the Power BI connector to import data from your data source into Power BI.
 
 == Prerequisites
 
@@ -188,7 +188,7 @@ TIP: You can use the btn:[Add Current IP Address] button to fill in the address 
 
 . Return to the menu:Settings[] page, then click on menu:Access Control[] in the left-hand menu.
 . Click on btn:[Create Account].
-. Add a `username` and `password` for the new account.
+. Add a `Cluster Access Name` and `Password` for the new account.
 . Make sure you set assign  `sys_view_reader` to the list of roles.
 +
 image::capella-columnar-user-account.png[]
@@ -239,7 +239,7 @@ To use a Couchbase data source in Power BI, you must configure an ODBC Data Sour
 During configuration, you can also enable logging for the ODBC driver. 
 The driver stores the logs in the following location: <location>.
 
-IMPORTANT: Ensure that use the *ODBC Data Source Administrator (64 bit)*.
+IMPORTANT: Ensure to use the *ODBC Data Source Administrator (64 bit)*.
 The 32-bit version is incompatible with the connector and will not work correctly.
 
 [tabs]
@@ -264,7 +264,7 @@ Capella Analytics::
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
-*User*:: The username created in the <<capella-columnar-user-account,User Account section>>.
+*Username*:: The cluster access name created in the <<capella-columnar-user-account,User Account section>>.
 *Password*:: The password created in the <<capella-columnar-user-account,User Account section>>. +
 NOTE: Providing the *Username* and *Password* here is optional.
 However, in the Power BI tool, you must provide these credentials when prompted.
@@ -285,14 +285,14 @@ Capella Operational::
 [horizontal]
 *Name:*:: A unique name for your data source.
 *Description:*:: An optional description.
-*Connection String:*:: The exact connection string copied from <<capella-columnar-connection-string,here>>.
+*Connection String:*:: The exact connection string copied from <<copy-connection-string,here>>.
 +
 include::partial$common.adoc[tag="remove-prefix-warning"]
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
-*User*:: The username created in the <<capella-columnar-user-account,User Account section>>
-*Password*:: The password created in the <<capella-columnar-user-account,User Account section>>. +
+*Username*:: The cluster access name created in the <<setup-database-access, Cluster Access section>>
+*Password*:: The password created in the <<setup-database-access, Cluster Access section>>. +
 NOTE: Providing the *Username* and *Password* here is optional.
 However, in the Power BI tool, you must provide these credentials when prompted.
 . Click btn:[OK] to save the DSN and complete the setup.
@@ -459,14 +459,10 @@ include::partial$common.adoc[tag="windows-separators-warning"]
 Business information tools rely on data organized into relational databases.
 To use the Power BI Connector, you must create tabular analytics views of your JSON documents. 
 
-* For Couchbase Server and Capella Operational, see xref:server:analytics:run-query.adoc#Using_analytics_workbench[Analytics Workbench] or 
-xref:server:analytics:5a_views.adoc[Tabular Views].
-
-* For Capella Analytics, see xref:analytics:query:views-tavs.adoc[Tabular Views] or xref:analytics/sqlpp/5a_views.html#TAV[Create a Tabular View].
-
-* For Enterprise Analytics, see xref:enterprise-analytics:sqlpp:5a_views.adoc[Tabular Views] or xref:enterprise-analytics:sqlpp:5a_views.adoc#TAV[Create a Tabular View].
-
 After you prepare tabular views and define DSNs, use the Couchbase Power BI Connector to load data into Power BI. 
+
+TIP: For Couchbase Server and Capella Operational, see xref:server:analytics:run-query.adoc#Using_analytics_workbench[Analytics Workbench] or 
+xref:server:analytics:5a_views.adoc[Tabular Views].
 
 === Add Data from Your Data Source
 
@@ -496,6 +492,6 @@ image::visualization.png[A data visualization in Power BI]
 
 == Related Links
 
-* Microsoft documentation
-** https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connect-to-data[Connecting to data sources in Power BI desktop].
-** https://support.microsoft.com/en-us/office/administer-odbc-data-sources-b19f856b-5b9b-48c9-8b93-07484bfab5a7#bm2[Adding a data source].
+* Microsoft documentation: 
+** https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connect-to-data[Connecting to data sources in Power BI desktop]
+** https://support.microsoft.com/en-us/office/administer-odbc-data-sources-b19f856b-5b9b-48c9-8b93-07484bfab5a7#bm2[Adding a data source]
