@@ -1,10 +1,15 @@
 sources:
     docs-server:
       branches: release/8.0
+
     docs-enterprise-analytics: 
       branches: release/2.1
+
     docs-columnar:
       branches: main
+
     docs-capella:
       branches: main  
-      
+
+    docs-devex:
+      branches: [release/8.0, capella]
