@@ -25,12 +25,12 @@ After you configure the DSN, you can use the Power BI connector to import data f
 
 == Prerequisites
 
-* Ensure that the Analytics Service is running on the target node when using Couchbase Server or Capella Operational as a data source.
+* Make sure that the Analytics Service is running on the target node when using Couchbase Server or Capella Operational as a data source.
 * To connect to Couchbase Server, the Power BI connector requires Couchbase Server 7.2.4 or later.
 
 == Install Power BI
 
-Before you start, ensure you have a supported version of Microsoft Power BI Desktop installed.
+Before you start, make sure you have a supported version of Microsoft Power BI Desktop installed.
 The Couchbase Power BI Connector requires the Power BI Desktop version March 2017 or later.
 
 If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US/download/details.aspx?id=58494[Microsoft downloads] page. 
@@ -107,9 +107,9 @@ To verify if the Couchbase Power BI Connector is installed correctly:
 . Go to menu:Get Data[].
 . In the search box, enter `Couchbase Connector`.
 
-If the connector appears in the search results, it is installed correctly.
+If the connector appears in the search results, it's installed correctly.
 
-== Setting up a Secure Connection
+== Set up a Secure Connection
 
 Couchbase strongly recommends that you secure your ODBC connection using SSL.
 This ensures encryption of the communication between Power BI and Couchbase. 
@@ -237,9 +237,10 @@ You will use this PEM file later when you create the ODBC connection.
 To use a Couchbase data source in Power BI, you must configure an ODBC Data Source Name (DSN).
 
 During configuration, you can also enable logging for the ODBC driver. 
-The driver stores the logs in the following location: <location>.
+The driver saves the logs to the following directory: `Documents\Power BI Desktop\Custom Connectors`.
+The log file is named `couchbase-odbc`.
 
-IMPORTANT: Ensure to use the *ODBC Data Source Administrator (64 bit)*.
+IMPORTANT: Make sure to use the *ODBC Data Source Administrator (64 bit)*.
 The 32-bit version is incompatible with the connector and will not work correctly.
 
 [tabs]
@@ -251,7 +252,7 @@ Capella Analytics::
 . Open the *ODBC Data Source Administration* tool.
 . Go to menu:User DSN[Add].
 . Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
-. Select *Capella Analytics* as the data source. 
+. Select the data source as *Capella Analytics*. 
 . (Optional) To enable logging, select *Collect Logs*.  
 . Click btn:[Next]. 
 . Enter the following DSN details:
@@ -259,13 +260,15 @@ Capella Analytics::
 [horizontal]
 *Name:*:: A unique name for your data source.
 *Description:*:: An optional description.
-*Connection String:*:: The connection string copied from <<capella-columnar-connection-string,here>>.
+*Connection String:*:: The exact connection string copied from <<capella-columnar-connection-string,here>>.
 *Database*:: The database from which the data must be extracted.
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
-*Username*:: The cluster access name created in the <<capella-columnar-user-account,User Account section>>.
-*Password*:: The password created in the <<capella-columnar-user-account,User Account section>>. +
++
+include::partial$common.adoc[tag="extra-spaces-warning"]
+*Username*:: The cluster access name created in the <<capella-columnar-user-account,Create Account section>>.
+*Password*:: The password created in the <<capella-columnar-user-account,Create Account section>>. +
 NOTE: Providing the *Username* and *Password* here is optional.
 However, in the Power BI tool, you must provide these credentials when prompted.
 . Click btn:[OK] to save the DSN and complete the setup.
@@ -277,7 +280,7 @@ Capella Operational::
 . Open the *ODBC Data Source Administration* tool.
 . Go to menu:User DSN[Add].
 . Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
-. Select *Capella Operational (Analytics Service)* as the data source. 
+. Select the data source as *Capella Operational (Analytics Service)*. 
 . (Optional) To enable logging, select *Collect Logs*.  
 . Click btn:[Next]. 
 . Enter the following DSN details:
@@ -285,14 +288,16 @@ Capella Operational::
 [horizontal]
 *Name:*:: A unique name for your data source.
 *Description:*:: An optional description.
-*Connection String:*:: The exact connection string copied from <<copy-connection-string,here>>.
+*Connection String:*:: The connection string copied from <<copy-connection-string,here>>.
 +
 include::partial$common.adoc[tag="remove-prefix-warning"]
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
-*Username*:: The cluster access name created in the <<setup-database-access, Cluster Access section>>
-*Password*:: The password created in the <<setup-database-access, Cluster Access section>>. +
++
+include::partial$common.adoc[tag="extra-spaces-warning"]
+*Username*:: The cluster access name created in the <<setup-database-access, Create Cluster Access section>>
+*Password*:: The password created in the <<setup-database-access, Create Cluster Access section>>. +
 NOTE: Providing the *Username* and *Password* here is optional.
 However, in the Power BI tool, you must provide these credentials when prompted.
 . Click btn:[OK] to save the DSN and complete the setup.
@@ -304,7 +309,7 @@ Couchbase Server::
 . Open the *ODBC Data Source Administration* tool.
 . Go to menu:User DSN[Add].
 . Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
-. On the next window, select *Couchbase Server (Analytics Service)* as the data source. 
+. Select the data source as *Couchbase Server (Analytics Service)*. 
 . (Optional) To enable logging, select *Collect Logs*.  
 . Click btn:[Next]. 
 . Enter the following DSN details:
@@ -332,38 +337,38 @@ Based on the SSL mode and authentication method you select, the required fields 
 | `Disable`
 | `Basic`
 | Username, Password
-| User credentials. 
+| Enter user credentials. 
 
 | `Enable`
 | `Basic`
 | Username, Password, Cluster Cert Path
-| User credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
+| Enter user credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
 
 | `Disable`
 | `LDAP`
 | Username, Password 
-| LDAP directory credentials. 
+| Enter LDAP directory credentials. 
 
 For more information, see xref:server:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `LDAP`
 | Username, Password, Cluster Cert Path 
-| LDAP credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
+| Enter LDAP credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
 
 For more information, see xref:server:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `Client Certificate`
 | Client Cert Path, Client Key Path, Cluster Cert Path
-| Paths to your client certificate, private key, and root certificate.
+| Enter paths to your client certificate, private key, and root certificate you downloaded <<download-root-certificate,here>>.
 
 For more information, see xref:server:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
 | `Enable`
 | `Client Certificate (Encrypted Key)`
 | Client Cert Path, Client Key Path, Key Password, Cluster Cert Path 
-| Paths to your certificates and encrypted key, including the key passphrase.    
+| Enter paths to your certificates and encrypted key, including the key passphrase.    
 
 For more information, see xref:server:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 |===
@@ -382,7 +387,7 @@ Enterprise Analytics::
 . Open the *ODBC Data Source Administration* tool.
 . Go to menu:User DSN[Add].
 . Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
-. On the next window, select *Enterprise Analytics* as the data source. 
+. Select the data source as *Enterprise Analytics*. 
 . (Optional) To enable logging, select *Collect Logs*.  
 . Click btn:[Next]. 
 . Enter the following DSN details:
@@ -397,6 +402,8 @@ If you're using an SSL connection, set the port to `11207`.
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
++
+include::partial$common.adoc[tag="extra-spaces-warning"]
 *SSL Mode:*:: Select `Enable` or `Disable`. 
 *Authentication:*:: Select an authentication method. +
 +
@@ -409,38 +416,38 @@ Based on the SSL mode and authentication method you select, the required fields 
 | `Disable`
 | `Basic`
 | Username, Password
-| User credentials. 
+| Enter user credentials. 
 
 | `Enable`
 | `Basic`
 | Username, Password, Cluster Cert Path
-| User credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
+| Enter user credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
 
 | `Disable`
 | `LDAP`
 | Username, Password 
-| LDAP directory credentials. 
+| Enter LDAP directory credentials. 
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `LDAP`
 | Username, Password, Cluster Cert Path 
-| LDAP credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
+| Enter LDAP credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `Client Certificate`
 | Client Cert Path, Client Key Path, Cluster Cert Path
-| Paths to your client certificate, private key, and root certificate.
+| Enter paths to your client certificate, private key, and root certificate you downloaded <<download-root-certificate,here>>.
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
 | `Enable`
 | `Client Certificate (Encrypted Key)`
 | Client Cert Path, Client Key Path, Key Password, Cluster Cert Path 
-| Paths to your certificates and encrypted key, including the key passphrase.   
+| Enter paths to your certificates and encrypted key, including the key passphrase.   
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 |===
