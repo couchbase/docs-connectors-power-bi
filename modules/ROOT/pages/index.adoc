@@ -30,7 +30,7 @@ After you configure the DSN, you can use the Power BI connector to import data f
 
 == Install Power BI
 
-Before you start, make sure you have a supported version of Microsoft Power BI Desktop installed.
+Before you start, install a supported version of Microsoft Power BI Desktop.
 The Couchbase Power BI Connector requires the Power BI Desktop version March 2017 or later.
 
 If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US/download/details.aspx?id=58494[Microsoft downloads] page. 
@@ -57,9 +57,9 @@ Open the command prompt (`cmd`), and enter the following:
 openssl version
 ----
 
-. If the output indicates OpenSSL is not installed, rather than returning the version that you installed, then you need to add the OpenSSL binary's location to the `PATH` environment:
+. If the output indicates OpenSSL is not installed, rather than returning the version that you installed, you need to add the OpenSSL binary's location to the `PATH` environment:
 
-.. Check the `C:\Program Files` or use `Find` to locate the SSL binary -- usually the path will be something like:
+.. Check `C:\Program Files` or use `Find` to locate the SSL binary -- usually the path will be something like:
 +
 [source, console]
 ----
@@ -69,7 +69,8 @@ C:\Program Files\OpenSSL-Win64\bin
 .. Add this path to the environmental variables list, found in menu:System variables[Path].
 
 .. Now verify that Windows has registered the path of the binary.
-Once again, open the command prompt (`cmd`) -- it must be a fresh command prompt, as the earlier one will not have loaded the newly added environmental variables -- and enter the following:
+Once again, open the command prompt (`cmd`).
+It must be a fresh command prompt, as the earlier one will not have loaded the newly added environmental variables, and enter the following:
 +
 [source, console]
 ----
@@ -80,7 +81,8 @@ openssl version
 
 To install the Couchbase ODBC driver:
 
-. Download the `couchbase-odbc-1.2-win64.msi` file from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.2/couchbase-odbc-1.2-win64.msi[] -- see the xref:release-notes.adoc[release notes page] for more details.
+. Download the `couchbase-odbc-1.2-win64.msi` file from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.2/couchbase-odbc-1.2-win64.msi[].
+For more information, see xref:release-notes.adoc[Release Notes].
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
 
@@ -89,13 +91,12 @@ This installation provides both ANSI and Unicode drivers.
 
 IMPORTANT: Make sure that you have installed the 64-bit versions of the ODBC drivers.
 
-
 == Install the Couchbase Power BI Connector
 
 To install the Power BI Connector: 
 
-. Download `couchbase-powerbi-connector-1.0.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[] --
-see the xref:release-notes.adoc[release notes page] for more details.
+. Download `couchbase-powerbi-connector-1.2.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.2/couchbase-powerbi-connector-1.2.mez[].
+For more information, see xref:release-notes.adoc[Release Notes].
 
 . Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
 
@@ -109,97 +110,69 @@ To verify if the Couchbase Power BI Connector is installed correctly:
 
 If the connector appears in the search results, it's installed correctly.
 
-== Set up a Secure Connection
+== Get Connection Details and Certificates
 
-Couchbase strongly recommends that you secure your ODBC connection using SSL.
+Before you configure the ODBC DSN, you must obtain the required connection details and certificates for your Couchbase data source.
+These details are necessary to establish a secure connection and allow Power BI to access the data in your Couchbase cluster.
+
+NOTE: Couchbase strongly recommends that you secure your ODBC connection using SSL.
 This ensures encryption of the communication between Power BI and Couchbase. 
 
 [tabs]
 ====
-Capella Operational::
-+
---
-You will need to get a connection string for your database
-and generate an API key to plug into the ODBC connector.
-
-[#copy-connection-string]#To obtain the `connection string`:#
-
-. Sign in to Capella as an `Organization Owner` or `Project Owner`.
-. Go to menu:Connect[].
-. Make a note of the *Public Connection String*.
-You'll need this to set up the ODBC connection. 
-+
-image::get-connection-string.png[copying connection string]
-+
-. In the next section of the page, you will find the link to create a list of
-menu:Allowed IP Addresses[].
-Click on the link to create an entry for the IP address of the machine from which you're running Power BI.
-+
-image::allowed-ip-addresses.png[creating-allowed-ip address]
-+
-TIP: You can use the btn:[Add Current IP Address] button to fill in the address of the machine currently running the web console.
-
-. [#setup-database-access]#Return to the *Connect* screen and click on the btn:[Cluster Access] link.#
-Create a new database access entry, setting values for `bucket`, and `scopes`.
-+
-image::create-cluster-access.png[Creating cluster access]
-
-. To set up a secure connection, you will need to retrieve the root certificate for your Capella instance.
-+
-.. Click on btn:[Security Certificate] in the left menu.
-.. Click on btn:[Download] to transfer a copy of the root certificate to your local machine.
-+
-image::download-root-certificate.png[]
---
 
 Capella Analytics::
 +
 --
+[#analytics-connection-details]
+For Capella Analytics, you need to obtain the public connection string, add an allowed IP address, and create cluster access credentials.
 
-For details on creating a Capella Analytics instance,
-first see xref:analytics:admin:prepare-project.adoc[Creating a Capella Analytics Cluster].
-
-[#capella-columnar-connection-string]#You will need to access the Capella web console to get the connection string for your analytics database.#
-
-. Sign in to Capella as an `Organization Owner` or `Project Owner`.
-. Go to menu:Analytics[].
-. Select your Analytics cluster from the list.
-. Select menu:Settings[] from the top-level page menu.
-+
-image::select-columnar-cluster-settings.png[]
-+
-. Select menu:Connection String[] from the left-hand menu.
+. Sign in to the Capella UI as an `Organization Owner` or `Project Owner`.
+. Go to menu:Analytics[] and select your cluster from the list.
+. Next, click menu:Settings[].
+. In the left-hand menu, click menu:Connection String[].
+. Make a note of the *Public Connection String*. 
 +
 image::get-capella-columnar-connection-string.png[]
-+
-. Make a note of the connection string.
-. Next, you need to add the IP address of the machine from which you are running Power BI,
- so that Capella will allow the machine to access the columnar data.
-. Click on menu:Allowed IP Addresses[] in the left-hand menu.
-. Click the btn:[Add Allowed IP] button.
-+
-image::capella-columnar-add-allowed-ip.png[]
-+
-. Enter the IP address of the Power BI host machine.
-+
-TIP: You can use the btn:[Add Current IP Address] button to fill in the address of the machine currently running the web console.
+. In the left-hand menu, click menu:Allowed IP Addresses[]. 
+* Add the IP address of the machine running Power BI to the allowlist.
+* To add your current IP address, use the btn:[Add Current IP Address] option.
+* For more information, see xref:analytics:admin:ip-allowed-list.adoc#add-allowed-ip[Add an Allowed IP Address].
+. In the left-hand menu, click menu:Access Control[].
+* Create a new access control account.
+* Enter a *Cluster Access Name* and *Password* and assign a role.
+* The account must have at least the `sys_view_reader` role.
+* For more information, see xref:analytics:admin:auth/auth-data.adoc#create-an-access-control-account[Create an Access Control Account].
+--
 
-[#capella-columnar-user-account]#Now, you will need to create a user account for Power BI to access the analytics data.#
+Capella Operational::
++
+--
+[#operational-connection-details]
+For Capella Operational, you need to obtain the public connection string, add an allowed IP address, and create cluster access credentials.
 
-. Return to the menu:Settings[] page, then click on menu:Access Control[] in the left-hand menu.
-. Click on btn:[Create Account].
-. Add a `Cluster Access Name` and `Password` for the new account.
-. Make sure you set assign  `sys_view_reader` to the list of roles.
+. Sign in to the Capella UI as an `Organization Owner` or `Project Owner`.
+. Go to menu:Operational[] and select your cluster from the list.
+. Next, go to menu:Connect[SDKs].
+. Make a note of the *Public Connection String*. 
 +
-image::capella-columnar-user-account.png[]
+image::get-connection-string.png[copying connection string]
 +
-. Click btn:[Create Account] to finish setting up the user account.
+. Add the IP address of the machine running Power BI to the allowlist.
+* To add your current IP address, use the btn:[Add Current IP Address] option.
+* For more information, see xref:cloud:clusters:allow-ip-address.adoc[Configure Allowed IP Addresses].
++
+. Create new cluster access credentials.
+* Enter a *Cluster Access Name* and *Password* and configure the access level.
+* The account must have at least the `Read` or `Analytics Read` privilege.
+* For more information, see xref:cloud:clusters:manage-database-users.adoc#create-database-credentials[Create Cluster Access Credentials].
 --
 
 Couchbase Server::
 +
 --
-[#download-root-certificate]#To create a secure connection to a self-managed Couchbase Server instance, you need to get the root certificate from the Administrator's Console.#
+[#server-connection-details]
+For Couchbase Server, you need to obtain the root certificate. 
 
 . Sign in to the Couchbase Server Web Console as an Administrator.
 . In the left-hand menu, select menu:Security[].
@@ -209,14 +182,14 @@ image::access-root-certificate.png[]
 +
 . In the *Trusted Root Certificates* section, copy the certificate text starting from `BEGIN CERTIFICATE` to `END CERTIFICATE`.
 . Save the text as a .pem file in an accessible location (for example, `C:\Users\user\certificate.pem`).
-
-You will use this file later when you create the ODBC connection.
+You need this file when you configure the ODBC DSN.
 --
 
 Enterprise Analytics::
 +
 --
-[#download-ea-root-certificate]#To create a secure connection to Enterprise Analytics, you must download the root certificate.#
+[#ea-connection-details]
+For Enterprise Analytics, you need to obtain the root certificate. 
 
 . Sign in to the Enterprise Analytics Web Console as an Administrator. 
 . In the left-hand menu, select menu:Security[].
@@ -226,10 +199,8 @@ image::access-ea-root-certificate.png[]
 +
 . In the *Trusted Root Certificates* section, copy the certificate text starting from `BEGIN CERTIFICATE` to `END CERTIFICATE`.
 . Save the text as a .pem file in an accessible location (for example, `C:\Users\user\certificate.pem`).
-
-You will use this PEM file later when you create the ODBC connection. 
+You need this file when you configure the ODBC DSN.
 --
-
 ====
 
 == Configure an ODBC Data Source 
@@ -260,15 +231,15 @@ Capella Analytics::
 [horizontal]
 *Name:*:: A unique name for your data source.
 *Description:*:: An optional description.
-*Connection String:*:: The exact connection string copied from <<capella-columnar-connection-string,here>>.
+*Connection String:*:: The exact connection string copied from <<analytics-connection-details,Get Connection Details>>.
 *Database*:: The database from which the data must be extracted.
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `/` to separate the two parts. 
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
 +
 include::partial$common.adoc[tag="extra-spaces-warning"]
-*Username*:: The cluster access name created in the <<capella-columnar-user-account,Create Account section>>.
-*Password*:: The password created in the <<capella-columnar-user-account,Create Account section>>. +
+*Username*:: The cluster access name created in <<analytics-connection-details,Get Connection Details>>.
+*Password*:: The password created in <<analytics-connection-details,Get Connection Details>>. +
 NOTE: Providing the *Username* and *Password* here is optional.
 However, in the Power BI tool, you must provide these credentials when prompted.
 . Click btn:[OK] to save the DSN and complete the setup.
@@ -288,7 +259,7 @@ Capella Operational::
 [horizontal]
 *Name:*:: A unique name for your data source.
 *Description:*:: An optional description.
-*Connection String:*:: The connection string copied from <<copy-connection-string,here>>.
+*Connection String:*:: The connection string copied from <<operational-connection-details,Get Connection Details>>.
 +
 include::partial$common.adoc[tag="remove-prefix-warning"]
 *Scope:*:: The scope from which the data must be extracted. +
@@ -296,8 +267,8 @@ For two-part scopes, use a `/` to separate the two parts.
 For example, if the scope is `travel-sample.inventory`, enter it as `travel-sample/inventory`.
 +
 include::partial$common.adoc[tag="extra-spaces-warning"]
-*Username*:: The cluster access name created in the <<setup-database-access, Create Cluster Access section>>
-*Password*:: The password created in the <<setup-database-access, Create Cluster Access section>>. +
+*Username*:: The cluster access name created in <<operational-connection-details,Get Connection Details>>.
+*Password*:: The password created in <<operational-connection-details,Get Connection Details>>. +
 NOTE: Providing the *Username* and *Password* here is optional.
 However, in the Power BI tool, you must provide these credentials when prompted.
 . Click btn:[OK] to save the DSN and complete the setup.
@@ -342,7 +313,7 @@ Based on the SSL mode and authentication method you select, the required fields 
 | `Enable`
 | `Basic`
 | Username, Password, Cluster Cert Path
-| Enter user credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
+| Enter user credentials and the path to the root certificate you downloaded from <<server-connection-details,Get Connection Details>>.
 
 | `Disable`
 | `LDAP`
@@ -354,14 +325,14 @@ For more information, see xref:server:manage:manage-security/configure-ldap.adoc
 | `Enable`
 | `LDAP`
 | Username, Password, Cluster Cert Path 
-| Enter LDAP credentials and the path to the root certificate you downloaded <<download-root-certificate,here>>.
+| Enter LDAP credentials and the path to the root certificate you downloaded from <<server-connection-details,Get Connection Details>>.
 
 For more information, see xref:server:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `Client Certificate`
 | Client Cert Path, Client Key Path, Cluster Cert Path
-| Enter paths to your client certificate, private key, and root certificate you downloaded <<download-root-certificate,here>>.
+| Enter paths to your client certificate, private key, and root certificate you downloaded from <<server-connection-details,Get Connection Details>>.
 
 For more information, see xref:server:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
@@ -422,7 +393,7 @@ Based on the SSL mode and authentication method you select, the required fields 
 | `Enable`
 | `Basic`
 | Username, Password, Cluster Cert Path
-| Enter user credentials and the path to the root certificate you downloaded <<download-ea-root-certificate,here>>.
+| Enter user credentials and the path to the root certificate you downloaded from <<ea-connection-details,Get Connection Details>>.
 
 | `Disable`
 | `LDAP`
@@ -434,14 +405,14 @@ For more information, see xref:enterprise-analytics:manage:manage-security/confi
 | `Enable`
 | `LDAP`
 | Username, Password, Cluster Cert Path 
-| Enter LDAP credentials and the path to the root certificate you downloaded <<download-ea-root-certificate,here>>.
+| Enter LDAP credentials and the path to the root certificate you downloaded from <<ea-connection-details,Get Connection Details>>.
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `Client Certificate`
 | Client Cert Path, Client Key Path, Cluster Cert Path
-| Enter paths to your client certificate, private key, and root certificate you downloaded <<download-ea-root-certificate,here>>.
+| Enter paths to your client certificate, private key, and root certificate you downloaded from <<ea-connection-details,Get Connection Details>>.
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
