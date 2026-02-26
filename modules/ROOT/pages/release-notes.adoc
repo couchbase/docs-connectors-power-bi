@@ -11,7 +11,7 @@ and either Couchbase Analytics Service (CBAS) or tabular views of your Capella c
 For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
 
 [#v-1-2]
-== Version 1.2 (2026-02-26)
+== Version 1.2 (2026-03-02)
 
 The Power BI connector now supports client certificate and LDAP authentication in addition to basic credentials.
 This update enhances enterprise security and streamlines access by allowing you to connect using organizational directory or certificate-based identities.
