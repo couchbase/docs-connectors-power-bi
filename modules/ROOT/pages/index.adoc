@@ -258,6 +258,10 @@ During configuration, you can also enable logging for the ODBC driver.
 The driver saves the logs to the following directory: `Documents\Power BI Desktop\Custom Connectors`.
 The log file is named `couchbase-odbc`.
 
+NOTE: If you notice performance issues, make sure ODBC tracing is disabled.
+Enable tracing only when you need to collect logs, and turn it off afterward. 
+For more information, see https://learn.microsoft.com/en-us/sql/odbc/admin/setting-tracing-options?view=sql-server-ver17[Setting Tracing Options].
+
 IMPORTANT: Make sure to use the *ODBC Data Source Administrator (64 bit)*.
 The 32-bit version is incompatible with the connector and will not work correctly.
 
