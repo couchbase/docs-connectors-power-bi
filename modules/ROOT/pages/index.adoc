@@ -16,8 +16,7 @@ The Couchbase Power BI Connector integrates Microsoft Power BI with the followin
 * Enterprise Analytics
 
 The connector uses the Couchbase ODBC driver to connect to these data sources.
-
-To use the connector, you must first <<configure-odbc, create an ODBC Data Source Name (DSN)>> for each data source you want to use in Power BI.
+You must first <<configure-odbc, create an ODBC Data Source Name (DSN)>> for each data source you want to use in Power BI.
 The DSN defines the connection details such as the address, authentication method, and SSL settings.
 After you configure the DSN, use the Power BI connector to import data from your data source into Power BI or query it using DirectQuery. 
 
@@ -53,7 +52,7 @@ ODBC --> S4
 
 == Prerequisites
 
-Before you begin, make you have the following:
+Before you begin, make sure you have the following:
 
 [cols="1a,2a", options="header"]
 |===
