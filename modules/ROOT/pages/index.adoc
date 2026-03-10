@@ -490,7 +490,10 @@ However, in the Power BI tool, you must provide these credentials when prompted.
 == Connect and Add Data to Power BI
 
 Business information tools rely on data organized into relational databases.
-To use the Power BI connector with Couchbase Analytics, you must create tabular analytics views on top of your collections. 
+To use the Power BI connector with Couchbase Analytics, you must create tabular analytics views (TAVs) on top of your collections. 
+
+IMPORTANT: Couchbase Analytics provides both views and tabular  views. 
+Only tabular views work with the Power BI connector.
 
 After you prepare tabular analytics views and define DSNs, use the Couchbase Power BI Connector to load data into Power BI. 
 
@@ -498,8 +501,8 @@ After you prepare tabular analytics views and define DSNs, use the Couchbase Pow
 --
 To prepare tabular analytics views, see:
 
-* xref:enterprise-analytics:sqlpp:5a_views.adoc[] for Enterprise Analytics
-* xref:analytics:sqlpp:5a_views.adoc[] for Capella Analytics
+* xref:enterprise-analytics:sqlpp:5a_views.adoc#TAV[Tabular Analytics Views] for Enterprise Analytics
+* xref:analytics:sqlpp:5a_views.adoc#TAV[Tabular Analytics Views] for Capella Analytics
 * xref:server:analytics:5a_views.adoc#tabular-analytics-views[Tabular Analytics Views] for Couchbase Server or Capella Operational
 --
 
