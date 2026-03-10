@@ -257,10 +257,6 @@ During configuration, you can also enable logging for the ODBC driver.
 The driver saves the logs to the following directory: `Documents\Power BI Desktop\Custom Connectors`.
 The log file is named `couchbase-odbc`.
 
-NOTE: If you notice performance issues, make sure ODBC tracing is disabled.
-Enable tracing only when you need to collect logs, and turn it off afterward. 
-For more information, see https://learn.microsoft.com/en-us/sql/odbc/admin/setting-tracing-options?view=sql-server-ver17[Setting Tracing Options].
-
 IMPORTANT: Make sure to use the *ODBC Data Source Administrator (64 bit)*.
 The 32-bit version is incompatible with the connector and will not work correctly.
 
@@ -526,6 +522,52 @@ You can then use various Power BI options to visualize the data.
 An example image of the `travel-sample` `airport_view`: 
 
 image::visualization.png[A data visualization in Power BI]
+
+== Troubleshooting 
+
+=== Performance Issues
+
+If you notice performance issues, make sure ODBC tracing is disabled.
+Enable tracing only when you need to collect logs, and turn it off afterward. 
+For more information, see https://learn.microsoft.com/en-us/sql/odbc/admin/setting-tracing-options?view=sql-server-ver17[Setting Tracing Options].
+
+=== Error Code 126: ODBC Driver Could Not Be Loaded
+
+When creating the ODBC DSN or loading the ODBC driver, you might encounter the following error:
+
+image::ODBC-driver-error.png[]
+
+If this happens, try the following steps: 
+
+. Check OpenSSL installation
+* Run `openssl version` in the command prompt. 
+* Make sure the version matches the driver requirements. 
+* For the correct OpenSSL version, see <<install-openssl,Install OpenSSL>>.
+
+. Verify driver installation
+* Open the *ODBC Data Source Administrator (64-bit)* tool.
+* Verify if the Couchbase ODBC driver is listed. 
+* Reinstall if missing. 
+
+. Check for missing dependencies
+* Download the https://github.com/lucasg/Dependencies[Dependencies] tool from GitHub. 
+* Open the tool and load `couchbaseodbcw.dll` and `couchbaseodbc.dll`.
+* Look for any entries marked as missing in the dependency tree.
+
+. Make OpenSSL DLLs discoverable
++
+If all the previous steps are correct, you can try copying the OpenSSL DLL files directly into the Couchbase ODBC driver folder.
+Sometimes Power BI cannot locate the OpenSSL dependencies at runtime, even if they're installed. 
++
+* Go to `C:\Software\OpenSSL-Win64\bin\`.
+* Copy these files: 
+** `libssl-3-x64.dll`
+** `libcrypto-3-x64.dll`
+* Paste them into the Couchbase ODBC driver folder `C:\Software\couchbase-odbc\bin\`. 
+* Restart and retry
+** Close Power BI Desktop completely.
+** Clear the Power BI cache if possible. 
+** Re-open Power BI and connect again. 
 
 == Related Links
 
