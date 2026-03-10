@@ -493,7 +493,7 @@ Business information tools rely on data organized into relational databases.
 To use the Power BI connector with Couchbase Analytics, you must create tabular analytics views (TAVs) on top of your collections. 
 
 IMPORTANT: Couchbase Analytics provides both views and tabular  views. 
-Only tabular views work with the Power BI connector.
+Only tabular views work with the Power BI.
 
 After you prepare tabular analytics views and define DSNs, use the Couchbase Power BI Connector to load data into Power BI. 
 
