@@ -73,7 +73,7 @@ Before you begin, make sure you have the following:
 For more information, see <<connect-add-data,Connect and Add Data to Power BI>>.
 |===
 
-== Install Power BI
+== Install Power BI Desktop
 
 Before you start, install a supported version of Microsoft Power BI Desktop.
 The Couchbase Power BI Connector requires the Power BI Desktop version March 2017 or later.
@@ -279,7 +279,10 @@ Enterprise Analytics::
 *Description:*:: (Optional) A description for your data source.
 *Address*:: The host and port details.
 Enter the IP address of the Data (KV) node in the Couchbase cluster.
-If you use the default port (`11207`), you only need to provide the host address. 
++
+If you use a default port, you only need to provide the host address. 
+The default SSL port is `11207`, and the default non-SSL port is `11210`.
++
 If you use a non-default port, use the `host:port` format (for example, `192.168.1.100:13000`).
 *Database*:: The name of the database from which the data must be extracted.
 *Scope:*:: (Optional) The scope from which the data must be extracted.
@@ -386,7 +389,10 @@ Couchbase Server::
 *Description:*:: (Optional) A description for your data source.
 *Address*:: The host and port details.
 Enter the IP address of the Data (KV) node in the Couchbase cluster.
-If you use the default port (`11207`), you only need to provide the host address. 
++
+If you use a default port, you only need to provide the host address. 
+The default SSL port is `11207`, and the default non-SSL port is `11210`.
++
 If you use a non-default port, use the `host:port` format (for example, `192.168.1.100:13000`).
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `.` to separate the two parts. 
@@ -484,17 +490,17 @@ However, in the Power BI tool, you must provide these credentials when prompted.
 == Connect and Add Data to Power BI
 
 Business information tools rely on data organized into relational databases.
-To use the Power BI Connector, you must create tabular analytics views of your JSON documents. 
+To use the Power BI connector with Couchbase Analytics, you must create tabular analytics views on top of your collections. 
 
-After you prepare tabular views and define DSNs, use the Couchbase Power BI Connector to load data into Power BI. 
+After you prepare tabular analytics views and define DSNs, use the Couchbase Power BI Connector to load data into Power BI. 
 
 [TIP]
 --
-To prepare tabular views, see:
+To prepare tabular analytics views, see:
 
 * xref:enterprise-analytics:sqlpp:5a_views.adoc[] for Enterprise Analytics
 * xref:analytics:sqlpp:5a_views.adoc[] for Capella Analytics
-* xref:server:analytics:5a_views.adoc[] for Couchbase Server or Capella Operational
+* xref:server:analytics:5a_views.adoc#tabular-analytics-views[] for Couchbase Server or Capella Operational
 --
 
 === Add Data from Your Data Source
