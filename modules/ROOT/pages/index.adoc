@@ -500,7 +500,7 @@ To prepare tabular analytics views, see:
 
 * xref:enterprise-analytics:sqlpp:5a_views.adoc[] for Enterprise Analytics
 * xref:analytics:sqlpp:5a_views.adoc[] for Capella Analytics
-* xref:server:analytics:5a_views.adoc#tabular-analytics-views[] for Couchbase Server or Capella Operational
+* xref:server:analytics:5a_views.adoc#tabular-analytics-views[Tabular Analytics Views] for Couchbase Server or Capella Operational
 --
 
 === Add Data from Your Data Source
