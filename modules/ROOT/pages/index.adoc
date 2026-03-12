@@ -126,7 +126,7 @@ openssl version
 
 To install the Couchbase ODBC driver:
 
-. Download the `couchbase-odbc-1.2-win64.msi` file from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.2/couchbase-odbc-1.2-win64.msi[].
+. Download `couchbase-odbc-1.2.114-win64.msi` from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.2/couchbase-odbc-1.2.114-win64.msi[].
 For more information, see xref:release-notes.adoc[Release Notes].
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
@@ -138,7 +138,7 @@ This installation provides both ANSI and Unicode drivers.
 
 To install the Power BI Connector: 
 
-. Download `couchbase-powerbi-connector-1.2.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.2/couchbase-powerbi-connector-1.2.mez[].
+. Download `couchbase-powerbi-connector-1.2.101.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.2/couchbase-powerbi-connector-1.2.101.mez[].
 For more information, see xref:release-notes.adoc[Release Notes].
 
 . Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
@@ -278,12 +278,15 @@ Enterprise Analytics::
 *Name:*:: A unique name for your data source.
 *Description:*:: (Optional) A description for your data source.
 *Address*:: The host and port details.
-Enter the IP address of the Data (KV) node in the Couchbase cluster.
+You can enter the IP address of any node or a load balancer endpoint in the cluster. 
 +
-If you use a default port, you only need to provide the host address. 
+* If you use a default port, provide only the host address. 
 The default SSL port is `11207`, and the default non-SSL port is `11210`.
-+
-If you use a non-default port, use the `host:port` format (for example, `192.168.1.100:13000`).
+* If you use a non-default port, use the format `<host>:<port>`.
+For example, `192.168.1.100:13000`.
+* If you want to connect through the HTTPS management port, use the format `<host>:<port>=http`. 
+For example, `192.168.1.100:18091=http`.
+* The default SSL HTTPS management port is `18091`, and the default non-SSL HTTPS management port is `8091`.
 *Database*:: The name of the database from which the data must be extracted.
 *Scope:*:: (Optional) The scope from which the data must be extracted.
 +
@@ -342,6 +345,10 @@ However, in the Power BI tool, you must provide these credentials when prompted.
 include::partial$common.adoc[tag="windows-separators-warning"]
 *Advanced Parameters:*:: Any additional parameters required for the connection.
 If no additional parameters are required, leave as the default.
++
+If you're using an alternate (external) address, add the parameter 
+`network=external`.
+
 . Click btn:[OK] to save the DSN and complete the setup.
 --
 
@@ -390,10 +397,13 @@ Couchbase Server::
 *Address*:: The host and port details.
 Enter the IP address of the Data (KV) node in the Couchbase cluster.
 +
-If you use a default port, you only need to provide the host address. 
+* If you use a default port, provide only the host address. 
 The default SSL port is `11207`, and the default non-SSL port is `11210`.
-+
-If you use a non-default port, use the `host:port` format (for example, `192.168.1.100:13000`).
+* If you use a non-default port, use the format `<host>:<port>`.
+For example, `192.168.1.100:13000`.
+* If you want to connect through the HTTPS management port, use the format `<host>:<port>=http`. 
+For example, `192.168.1.100:18091=http`.
+* The default SSL HTTPS management port is `18091`, and the default non-SSL HTTPS management port is `8091`.
 *Scope:*:: The scope from which the data must be extracted. +
 For two-part scopes, use a `.` to separate the two parts. 
 For example, `travel-sample.inventory`.
@@ -453,6 +463,9 @@ However, in the Power BI tool, you must provide these credentials when prompted.
 include::partial$common.adoc[tag="windows-separators-warning"]
 *Advanced Parameters:*:: Any additional parameters required for the connection.
 If no additional parameters are required, leave as the default.
++
+If you're using an alternate (external) address, add the parameter 
+`network=external`.
 . Click btn:[OK] to save the DSN and complete the setup.
 --
 
