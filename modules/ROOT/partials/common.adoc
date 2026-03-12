@@ -17,14 +17,7 @@ E.g., `C:\\Users\\user\\certificate.txt`
 =====
 Remove the `couchbase:` prefix from the string when you enter it.
 
-For example, if the connection string is:
-
-`couchbases://cb.test.customsubdomain.couchbase.com`
-
-Then use:
-
-`cb.test.customsubdomain.couchbase.com`
-
-For the connection.
+For example, if the connection string is
+`couchbases://cb.test.customsubdomain.couchbase.com`, use `cb.test.customsubdomain.couchbase.com`.
 =====
 // end::remove-prefix-warning[]
