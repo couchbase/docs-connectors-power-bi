@@ -10,19 +10,6 @@ and either Couchbase Analytics Service (CBAS) or tabular views of your Capella c
 
 For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
 
-[#v-1-1]
-== Version 1.1 (2024-06-12)
-
-https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[Power BI Connector Download]
-
-The supported and tested dependencies of this release are:
-
-* https://packages.couchbase.com/releases/couchbase-odbc-driver/1.1/couchbase-odbc-1.1-win64.msi[couchbase-odbc-1.1-win64.msi]
-
-** See the https://packages.couchbase.com/releases/couchbase-odbc-driver/1.1/couchbase-odbc-driver-1.1-notices.txt[Notices File] for dependency licenses for the ODBC Driver.
-
-* https://slproweb.com/download/Win64OpenSSL_Light-3_3_1.msi[Win64 OpenSSL v3.3.x Light]
-
 [#v-1-0]
 == Version 1.0 (2024-01-25)
 
