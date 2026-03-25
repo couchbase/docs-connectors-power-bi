@@ -173,9 +173,6 @@ For Enterprise Analytics, you need to obtain the root certificate.
 . Sign in to the Enterprise Analytics Web Console as an Administrator. 
 . In the left-hand menu, select menu:Security[].
 . From the top menu, select menu:Certificates[] to view the security certificates.
-+
-image::access-ea-root-certificate.png[]
-+
 . In the *Trusted Root Certificates* section, copy the certificate text starting from `BEGIN CERTIFICATE` to `END CERTIFICATE`.
 . Save the text to an accessible file location (for example, `C:\Users\user\certificate.txt`). 
 
@@ -193,8 +190,6 @@ For Capella Analytics, you need to obtain the public connection string, add an a
 . Next, click menu:Settings[].
 . In the left-hand menu, click menu:Connection String[].
 . Make a note of the *Public Connection String*. 
-+
-image::get-capella-columnar-connection-string.png[]
 . In the left-hand menu, click menu:Allowed IP Addresses[]. 
 * Add the IP address of the machine running Power BI to the allowlist.
 * To add your current IP address, use the btn:[Add Current IP Address] option.
@@ -215,9 +210,6 @@ For Couchbase Server, you need to obtain the root certificate.
 . Sign in to the Couchbase Server Web Console as an Administrator.
 . In the left-hand menu, select menu:Security[].
 . From the top menu, select menu:Certificates[] to view the security certificates.
-+
-image::access-root-certificate.png[]
-+
 . In the *Trusted Root Certificates* section, copy the certificate text starting from `BEGIN CERTIFICATE` to `END CERTIFICATE`.
 . Save the text to an accessible file location (for example, `C:\Users\user\certificate.txt`).
 
@@ -234,9 +226,6 @@ For Capella Operational, you need to obtain the public connection string, add an
 . Go to menu:Operational[] and select your cluster from the list.
 . Next, go to menu:Connect[SDKs].
 . Make a note of the *Public Connection String*. 
-+
-image::get-connection-string.png[copying connection string]
-+
 . Add the IP address of the machine running Power BI to the allowlist.
 * To add your current IP address, use the btn:[Add Current IP Address] option.
 * For more information, see xref:cloud:clusters:allow-ip-address.adoc[Configure Allowed IP Addresses].
@@ -538,10 +527,6 @@ After connecting, Power BI displays a list of the tabular views in the database 
 Select a view from the list and click btn:[Load] to import it. 
 You can then use various Power BI options to visualize the data.
 
-An example image of the `travel-sample` `airport_view`: 
-
-image::visualization.png[A data visualization in Power BI]
-
 == Troubleshooting 
 
 === Performance Issues
@@ -554,7 +539,7 @@ For more information, see https://learn.microsoft.com/en-us/sql/odbc/admin/setti
 
 When creating the ODBC DSN or loading the ODBC driver, you might encounter the following error:
 
-image::ODBC-driver-error.png[]
+`Error code 126: The specified module could not be found (C:\Program Files\couchbase-odbc\bin\couchbaseodbcw.dil).`
 
 If this happens, try the following steps: 
 
