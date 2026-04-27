@@ -1,4 +1,5 @@
-= Introduction
+= Using Microsoft Power BI
+ 
 :page-topic-type: guide
 :page-toclevels: 2
 :description: The Couchbase Power BI Connector provides data visualization for the Couchbase platform, using Microsoft's data visualization software.
@@ -83,6 +84,7 @@ Once again, open the command prompt (`cmd`) -- it must be a fresh command prompt
 openssl version
 ----
 
+// tag::install-power-bi-connector[]
 
 == Install the Couchbase Power BI Connector
 You will need to install the connector that allows Power BI to communicate with Couchbase, through ODBC.
@@ -90,8 +92,9 @@ You will need to install the connector that allows Power BI to communicate with 
 . Download `couchbase-powerbi-connector-1.0.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.0/couchbase-powerbi-connector-1.0.mez[] --
 see the xref:release-notes.adoc[release notes page] for more details.
 
-. Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
+. Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring   custom connector.
 
+// end::install-power-bi-connector[]
 
 == Verify the Connector is Loaded Successfully:
 
@@ -196,12 +199,15 @@ Self-Managed Couchbase Server::
 +
 --
 
+// tag::on-premises-secure-connection[]
+
 [#download-root-certificate]#To create a secure connection to a self-managed Couchbase Server instance, you need to get the root certificate from the Administrator's Console.#
 
 . Use your web browser to access the Admin console and log in as an Administrator.
 . Use the left-hand menu to access the menu:Security[] settings.
 . From the top menu, select menu:Certificates[]. This will take you to the page from which you can view the server's security certificates:
 +
+.Locating the server's security certificate
 image::access-root-certificate.png[]
 +
 . Copy *all* the text in the Trusted *Root Certificates* section (start from `BEGIN CERTIFICATE` and include `END CERTIFICATE` ),
@@ -209,6 +215,8 @@ and save the text to an accessible `PEM` file.
 E.g., `C:\Users\user\certificate.pem`).
 +
 You will use this file later when you create the ODBC connection.
+
+// end::on-premises-secure-connection[]
 --
 
 ====
@@ -346,4 +354,5 @@ btn:[Load] a view to use Power BI options.
 
 An example image of the `travel-sample` `airport_view` follows.
 
+.The Power BI Desktop
 image::visualization.png[A data visualization in Power BI]

@@ -1,0 +1,6 @@
+sources:
+  docs-server:
+    branches: release/8.1
+  
+  docs-analytics:
+    branches: release/8.0
