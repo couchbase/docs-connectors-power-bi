@@ -1,0 +1,82 @@
+= Installing Power BI Cloud Gateway
+
+:description: This guide provides instructions for installing and configuring the Power BI Cloud Gateway, which enables secure data integration between Power BI and on-premises data sources.
+:page-topic-type: guide
+
+[abstract]
+{description}
+
+== Introduction
+
+You can build data visualization dashboards that provide live overviews of the data stored in your on-premise Couchbase data sources. One of the ways to do this is through the Microsoft Power BI Cloud Gateway. 
+
+This guide will walk you through the process of installing and configuring the Power BI Cloud Gateway to enable secure data integration between Power BI and your on-premises Couchbase data sources.
+
+== Prerequisites
+Before using the Power BI Cloud Gateway, you must first install and set up.
+
+* The Power BI Desktop application.
+* The Couchbase ODBC driver
+* The Couchbase Custom Connector.
+
+Instructions for installing the prerequisites can be found on the  xref:index.adoc[] page.
+
+
+== Install the Power BI Cloud Gateway
+
+. Use your browser to download the Power BI Cloud Gateway installer from the Microsoft website. The gateway can be found here:
++
+https://powerbi.microsoft.com/en-in/gateway[PowerBI Gateway download].
++
+. Download the btn:[Standard Mode] edition.
+. Run the downloaded installation program to install the Gateway.
+. Enter your credentials on the menu:Sign In[] page.
++
+.Data gateway sign-in
+image::data-gateway-sign-in.png[,70%]
++
+The next page will ask you to register a new gateway, or migrate, restore, or take over an existing gateway.
+Select the option to menu:Register a new gateway on this computer[].
++
+. On the next screen, fill in the configuration details for the new gateway.
++
+.Gateway configuration details
+image::data-gateway-configuration.png[,70%]
++
+. Navigate to the btn:[Connectors] tab from the left-hand menu and the name of the folder where the Gateway can load the Power BI custom connector.
++
+.Setting up the connector for the Power BI Cloud Gateway
+image::on-premises-data-gateway.png[,70%]
++
+. Select the menu:Status[] item from the left-hand menu to check the status of the gateway.
++
+.Gateway status
+image::data-gateway-status.png[,70%]
+
+== Access Power BI 
+
+You can access the cloud version of Power BI at https://app.powerbi.com[]. Sign in to your account or create a new one if required.
+
+== Publish a Report
+
+First, you create a report using the Power BI desktop application and then publish to the cloud using the Power BI Cloud Gateway.
+
+. Create and save a report using the PowerBI desktop.
+. Select the btn:[Home] tab on the Power BI desktop.
+. Click on the btn:[Publish] button.
+. Enter your sign-in details as required.
+. Select a workspace for publishing your report.
+
+== Access your Report
+
+Refresh your  https://app.powerbi.com[Power BI Cloud] page to see your published workspace.
+
+NOTE: You have to sign out and then sign back in.
+
+.Power BI workspace
+image::power-bi-workspace.png[,70%]
+
+
+
+
+
