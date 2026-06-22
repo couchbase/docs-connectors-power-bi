@@ -167,8 +167,8 @@ These details are necessary to establish a secure connection and allow Power BI 
 ====
 * Couchbase strongly recommends that you secure your ODBC connection using SSL.
 This ensures encryption of the communication between Power BI and Couchbase. 
-* In Power BI Connector 1.3 and later, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics.
-For more information, see <<jwt-authentication>>.
+* In Power BI Connector 1.3 and later, you can use JSON Web Token (JWT) authentication for Enterprise Analytics.
+For more information, see <<authenticate-using-jwt>>.
 ====
 
 [tabs]
@@ -188,8 +188,8 @@ For Enterprise Analytics, you need to obtain the root certificate.
 
 You need this file when you configure the ODBC DSN.
 
-NOTE: If you want to use JWT authentication with Enterprise Analytics, you also need to configure an external Identity Provider and register a client with the appropriate scopes. 
-For more information, see <<prerequisites-for-jwt-authentication>>.
+NOTE: To use JWT authentication with Enterprise Analytics, you also need to configure an external Identity Provider and register a client with the appropriate scopes. 
+For more information, see <<authenticate-using-jwt>>..
 --
 
 Capella Analytics::
@@ -250,45 +250,46 @@ For Capella Operational, you need to obtain the public connection string, add an
 --
 ====
 
-== JWT Authentication
+== Authenticate Using JWT
 
-Starting in version 1.3 of Power BI connector and ODBC driver, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics.
+[.status]#Enterprise Analytics#
 
-JWT authentication uses an external Identity Provider (IdP), such as Keycloak, Okta, or Azure AD, to issue a JWT access token.
-The connector performs a PKCE OAuth 2.0 browser flow to obtain the token, and then passes it to the ODBC driver.
-The ODBC driver uses this token to authenticate with Enterprise Analytics.
+Starting in version 1.3, of Power BI connector and ODBC driver, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics.
 
-=== Prerequisites for JWT Authentication
+JWT authentication uses an external Identity Provider (IdP) to issue a JWT access token.
+When you initiate a connection, the Power BI connector opens a browser window for you to log in to your IdP.
+After you log in, the connector retrieves the access token using the PKCE OAuth 2.0 protocol. 
+The connector passes this token to the ODBC driver, which authenticates your connection to Enterprise Analytics.
 
-Before you configure the DSN or connector for JWT authentication, make sure you have the following: 
+To use JWT authentication, you need the following: 
 
 [cols="1a,2a", options="header"]
 |====
 | Requirement | Description
 
 | Identity Provider (IdP) 
-| An OIDC-compliant IdP (such Keycloak, Okta, or Azure AD) must be running and accessible from your Windows machine.
+| An OIDC-compliant IdP must be running and accessible from your Windows machine.
+For example, Keycloak, Okta, or Azure AD.
 
-| Issuer URL (Login URL)
-| Obtain the base OIDC discovery URL of your IdP realm. +
+| Login URL
+| You must have the base OIDC discovery URL of your IdP realm. +
 For example: http://192.168.88.4:8080/realms/my-app-realm
 
 | Public Client ID
-| Register a public OIDC client on the IdP.
+| You must have a public OIDC client registered on your IdP that:
 
-* It must have no client secret. 
-* It must allow the following Power BI redirect URI: https://oauth.powerbi.com/views/oauthredirect.html
+* Does not use a client secret. 
+* Allows the Power BI redirect URI: https://oauth.powerbi.com/views/oauthredirect.html
 
 | Scopes
-| Enable (at minimum) the following scopes for the client: 
-
+| The registered client must have at least the following scopes enabled: 
 * `openid` 
-* `offline_access` - Required for refresh token support
+* `offline_access` (required for token refresh)
 
 You can add additional scopes that your IdP requires. 
 
 | User Account
-| A user account must exist on the IdP that is also registered as an external user on Couchbase. 
+| You must have a valid user account on the IdP and the same user must be registered as an external user on Couchbase. 
 |====
 
 [[configure-odbc]]
@@ -573,23 +574,44 @@ To add data from Couchbase data sources to Power BI:
 . In Power BI Desktop, select menu:Get Data[].
 . Select *Couchbase Connector (Custom)*.
 . In the *ODBC DSN* field, enter the name of the DSN you created. 
+. If you're using <<authenticate-using-jwt, JWT authentication>>, enter the following:
++
+--
+** *Login URL*: The base OIDC discovery URL of your IdP realm.
+** *Client ID*: The public client ID of your registered OIDC client.
+** *OAuth Scopes*: The scopes enabled for your registered OIDC client.
+--
++
+For other authentication methods, leave these fields empty.
+
 . Select *Import* or *DirectQuery* as the *Data Connectivity mode* and click btn:[OK]. 
 . Select an authentication method based on your ODBC DSN configuration. 
-** `Basic`: Select this option if your DSN uses `Basic` or `LDAP` authentication, or if you're connecting to Capella Analytics or Capella Operational.
-Enter your username and password.
-
-** `Basic` (passphrase only): Select this option if your DSN uses `Client Certificate (Encrypted Key)` authentication.
-Enter your private key passphrase and leave the username field empty.
-
-** `Anonymous`: Select this option if your DSN uses `Client Certificate` authentication. 
-No certificate details required as this option provides implicit authentication.
-
-** `Windows`: Select this option if you want to authenticate with your Windows credentials.
-
-** `OAuth2 (JWT via IdP)`: Select this option if your DSN uses `JWT` authentication. 
-Click btn:[Sign In] to open a browser window and log in through your Identity Provider (IdP).
 +
-NOTE: After a successful login, Power BI securely stores the access token and automatically renews it using the refresh token.
+[cols="1a,2a,2a", options="header"]
+|===
+| Method | When to use | Action
+
+| `Basic`
+| DSN uses `Basic` or `LDAP` authentication, or if you're connecting to Capella Analytics or Capella Operational.
+| Enter your username and password.
+
+| `Basic` (passphrase only)
+| DSN uses `Client Certificate (Encrypted Key)` authentication.
+| Enter your private key passphrase and leave the username field empty.
+
+| `Anonymous`
+| DSN uses `Client Certificate` authentication. 
+| No certificate details required as this option provides implicit authentication.
+
+| `Windows`
+| To authenticate with your Windows credentials.
+| No additional credentials required.
+
+| `OAuth2 (JWT via IdP)`
+| DSN uses `JWT` authentication.
+| Click btn:[Sign In] to open a browser window and log in through your Identity Provider (IdP). 
+After a successful login, Power BI securely stores the access token and automatically renews it using the refresh token.
+|===
 
 . Click btn:[Connect].
 

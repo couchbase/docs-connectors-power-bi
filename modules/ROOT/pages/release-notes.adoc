@@ -10,6 +10,24 @@ and either Couchbase Analytics Service (CBAS) or tabular views of your Capella c
 
 For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
 
+[#v-1-3]
+== Version 1.3 (2026-06-30)
+
+The Power BI connector now supports JSON Web Token (JWT) authentication for Enterprise Analytics.
+For more information, see xref:index.adoc#authenticate-using-jwt[Authenticate Using JWT].
+
+https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.2/couchbase-powerbi-connector-1.3.101.mez[Power BI Connector Download]
+
+The supported and tested dependencies of this release are:
+
+* https://packages.couchbase.com/releases/couchbase-odbc-driver/1.3/couchbase-odbc-1.3.114-win64.msi[couchbase-odbc-1.3-win64.msi]
+
+** See the https://packages.couchbase.com/releases/couchbase-odbc-driver/1.3/couchbase-odbc-driver-1.3-notices.txt[Notices File] for dependency licenses for the ODBC Driver.
+
+* https://slproweb.com/products/Win32OpenSSL.html[Win64 OpenSSL v3.3.x Light]
+
+// TODO: Replace links with actual 1.3 release files once available.
+
 [#v-1-2]
 == Version 1.2 (2026-03-12)
 
