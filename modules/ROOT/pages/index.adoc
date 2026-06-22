@@ -80,8 +80,11 @@ The Couchbase Power BI Connector requires the Power BI Desktop version March 201
 
 If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US/download/details.aspx?id=58494[Microsoft downloads] page. 
 
+After installation, you must enable custom connectors in Power BI Desktop to use the Couchbase Power BI Connector.
+To enable custom connectors, go to menu:File[Options, Security, Data Extensions] and click btn:[Allow]. 
+
 NOTE: Power BI is only available for the Microsoft Windows platform;
-for other platforms, consider our xref:tableau-connector::index.adoc[Tableau connector].
+for other platforms, consider xref:tableau-connector::index.adoc[Couchbase Tableau Connector].
 
 == Install OpenSSL
 
@@ -126,7 +129,8 @@ openssl version
 
 To install the Couchbase ODBC driver:
 
-. Download `couchbase-odbc-1.2.114-win64.msi` from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.2/couchbase-odbc-1.2.114-win64.msi[].
+. Download `couchbase-odbc-1.3.-win64.msi` from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.3/couchbase-odbc-1.3.-win64.msi[].
+// TODO: Update the link to the latest version of the ODBC driver.
 For more information, see xref:release-notes.adoc[Release Notes].
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
@@ -138,7 +142,8 @@ This installation provides both ANSI and Unicode drivers.
 
 To install the Power BI Connector: 
 
-. Download `couchbase-powerbi-connector-1.2.101.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.2/couchbase-powerbi-connector-1.2.101.mez[].
+. Download `couchbase-powerbi-connector-1.3.101.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.2/couchbase-powerbi-connector-1.3.101.mez[]. 
+// TODO: Update the link to the latest version of the Power BI connector.
 For more information, see xref:release-notes.adoc[Release Notes].
 
 . Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
@@ -158,8 +163,13 @@ If the connector appears in the search results, it's installed correctly.
 Before you configure the ODBC DSN, you must obtain the required connection details and certificates for your Couchbase data source.
 These details are necessary to establish a secure connection and allow Power BI to access the data in your Couchbase cluster.
 
-NOTE: Couchbase strongly recommends that you secure your ODBC connection using SSL.
+[NOTE]
+====
+* Couchbase strongly recommends that you secure your ODBC connection using SSL.
 This ensures encryption of the communication between Power BI and Couchbase. 
+* In Power BI Connector 1.3 and later, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics.
+For more information, see <<jwt-authentication>>.
+====
 
 [tabs]
 ====
@@ -177,6 +187,9 @@ For Enterprise Analytics, you need to obtain the root certificate.
 . Save the text to an accessible file location (for example, `C:\Users\user\certificate.txt`). 
 
 You need this file when you configure the ODBC DSN.
+
+NOTE: If you want to use JWT authentication with Enterprise Analytics, you also need to configure an external Identity Provider and register a client with the appropriate scopes. 
+For more information, see <<prerequisites-for-jwt-authentication>>.
 --
 
 Capella Analytics::
@@ -237,14 +250,57 @@ For Capella Operational, you need to obtain the public connection string, add an
 --
 ====
 
+== JWT Authentication
+
+Starting in version 1.3 of Power BI connector and ODBC driver, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics.
+
+JWT authentication uses an external Identity Provider (IdP), such as Keycloak, Okta, or Azure AD, to issue a JWT access token.
+The connector performs a PKCE OAuth 2.0 browser flow to obtain the token, and then passes it to the ODBC driver.
+The ODBC driver uses this token to authenticate with Enterprise Analytics.
+
+=== Prerequisites for JWT Authentication
+
+Before you configure the DSN or connector for JWT authentication, make sure you have the following: 
+
+[cols="1a,2a", options="header"]
+|====
+| Requirement | Description
+
+| Identity Provider (IdP) 
+| An OIDC-compliant IdP (such Keycloak, Okta, or Azure AD) must be running and accessible from your Windows machine.
+
+| Issuer URL (Login URL)
+| Obtain the base OIDC discovery URL of your IdP realm. +
+For example: http://192.168.88.4:8080/realms/my-app-realm
+
+| Public Client ID
+| Register a public OIDC client on the IdP.
+
+* It must have no client secret. 
+* It must allow the following Power BI redirect URI: https://oauth.powerbi.com/views/oauthredirect.html
+
+| Scopes
+| Enable (at minimum) the following scopes for the client: 
+
+* `openid` 
+* `offline_access` - Required for refresh token support
+
+You can add additional scopes that your IdP requires. 
+
+| User Account
+| A user account must exist on the IdP that is also registered as an external user on Couchbase. 
+|====
+
 [[configure-odbc]]
 == Configure an ODBC Data Source 
 
 To use a Couchbase data source in Power BI, you must configure an ODBC Data Source Name (DSN).
 
-During configuration, you can also enable logging for the ODBC driver. 
-The driver saves the logs to the following directory: `Documents\Power BI Desktop\Custom Connectors`.
-The log file is named `couchbase-odbc`.
+During configuration, you can optionally enable ODBC driver logging. 
+The driver writes two log files to the `Documents\Power BI Desktop\Custom Connectors` directory:
+
+* `couchbase-odbc-diag.log`: Contains driver diagnostics, including the connection string, authentication mode, server, token length.
+* `couchbase-odbc.log`: Contains internal `libcouchbase` logs such as TLS data, bootstrap data, and authentication events. 
 
 IMPORTANT: Make sure to use the *ODBC Data Source Administrator (64 bit)*.
 The 32-bit version is incompatible with the connector and will not work correctly.
@@ -326,6 +382,11 @@ For more information, see xref:enterprise-analytics:manage:manage-security/confi
 | Enter paths to your certificates and encrypted key, including the key passphrase.   
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
+
+| `Enable`
+| `JWT`
+| Cluster Cert Path
+| Enter the path to the root certificate you downloaded from <<ea-connection-details,Get Connection Details>>.
 |===
 +
 NOTE: Providing the *Username* and *Password* in the DSN configuration is optional.
@@ -510,17 +571,26 @@ To prepare tabular analytics views, see:
 To add data from Couchbase data sources to Power BI: 
 
 . In Power BI Desktop, select menu:Get Data[].
-. Select *Couchbase Connector*.
-. In the *dsn* field, enter the name of the DSN you created. 
+. Select *Couchbase Connector (Custom)*.
+. In the *ODBC DSN* field, enter the name of the DSN you created. 
 . Select *Import* or *DirectQuery* as the *Data Connectivity mode* and click btn:[OK]. 
 . Select an authentication method based on your ODBC DSN configuration. 
-** `Basic` - If your DSN uses `Basic` or `LDAP` authentication, or if you're connecting to Capella Analytics or Capella Operational.
+** `Basic`: Select this option if your DSN uses `Basic` or `LDAP` authentication, or if you're connecting to Capella Analytics or Capella Operational.
 Enter your username and password.
-** `Basic` (passphrase only) - If your DSN uses `Client Certificate (Encrypted Key)` authentication.
+
+** `Basic` (passphrase only): Select this option if your DSN uses `Client Certificate (Encrypted Key)` authentication.
 Enter your private key passphrase and leave the username field empty.
-** `Anonymous` - If your DSN uses `Client Certificate` authentication. 
+
+** `Anonymous`: Select this option if your DSN uses `Client Certificate` authentication. 
 No certificate details required as this option provides implicit authentication.
-** `Windows` - If you want to authenticate with your Windows credentials.
+
+** `Windows`: Select this option if you want to authenticate with your Windows credentials.
+
+** `OAuth2 (JWT via IdP)`: Select this option if your DSN uses `JWT` authentication. 
+Click btn:[Sign In] to open a browser window and log in through your Identity Provider (IdP).
++
+NOTE: After a successful login, Power BI securely stores the access token and automatically renews it using the refresh token.
+
 . Click btn:[Connect].
 
 After connecting, Power BI displays a list of the tabular views in the database specified by your DSN. 
