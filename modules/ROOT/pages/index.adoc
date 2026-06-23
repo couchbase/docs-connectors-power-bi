@@ -130,7 +130,7 @@ openssl version
 To install the Couchbase ODBC driver:
 
 . Download `couchbase-odbc-1.3.-win64.msi` from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.3/couchbase-odbc-1.3.-win64.msi[].
-// TODO: Update the link to the latest version of the ODBC driver.
+// TODO: Replace link with the actual 1.3 release file once available.
 For more information, see xref:release-notes.adoc[Release Notes].
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
@@ -143,7 +143,7 @@ This installation provides both ANSI and Unicode drivers.
 To install the Power BI Connector: 
 
 . Download `couchbase-powerbi-connector-1.3.101.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.2/couchbase-powerbi-connector-1.3.101.mez[]. 
-// TODO: Update the link to the latest version of the Power BI connector.
+// TODO: Replace link with the actual 1.3 release file once available.
 For more information, see xref:release-notes.adoc[Release Notes].
 
 . Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
