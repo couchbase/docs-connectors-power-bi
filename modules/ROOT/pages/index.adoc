@@ -261,7 +261,7 @@ When you initiate a connection, the Power BI connector opens a browser window fo
 After you log in, the connector retrieves the access token using the PKCE OAuth 2.0 protocol. 
 The connector passes this token to the ODBC driver, which authenticates your connection to Enterprise Analytics.
 
-To use JWT authentication, you need the following: 
+To use JWT authentication, you must configure the following:
 
 [cols="1a,2a", options="header"]
 |====
@@ -272,8 +272,13 @@ To use JWT authentication, you need the following:
 For example, Keycloak, Okta, or Azure AD.
 
 | Login URL
-| The base OIDC discovery URL of your IdP realm. +
-For example: http://192.168.88.4:8080/realms/my-app-realm
+| The base OIDC discovery URL of your IdP realm. 
+
+For example: 
+
+* Keycloack: `++https://<keycloak-host>:<port>/realms/<realm-name>++`
+* Okta: `++https://<your-okta-domain>/oauth2/default++`
+* Azure AD (Entra ID): `++https://login.microsoftonline.com/<tenant-id>/v2.0++`
 
 | Public Client ID
 | A public OIDC client registered on your IdP that:
@@ -292,6 +297,15 @@ You can add additional scopes as well.
 | User Account
 | A valid user account on the IdP and the same user must be registered as an external user on Couchbase. 
 |====
+
+[NOTE]
+====
+For instructions on configuring an IdP, see it's official documentation:
+
+* https://www.keycloak.org/docs/latest/server_admin/#_clients[Keycloak Documentation]
+* https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm[Okta Documentation]
+* https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc[Microsoft Documentation]
+====
 
 [[configure-odbc]]
 == Configure an ODBC Data Source 
@@ -575,12 +589,13 @@ To add data from Couchbase data sources to Power BI:
 . In Power BI Desktop, select menu:Get Data[].
 . Select *Couchbase Connector (Custom)*.
 . In the *ODBC DSN* field, enter the name of the DSN you created. 
-. If you're using <<authenticate-using-jwt, JWT authentication>>, enter the following:
+. [[step-4]]If you're using <<authenticate-using-jwt, JWT authentication>>, enter the following:
 +
 --
-** *Login URL*: The base OIDC discovery URL of your IdP realm.
+** *Login URL*: The base OIDC discovery URL of your Identity Provider (IdP) realm.
 ** *Client ID*: The public client ID of your registered OIDC client.
-** *OAuth Scopes*: The scopes enabled for your registered OIDC client.
+** *OAuth Scopes*: (Optional) Space-separated custom OIDC scopes required by your IdP.
+If you leave this field empty, the connector uses the default scopes, `openid offline_access`. 
 --
 +
 For other authentication methods, leave these fields empty.
@@ -610,6 +625,9 @@ For other authentication methods, leave these fields empty.
 
 | `OAuth2 (JWT via IdP)`
 | DSN uses `JWT` authentication.
+
+Select this method only if you configured the *Login URL* and *Client ID* in <<step-4,step 4>>.
+
 | Click btn:[Sign In] to open a browser window and log in through your Identity Provider (IdP). 
 After a successful login, Power BI securely stores the access token and automatically renews it using the refresh token.
 |===
