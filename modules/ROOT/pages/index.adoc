@@ -268,7 +268,7 @@ To use JWT authentication, you must configure the following:
 | Requirement | Description
 
 | Identity Provider (IdP) 
-a | An OIDC-compliant IdP must be running and accessible from your Windows machine.
+a| An OIDC-compliant IdP must be running and accessible from your Windows machine.
 
 For example:
 
@@ -277,7 +277,7 @@ For example:
 * https://www.microsoft.com/en-in/security/business/identity-access/microsoft-entra-id[Microsoft Azure AD/Entra ID^].
 
 | Login URL
-a | The base OIDC discovery URL of your IdP realm. 
+a| The base OIDC discovery URL of your IdP realm. 
 
 For example: 
 
