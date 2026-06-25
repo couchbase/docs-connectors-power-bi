@@ -268,11 +268,16 @@ To use JWT authentication, you must configure the following:
 | Requirement | Description
 
 | Identity Provider (IdP) 
-| An OIDC-compliant IdP must be running and accessible from your Windows machine.
-For example, Keycloak, Okta, or Azure AD.
+a | An OIDC-compliant IdP must be running and accessible from your Windows machine.
+
+For example:
+
+* https://www.keycloak.org/[Keycloak^]
+* https://www.okta.com/[Okta^]
+* https://www.microsoft.com/en-in/security/business/identity-access/microsoft-entra-id[Microsoft Azure AD/Entra ID^].
 
 | Login URL
-| The base OIDC discovery URL of your IdP realm. 
+a | The base OIDC discovery URL of your IdP realm. 
 
 For example: 
 
@@ -608,23 +613,27 @@ For other authentication methods, leave these fields empty.
 | Method | When to use | Action
 
 | `Basic`
-| DSN uses `Basic` or `LDAP` authentication, or if you're connecting to Capella Analytics or Capella Operational.
+a| Use this when: 
+
+* Your DSN uses `Basic` or `LDAP` authentication
+* You're connecting to Capella Analytics or Capella Operational.
+
 | Enter your username and password.
 
 | `Basic` (passphrase only)
-| DSN uses `Client Certificate (Encrypted Key)` authentication.
+| Your DSN uses `Client Certificate (Encrypted Key)` authentication.
 | Enter your private key passphrase and leave the username field empty.
 
 | `Anonymous`
-| DSN uses `Client Certificate` authentication. 
+| Your DSN uses `Client Certificate` authentication. 
 | No certificate details required as this option provides implicit authentication.
 
 | `Windows`
-| To authenticate with your Windows credentials.
+| You want to authenticate with your Windows credentials.
 | No additional credentials required.
 
 | `OAuth2 (JWT via IdP)`
-a| DSN uses `JWT` authentication.
+a| Your DSN uses `JWT` authentication.
 
 Select this method only if you configured the *Login URL* and *Client ID* in <<step-4,step 4>>.
 
