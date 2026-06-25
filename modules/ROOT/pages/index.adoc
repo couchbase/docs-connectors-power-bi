@@ -594,7 +594,7 @@ To add data from Couchbase data sources to Power BI:
 . In Power BI Desktop, select menu:Get Data[].
 . Select *Couchbase Connector (Custom)*.
 . In the *ODBC DSN* field, enter the name of the DSN you created. 
-. [[step-4]]If you're using <<authenticate-using-jwt, JWT authentication>>, enter the following:
+. [[step-4]] If you're using <<authenticate-using-jwt, JWT authentication>> with Enterprise Analytics, enter the following:
 +
 --
 ** *Login URL*: The base OIDC discovery URL of your Identity Provider (IdP) realm.
