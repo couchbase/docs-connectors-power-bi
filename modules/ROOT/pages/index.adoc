@@ -188,7 +188,7 @@ For Enterprise Analytics, you need to obtain the root certificate.
 
 You need this file when you configure the ODBC DSN.
 
-NOTE: To use JWT authentication with Enterprise Analytics, you also need to configure an external Identity Provider and register a client with the appropriate scopes. 
+NOTE: To use JWT authentication with Enterprise Analytics, you also need to configure an external Identity Provider (IdP) and register a client with the appropriate scopes. 
 For more information, see <<authenticate-using-jwt>>..
 --
 
@@ -254,7 +254,7 @@ For Capella Operational, you need to obtain the public connection string, add an
 
 [.status]#Enterprise Analytics#
 
-From version 1.3 of Power BI connector and ODBC driver, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics.
+From version 1.3 of the Power BI connector and ODBC driver, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics.
 
 JWT authentication uses an external Identity Provider (IdP) to issue a JWT access token.
 When you initiate a connection, the Power BI connector opens a browser window for you to log in to your IdP.
@@ -276,18 +276,18 @@ For example, Keycloak, Okta, or Azure AD.
 
 For example: 
 
-* Keycloack: `++https://<keycloak-host>:<port>/realms/<realm-name>++`
+* Keycloak: `++https://<keycloak-host>:<port>/realms/<realm-name>++`
 * Okta: `++https://<your-okta-domain>/oauth2/default++`
 * Azure AD (Entra ID): `++https://login.microsoftonline.com/<tenant-id>/v2.0++`
 
 | Public Client ID
-| A public OIDC client registered on your IdP that:
+a| A public OIDC client registered on your IdP that:
 
 * Does not use a client secret. 
 * Allows the Power BI redirect URI: https://oauth.powerbi.com/views/oauthredirect.html
 
 | Scopes
-| The registered client must have at least the following scopes enabled: 
+a| The registered client must have at least the following scopes enabled: 
 
 * `openid` 
 * `offline_access` (required for token refresh)
@@ -300,11 +300,11 @@ You can add additional scopes as well.
 
 [NOTE]
 ====
-For instructions on configuring an IdP, see it's official documentation:
+For instructions on configuring an IdP, see the official documentation:
 
-* https://www.keycloak.org/docs/latest/server_admin/#_clients[Keycloak Documentation]
-* https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm[Okta Documentation]
-* https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc[Microsoft Documentation]
+* https://www.keycloak.org/docs/latest/server_admin/#_clients[Keycloak Documentation^]
+* https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm[Okta Documentation^]
+* https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc[Microsoft Azure AD/Entra ID Documentation^]
 ====
 
 [[configure-odbc]]
@@ -312,11 +312,11 @@ For instructions on configuring an IdP, see it's official documentation:
 
 To use a Couchbase data source in Power BI, you must configure an ODBC Data Source Name (DSN).
 
-During configuration, you can optionally enable ODBC driver logging. 
-The driver writes two log files to the `Documents\Power BI Desktop\Custom Connectors` directory:
+During configuration, you can choose to enable ODBC driver logging. 
+The driver writes 2 log files to the `Documents\Power BI Desktop\Custom Connectors` directory:
 
-* `couchbase-odbc-diag.log`: Contains driver diagnostics, including the connection string, authentication mode, server, token length.
-* `couchbase-odbc.log`: Contains internal `libcouchbase` logs such as TLS data, bootstrap data, and authentication events. 
+. `couchbase-odbc-diag.log`: Contains driver diagnostics, including the connection string, authentication mode, server, and token length.
+. `couchbase-odbc.log`: Contains internal `libcouchbase` logs such as TLS data, bootstrap data, and authentication events. 
 
 IMPORTANT: Make sure to use the *ODBC Data Source Administrator (64 bit)*.
 The 32-bit version is incompatible with the connector and will not work correctly.
@@ -624,7 +624,7 @@ For other authentication methods, leave these fields empty.
 | No additional credentials required.
 
 | `OAuth2 (JWT via IdP)`
-| DSN uses `JWT` authentication.
+a| DSN uses `JWT` authentication.
 
 Select this method only if you configured the *Login URL* and *Client ID* in <<step-4,step 4>>.
 
