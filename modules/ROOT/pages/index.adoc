@@ -189,7 +189,7 @@ For Enterprise Analytics, you need to obtain the root certificate.
 You need this file when you configure the ODBC DSN.
 
 NOTE: To use JWT authentication with Enterprise Analytics, you also need to configure an external Identity Provider (IdP) and register a client with the appropriate scopes. 
-For more information, see <<authenticate-using-jwt>>..
+For more information, see <<authenticate-using-jwt>>.
 --
 
 Capella Analytics::
@@ -252,9 +252,7 @@ For Capella Operational, you need to obtain the public connection string, add an
 
 == Authenticate Using JWT
 
-[.status]#Enterprise Analytics#
-
-From version 1.3 of the Power BI connector and ODBC driver, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics.
+From version 1.3 of the Power BI connector and ODBC driver, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics 2.2 and later.
 
 JWT authentication uses an external Identity Provider (IdP) to issue a JWT access token.
 When you initiate a connection, the Power BI connector opens a browser window for you to log in to your IdP.
@@ -270,20 +268,13 @@ To use JWT authentication, you must configure the following:
 | Identity Provider (IdP) 
 a| An OIDC-compliant IdP must be running and accessible from your Windows machine.
 
-For example:
-
-* https://www.keycloak.org/[Keycloak^]
-* https://www.okta.com/[Okta^]
-* https://www.microsoft.com/en-in/security/business/identity-access/microsoft-entra-id[Microsoft Azure AD/Entra ID^].
+For example, https://www.keycloak.org/[Keycloak^].
 
 | Login URL
 a| The base OIDC discovery URL of your IdP realm. 
 
-For example: 
-
-* Keycloak: `++https://<keycloak-host>:<port>/realms/<realm-name>++`
-* Okta: `++https://<your-okta-domain>/oauth2/default++`
-* Azure AD (Entra ID): `++https://login.microsoftonline.com/<tenant-id>/v2.0++`
+For example, the URL for Keycloak is: 
+`++https://<keycloak-host>:<port>/realms/<realm-name>++`
 
 | Public Client ID
 a| A public OIDC client registered on your IdP that:
@@ -303,14 +294,7 @@ You can add additional scopes as well.
 | A valid user account on the IdP and the same user must be registered as an external user on Couchbase. 
 |====
 
-[NOTE]
-====
-For instructions on configuring an IdP, see the official documentation:
-
-* https://www.keycloak.org/docs/latest/server_admin/#_clients[Keycloak Documentation^]
-* https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm[Okta Documentation^]
-* https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc[Microsoft Azure AD/Entra ID Documentation^]
-====
+NOTE: For instructions on configuring Keycloak, see the official https://www.keycloak.org/docs/latest/server_admin/#_clients[Keycloak Documentation^].
 
 [[configure-odbc]]
 == Configure an ODBC Data Source 
