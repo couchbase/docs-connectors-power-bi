@@ -15,9 +15,9 @@ This guide will walk you through the process of installing and configuring the P
 == Prerequisites
 Before using the Power BI Cloud Gateway, you must first install and set up.
 
-* The Power BI Desktop application.
-* The Couchbase ODBC driver
-* The Couchbase Custom Connector.
+* xref:index.adoc#install-power-bi-desktop[The Power BI Desktop application].
+* xref:index.adoc#install-ODBC-driver[The Couchbase ODBC driver].
+* xref:index.adoc#install-Power-BI-connector[The Couchbase Custom Connector].
 
 Instructions for installing the prerequisites can be found on the  xref:index.adoc[] page.
 
@@ -80,7 +80,7 @@ First, you create a report using the Power BI desktop application and then publi
 
 Refresh your https://app.powerbi.com[Power BI Cloud] page to see your published workspace.
 
-NOTE: You have to sign out and then sign back in.
+NOTE: If you cannot see your published workspace, then sign out of Power BI Cloud and sign back in.
 
 You can make sure that the gateway is loaded by accessing the menu:Settings[] page.
 
