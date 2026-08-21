@@ -66,6 +66,19 @@ image::on-premises-data-gateway.png[,70%]
 
 You can access the cloud version of Power BI at https://app.powerbi.com[]. Sign in to your account or create a new one if required.
 
+== Link Your Power BI Cloud to Your Power BI Desktop
+
+. Select menu:Settings[Manage Connections and Gateways]
++
+image::power-bi-cloud-settings.png[,50%]
+
+. Click on the btn:[{plus}New] button to create a new connection.
+
+. Fill the details for the connection you created
+
+
+
+
 == Publish a Report
 
 First, you create a report using the Power BI desktop application and then publish to the cloud using the Power BI Cloud Gateway.

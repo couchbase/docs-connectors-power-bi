@@ -22,6 +22,7 @@ The DSN defines the connection details such as the address, authentication metho
 After you configure the DSN, use the Power BI connector to import data from your data source into Power BI or query it using DirectQuery. 
 
 
+[#figure-power-bi]
 [mermaid]
 .Couchbase Power BI Connector Flow Diagram
 ----
