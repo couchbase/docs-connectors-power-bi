@@ -1,6 +1,6 @@
 = Connecting Power BI Cloud to On-Premises Couchbase Analytics
 
-:description: This guide provides instructions for installing and configuring the Power BI Cloud Gateway, enabling secure data integration between Power BI and on-premises data sources.
+:description: This guide provides instructions for installing and configuring the Power BI Cloud Gateway.
 :page-topic-type: guide
 
 [abstract]
