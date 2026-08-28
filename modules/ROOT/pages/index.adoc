@@ -156,6 +156,16 @@ To verify if the Couchbase Power BI Connector is installed correctly:
 
 If the connector appears in the search results, it's installed correctly.
 
+[NOTE]
+.If the connector isn't found.
+====
+If the Couchbase Connector does not appear in the search results, then carry out the following instructions to register the connector with Power BI:
+
+. From the main menu, select menu:File[Options and settings > Options]  
+. Select the menu:Security[] option
+. Under [.ui]*Data Extensions* select [.ui]*Allow any extension to load without validation or warning*
+====
+
 == Get Connection Details and Certificates
 
 Before you configure the ODBC DSN, you must obtain the required connection details and certificates for your Couchbase data source.
