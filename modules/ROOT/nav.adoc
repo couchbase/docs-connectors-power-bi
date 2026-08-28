@@ -1,2 +1,3 @@
 * xref:index.adoc[]
+* xref:installing-power-bi-cloud-gateway.adoc[]
 * xref:release-notes.adoc[]
