@@ -1,7 +1,9 @@
-= Introduction
+= Using Microsoft Power BI
+ 
 :page-topic-type: guide
 :page-toclevels: 2
 :description: The Couchbase Power BI Connector provides data visualization for the Couchbase platform, using Microsoft's data visualization software.
+:odbc-footnote: footnote:[Open Database Connectivity]
 
 [abstract]
 {description}
@@ -15,40 +17,39 @@ The Couchbase Power BI Connector integrates Microsoft Power BI with the followin
 * Couchbase Server (Analytics Service)
 * Capella Operational (Analytics Service)
 
-The connector uses the Couchbase ODBC driver to connect to these data sources.
+The connector uses the Couchbase ODBC{odbc-footnote} driver to connect to these data sources.
 You must first <<configure-odbc, create an ODBC Data Source Name (DSN)>> for each data source you want to use in Power BI.
 The DSN defines the connection details such as the address, authentication method, and SSL settings.
 After you configure the DSN, use the Power BI connector to import data from your data source into Power BI or query it using DirectQuery. 
 
+
+[#figure-power-bi]
+[mermaid]
 .Couchbase Power BI Connector Flow Diagram
-[plantuml#figure-power-bi,power-bi,svg]
-....
+----
+flowchart-elk LR
 
-@startuml
+Power-BI-Desktop@{"shape": "rect", "label": "Power BI Desktop"}
+Power-BI-Connector@{"shape": "rect", "label": "Couchbase Power BI Connector"}
+ODBC-Driver@{"shape": "rect", "label": "Couchbase ODBC Driver"}
 
-left to right direction
-skinparam defaultTextAlignment center
+subgraph "Data Sources"
+  
+  Enterprise-Analytics@{"shape": "lin-cyl", "label": "Enterprise\nAnalytics"}
+  
+   Capella-Analytics@{"shape": "lin-cyl", "label": "Capella\nAnalytics"}
+  
+   Couchbase-Server@{"shape": "lin-cyl", "label": "Couchbase Server\n(Analytics Service"}   
 
-rectangle "Power BI Desktop" as PBI
-rectangle "Couchbase Power BI\nConnector" as Connector
-rectangle "Couchbase ODBC\nDriver" as ODBC
+   Capella-Operational@{"shape": "lin-cyl", "label": "Capella Operational\n(Analytics Service"}      
+end
 
-rectangle "Data Sources" {
-  rectangle "Enterprise Analytics" as S1
-  rectangle "Capella Analytics" as S2
-  rectangle "Couchbase Server\n(Analytics Service)" as S3
-  rectangle "Capella Operational\n(Analytics Service)" as S4
-}
-
-PBI --> Connector
-Connector --> ODBC
-ODBC --> S1
-ODBC --> S2
-ODBC --> S3
-ODBC --> S4
-
-@enduml
-....
+Power-BI-Desktop --> Power-BI-Connector --> ODBC-Driver
+ODBC-Driver --> Enterprise-Analytics
+ODBC-Driver --> Capella-Analytics
+ODBC-Driver --> Couchbase-Server
+ODBC-Driver --> Capella-Operational
+----
 
 == Prerequisites
 
@@ -58,8 +59,8 @@ Before you begin, make sure you have the following:
 |===
 | Component | Requirement
 | Enterprise Analytics
-| * For on-premise deployments: A compatible server infrastructure. 
-* For self-managed deployments: An account with your cloud provider. 
+| * For on-premise deployments: a compatible server infrastructure. 
+* For self-managed deployments: an account with your cloud provider. 
 | Capella Analytics
 | * An existing Couchbase Capella account.
 | Couchbase Server (Analytics Service)
@@ -73,6 +74,7 @@ Before you begin, make sure you have the following:
 For more information, see <<connect-add-data,Connect and Add Data to Power BI>>.
 |===
 
+[#install-power-bi-desktop]
 == Install Power BI Desktop
 
 Before you start, install a supported version of Microsoft Power BI Desktop.
@@ -81,7 +83,7 @@ The Couchbase Power BI Connector requires the Power BI Desktop version March 201
 If necessary, download Power BI Desktop from the https://www.microsoft.com/en-US/download/details.aspx?id=58494[Microsoft downloads] page. 
 
 NOTE: Power BI is only available for the Microsoft Windows platform;
-for other platforms, consider our xref:tableau-connector::index.adoc[Tableau connector].
+for other platforms, consider xref:tableau-connector::index.adoc[Tableau connector].
 
 == Install OpenSSL
 
@@ -89,7 +91,7 @@ OpenSSL is a required dependency for the Couchbase ODBC driver.
 
 To install OpenSSL: 
 
-. Download OpenSSL 3.x for x64 (recommended version: OpenSSL 3.5.x Light -- the current LTS version)
+. Download OpenSSL 3.x for x64 (recommended version is OpenSSL 3.5.x Light -- the current LTS version)
  from the link:https://slproweb.com/products/Win32OpenSSL.html[Shining Light Productions site].
 
 . Install OpenSSL from the downloaded file.
@@ -122,6 +124,7 @@ It must be a fresh command prompt, as the earlier one will not have loaded the n
 openssl version
 ----
 
+[#install-ODBC-driver]
 == Install the Couchbase ODBC Driver
 
 To install the Couchbase ODBC driver:
@@ -134,6 +137,7 @@ For more information, see xref:release-notes.adoc[Release Notes].
 . Install the ODBC drivers from the downloaded file.
 This installation provides both ANSI and Unicode drivers.
 
+[#install-Power-BI-connector]
 == Install the Couchbase Power BI Connector
 
 To install the Power BI Connector: 
@@ -145,13 +149,23 @@ For more information, see xref:release-notes.adoc[Release Notes].
 
 == Verify the Connector Installation
 
-To verify if the Couchbase Power BI Connector is installed correctly:
+To verify if the Couchbase Power BI Connector is installed:
 
 . Open *Power BI Desktop*.
 . Go to menu:Get Data[].
 . In the search box, enter `Couchbase Connector`.
 
-If the connector appears in the search results, it's installed correctly.
+The Couchbase Connector should appear in the search results.
+
+[NOTE]
+.If the connector is not found.
+====
+If the Couchbase Connector does not appear in the search results, then carry out the following instructions to register the connector with Power BI:
+
+. From the main menu, select menu:File[Options and settings > Options]  
+. Select the menu:Security[] option
+. Under [.ui]*Data Extensions* select [.ui]*Allow any extension to load without validation or warning*
+====
 
 == Get Connection Details and Certificates
 
