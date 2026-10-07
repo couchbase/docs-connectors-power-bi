@@ -109,16 +109,5 @@ image::on-premises-gateway-connection.png[,70%]
 
 Having established that your connection details are loaded, proceed to create the semantic model.
 
-== Create a Semantic Model
+== Add the Couchbase Connector to the Power BI Service
 
-. From the [.ui]*Workspace* screen, select the btn:[Create] button.
-+
-image::locate-create-button.png[,70%]
-
-. The next screen shown is for building reports or semantic models.
-Press the btn:[Pick a semantic model] button.
-+
-image::pick-semantic-model-button.png[,70%]
-
-. On the next screen, select the semantic model from your workspace.
-. Click on the btn:[Auto-create report] button to generate your report.
