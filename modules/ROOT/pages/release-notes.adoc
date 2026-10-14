@@ -5,10 +5,27 @@
 [abstract]
 {description}
 
-The xref:index.adoc[Couchbase Power BI Connector] provides integration between Microsoft's Power BI interactive data visualization platform 
-and either Couchbase Analytics Service (CBAS) or tabular views of your Capella columnar collections or query results.
+The xref:index.adoc[Couchbase Power BI Connector] lets you connect Microsoft Power BI to your Couchbase data sources for interactive data visualization.
 
-For self-managed CBAS, the Power BI connector requires Couchbase Server 7.2.4 or newer.
+[#v-2-0]
+== Version 2.0 (2026-10-19)
+
+The Power BI connector now uses the new names for the Couchbase Analytics products:
+
+* Enterprise Analytics is now Operational Insights Enterprise.
+* Capella Analytics is now Operational Insights Capella.
+
+When you configure an ODBC Data Source Name (DSN), select the data source by its new name.
+
+https://packages.couchbase.com/releases/couchbase-powerbi-connector/2.0/couchbase-powerbi-connector-2.0.103.mez[Power BI Connector 2.0 Download]
+
+The supported and tested dependencies of this release are:
+
+* https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/couchbase-odbc-2.0.104-win64.msi[couchbase-odbc-2.0-win64.msi]
+
+** See the https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/couchbase-odbc-driver-2.0-notices.txt[Notices File] for dependency licenses for the ODBC Driver.
+
+* https://slproweb.com/products/Win32OpenSSL.html[Win64 OpenSSL v3.5.x Light]
 
 [#v-1-3]
 == Version 1.3 (2026-06-30)
