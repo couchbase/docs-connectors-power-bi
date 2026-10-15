@@ -9,23 +9,29 @@ The xref:index.adoc[Couchbase Power BI Connector] lets you connect Microsoft Pow
 
 [#v-2-0]
 == Version 2.0 (2026-10-19)
+//FIXME: Check the release date before merging! 
 
-The Power BI connector now uses the new names for the Couchbase Analytics products:
-
-* Enterprise Analytics is now Operational Insights Enterprise.
-* Capella Analytics is now Operational Insights Capella.
-
+* The Power BI connector now uses the new names for the Couchbase Analytics products:
++
+--
+** Enterprise Analytics is now Operational Insights Enterprise.
+** Capella Analytics is now Operational Insights Capella.
+--
++
 When you configure an ODBC Data Source Name (DSN), select the data source by its new name.
 
-https://packages.couchbase.com/releases/couchbase-powerbi-connector/2.0/couchbase-powerbi-connector-2.0.103.mez[Power BI Connector 2.0 Download]
+* The ODBC driver now uses the Windows certificate store and supports TLS hostname verification.
+For more information, see xref:index.adoc#certificate-and-hostname-verification[Certificate and Hostname Verification].
 
-The supported and tested dependencies of this release are:
+.Download
+* https://packages.couchbase.com/releases/couchbase-powerbi-connector/2.0/couchbase-powerbi-connector-2.0.103.mez[Power BI Connector 2.0]
 
-* https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/couchbase-odbc-2.0.104-win64.msi[couchbase-odbc-2.0-win64.msi]
+.Supported and tested dependencies
+* ODBC driver: https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/couchbase-odbc-2.0.104-win64.msi[couchbase-odbc-2.0-win64.msi]
+** For dependency licenses, see the https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/couchbase-odbc-driver-2.0-notices.txt[ODBC Driver Notices File].
+* OpenSSL: https://slproweb.com/products/Win32OpenSSL.html[Win64 OpenSSL v3.5.x Light]
 
-** See the https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/couchbase-odbc-driver-2.0-notices.txt[Notices File] for dependency licenses for the ODBC Driver.
-
-* https://slproweb.com/products/Win32OpenSSL.html[Win64 OpenSSL v3.5.x Light]
+//FIXME: Check and update the final build info once available. 
 
 [#v-1-3]
 == Version 1.3 (2026-06-30)

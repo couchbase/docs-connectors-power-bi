@@ -131,7 +131,6 @@ To install the Couchbase ODBC driver:
 
 . Download `couchbase-odbc-2.0.104-win64.msi` from https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/ccouchbase-odbc-2.0.104-win64.msi[].
 For more information, see xref:release-notes.adoc[Release Notes].
-
 //FIXME: Check and update the final build info once available. 
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
@@ -145,7 +144,6 @@ To install the Power BI Connector:
 
 . Download `couchbase-powerbi-connector-2.0-103.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/2.0/couchbase-powerbi-connector-2.0.103.mez[]. 
 For more information, see xref:release-notes.adoc[Release Notes].
-
 //FIXME: Check and update the final build info once available. 
 
 . Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
@@ -173,16 +171,13 @@ SSL encrypts the communication between Power BI and Couchbase.
 For more information, see <<authenticate-using-jwt>>.
 ====
 
-If you use SSL, check which certificate authority (CA) issued your cluster's certificate. 
-The issuer determines whether you need a local root certificate file:
+If you use SSL, the ODBC driver first checks your cluster certificate against the Windows certificate store.
+If your cluster uses a certificate from a public certificate authority (CA), such as an AWS load balancer certificate, Windows trusts it automatically.
+In this case, you do not need to provide a root certificate file. 
 
-* *Public CA*: Windows trusts public CAs in the Windows certificate store, by default. 
-You do not need to specify a root certificate path when connecting to clusters that use these certificates (for example, an AWS load balancer certificate). 
-
-* *Private CA or self-signed certificate*: You must obtain the cluster root certificate and save it locally. 
-You must enter this file path in *Cluster Cert Path* when configuring your DSN. 
-
-For more information about how the ODBC driver values the cluster certificate, see <<certificate-verification>>.
+If your cluster uses a private or self-signed CA, you must provide a root certificate file.
+Save the file locally and specify the file path in the *Cluster Cert Path* field in your DSN. 
+For more information about how the ODBC driver verifies cluster certificates, see <<certificate-and-hostname-verification>>.
 
 [tabs]
 ====
@@ -191,7 +186,8 @@ Operational Insights Enterprise::
 +
 --
 [#enterprise-connection-details]
-For Operational Insights Enterprise, get the root certificate only if Windows does not trust the cluster's certificate.
+
+To get the cluster's root certificate:
 
 . Sign in to the Operational Insights Enterprise Web Console as an Administrator. 
 . In the left-hand menu, select menu:Security[].
@@ -231,7 +227,8 @@ Couchbase Server::
 +
 --
 [#server-connection-details]
-For Couchbase Server, get the root certificate only if Windows does not trust the cluster's certificate.
+
+To get the cluster's root certificate:
 
 . Sign in to the Couchbase Server Web Console as an Administrator.
 . In the left-hand menu, select menu:Security[].
@@ -263,28 +260,26 @@ For Capella Operational, you need to obtain the public connection string, add an
 --
 ====
 
-== Certificate Verification
+== Certificate and Hostname Verification
 
-If you enable SSL, the Couchbase ODBC driver verifies the cluster certificate before signing in. 
-The driver performs this verification for all authentication methods: Basic, LDAP, Client Certificate, and JWT.
+When you use SSL, the ODBC driver verifies your cluster certificate before signing in.
+The driver does this for all authentication methods: Basic, LDAP, Client Certificate, and JWT.
 
-The driver verifies the certificate in the following order:
+The driver checks the Windows certificate store first.
+It uses your root certificate file in *Cluster Cert Path* (required for private or self-signed CA) only as a fallback, if Windows does not trust the certificate.
 
-. The driver checks the certificate against the Windows certificate store.
-If Windows trusts the certificate, the connection succeeds, and you do not need to set the *Cluster Cert Path*.
-. If Windows does not trust the certificate, the driver checks the root certificate file specified in *Cluster Cert Path*.
-. If neither Windows nor specified root certificate file trusts the certificate, the connection fails.
+* If Windows trusts the certificate, the driver continues to connect and does not check *Cluster Cert Path*.
+* If Windows does not trust the certificate, the driver checks the *Cluster Cert Path*.
+* If neither Windows nor the file in *Cluster Cert Path* trusts the certificate, the connection fails.
 
-In addition, the driver also performs a hostname verification. 
-The *Address* in your DSN must match a name or IP address listed in the cluster certificate. 
-Otherwise, the connection fails with a hostname mismatch error. 
+The driver rejects certificates in the Windows *Untrusted Certificates* store, and root certificates restricted to purposes other than server authentication.
 
-* To turn off this check, set `verify_hostname=false` in *Advanced Parameters*.
-When disabled, the driver logs a warning, but still validates the certificate. 
+In addition, the driver also performs a hostname verification.
+The *Address* in your DSN must match a hostname or IP address listed in the cluster certificate. 
+Otherwise, the connection fails with a hostname mismatch error.
 
-* The driver also rejects certificates that Windows refuses, including certificates in the *Untrusted Certificates (Disallowed)* store and root certificates restricted to purposes other than Server authentication. 
-
-* The driver also rejects any certificate that Windows does not trust, including certificates in the *Untrusted Certificates* store or root certificates restricted to purposes other than server authentication.
+To skip this check, enter `verify_hostname=false` in the *Advanced Parameters* field of your DSN.
+The driver logs a warning, but still verifies the certificate.
 
 == Authenticate Using JWT
 
@@ -395,7 +390,7 @@ Based on the SSL mode and authentication method you select, the required fields 
 | Username, Password, Cluster Cert Path (optional)
 | Enter user credentials.
 
-If Windows does not trust the cluster certificate, provide the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>.
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 
 | `Disable`
 | `LDAP`
@@ -409,7 +404,7 @@ For more information, see xref:enterprise-analytics:manage:manage-security/confi
 | Username, Password, Cluster Cert Path (optional)
 | Enter LDAP credentials.
 
-If Windows does not trust the cluster certificate, provide the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>.
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
@@ -418,7 +413,7 @@ For more information, see xref:enterprise-analytics:manage:manage-security/confi
 | Client Cert Path, Client Key Path, Cluster Cert Path (optional)
 | Enter the paths to your client certificate and private key.
 
-If Windows does not trust the cluster certificate, provide the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>.
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
@@ -427,7 +422,7 @@ For more information, see xref:enterprise-analytics:manage:manage-security/confi
 | Client Cert Path, Client Key Path, Key Password, Cluster Cert Path (optional)
 | Enter the paths to your client certificate and encrypted private key, and the key passphrase.
 
-If Windows does not trust the cluster certificate, provide the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>.
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
@@ -436,7 +431,7 @@ For more information, see xref:enterprise-analytics:manage:manage-security/confi
 | Cluster Cert Path (optional)
 | Use JSON Web Token (JWT) authentication.  
 
-If Windows does not trust the cluster certificate, provide the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>.
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 |===
 +
 NOTE: Providing the *Username* and *Password* in the DSN configuration is optional.
@@ -450,7 +445,7 @@ If you're using an alternate (external) address, add the parameter
 `network=external`.
 +
 To turn off hostname verification, add the parameter `verify_hostname=false`. 
-For more information, see <<certificate-verification>>.
+For more information, see <<certificate-and-hostname-verification>>.
 
 . Click btn:[OK] to save the DSN and complete the setup.
 --
@@ -531,7 +526,7 @@ Based on the SSL mode and authentication method you select, the required fields 
 | Username, Password, Cluster Cert Path (optional)
 | Enter user credentials.
 
-If Windows does not trust the cluster certificate, provide the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
 
 | `Disable`
 | `LDAP`
@@ -545,7 +540,7 @@ For more information, see xref:server:manage:manage-security/configure-ldap.adoc
 | Username, Password, Cluster Cert Path (optional)
 | Enter LDAP credentials.
 
-If Windows does not trust the cluster certificate, provide the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
 
 For more information, see xref:server:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
@@ -554,7 +549,7 @@ For more information, see xref:server:manage:manage-security/configure-ldap.adoc
 | Client Cert Path, Client Key Path, Cluster Cert Path (optional)
 | Enter the paths to your client certificate and private key.
 
-If Windows does not trust the cluster certificate, provide the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
 
 For more information, see xref:server:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
@@ -563,7 +558,7 @@ For more information, see xref:server:manage:manage-security/configure-client-ce
 | Client Cert Path, Client Key Path, Key Password, Cluster Cert Path (optional)
 | Enter the paths to your client certificate and encrypted private key, and the key passphrase.
 
-If Windows does not trust the cluster certificate, provide the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
 
 For more information, see xref:server:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 |===
@@ -579,7 +574,7 @@ If you're using an alternate (external) address, add the parameter
 `network=external`.
 +
 To turn off hostname verification, add the parameter `verify_hostname=false`. 
-For more information, see <<certificate-verification>>.
+For more information, see <<certificate-and-hostname-verification>>.
 
 . Click btn:[OK] to save the DSN and complete the setup.
 --
