@@ -10,8 +10,8 @@
 
 The Couchbase Power BI Connector integrates Microsoft Power BI with the following Couchbase data sources:
 
-* Enterprise Analytics 
-* Capella Analytics
+* Operational Insights Enterprise
+* Operational Insights Capella
 * Couchbase Server (Analytics Service)
 * Capella Operational (Analytics Service)
 
@@ -34,8 +34,8 @@ rectangle "Couchbase Power BI\nConnector" as Connector
 rectangle "Couchbase ODBC\nDriver" as ODBC
 
 rectangle "Data Sources" {
-  rectangle "Enterprise Analytics" as S1
-  rectangle "Capella Analytics" as S2
+  rectangle "Operational Insights Enterprise" as S1
+  rectangle "Operational Insights Capella" as S2
   rectangle "Couchbase Server\n(Analytics Service)" as S3
   rectangle "Capella Operational\n(Analytics Service)" as S4
 }
@@ -57,10 +57,10 @@ Before you begin, make sure you have the following:
 [cols="1a,2a", options="header"]
 |===
 | Component | Requirement
-| Enterprise Analytics
+| Operational Insights Enterprise 
 | * For on-premise deployments: A compatible server infrastructure. 
 * For self-managed deployments: An account with your cloud provider. 
-| Capella Analytics
+| Operational Insights Capella 
 | * An existing Couchbase Capella account.
 | Couchbase Server (Analytics Service)
 | * Couchbase Server 7.2.4 or later.
@@ -129,7 +129,7 @@ openssl version
 
 To install the Couchbase ODBC driver:
 
-. Download `couchbase-odbc-1.3.102-win64.msi` from https://packages.couchbase.com/releases/couchbase-odbc-driver/1.3/couchbase-odbc-1.3.102-win64.msi[].
+. Download `couchbase-odbc-2.0.104-win64.msi` from https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/couchbase-odbc-2.0.104-win64.msi[].
 For more information, see xref:release-notes.adoc[Release Notes].
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
@@ -141,7 +141,8 @@ This installation provides both ANSI and Unicode drivers.
 
 To install the Power BI Connector: 
 
-. Download `couchbase-powerbi-connector-1.3.100.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/1.3/couchbase-powerbi-connector-1.3.100.mez[]. 
+. Download `couchbase-powerbi-connector-2.0.103.mez` from 
+https://packages.couchbase.com/releases/couchbase-powerbi-connector/2.0/couchbase-powerbi-connector-2.0.103.mez[].
 For more information, see xref:release-notes.adoc[Release Notes].
 
 . Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
@@ -158,46 +159,58 @@ If the connector appears in the search results, it's installed correctly.
 
 == Get Connection Details and Certificates
 
-Before you configure the ODBC DSN, you must obtain the required connection details and certificates for your Couchbase data source.
-These details are necessary to establish a secure connection and allow Power BI to access the data in your Couchbase cluster.
+Before you configure the ODBC DSN, get the connection details and certificates for your Couchbase data source.
+Power BI uses these details to connect securely to your Couchbase cluster.
 
 [NOTE]
 ====
-* Couchbase strongly recommends that you secure your ODBC connection using SSL.
-This ensures encryption of the communication between Power BI and Couchbase. 
-* In Power BI Connector 1.3 and later, you can use JSON Web Token (JWT) authentication for Enterprise Analytics.
+* Couchbase strongly recommends that you use SSL to secure your ODBC connection.
+SSL encrypts the communication between Power BI and Couchbase.
+* When connecting to Operational Insights Enterprise, you can also use JSON Web Token (JWT) authentication.
 For more information, see <<authenticate-using-jwt>>.
 ====
+
+If you use SSL, the ODBC driver first checks your cluster certificate against the Windows certificate store.
+If your cluster uses a certificate from a public certificate authority (CA), such as an AWS load balancer certificate, Windows trusts it automatically.
+In this case, you do not need to provide a root certificate file. 
+
+If your cluster uses a private or self-signed CA, do 1 of the following:
+
+* Add the root certificate to the Windows https://learn.microsoft.com/en-us/windows-hardware/drivers/install/trusted-root-certification-authorities-certificate-store[Trusted Root Certification Authorities Store^].
+* Save the root certificate file locally, and specify the file path in the *Cluster Cert Path* field of your DSN.
+
+For more information about how the ODBC driver verifies cluster certificates, see <<certificate-and-hostname-verification>>.
 
 [tabs]
 ====
 
-Enterprise Analytics::
+Operational Insights Enterprise::
 +
 --
-[#ea-connection-details]
-For Enterprise Analytics, you need to obtain the root certificate. 
+[#enterprise-connection-details]
 
-. Sign in to the Enterprise Analytics Web Console as an Administrator. 
+To get the cluster's root certificate:
+
+. Sign in to the Operational Insights Enterprise Web Console as an Administrator. 
 . In the left-hand menu, select menu:Security[].
 . From the top menu, select menu:Certificates[] to view the security certificates.
 . In the *Trusted Root Certificates* section, copy the certificate text starting from `BEGIN CERTIFICATE` to `END CERTIFICATE`.
 . Save the text to an accessible file location (for example, `C:\Users\user\certificate.txt`). 
 
-You need this file when you configure the ODBC DSN.
+You need this path when you configure the ODBC DSN.
 
-NOTE: To use JWT authentication with Enterprise Analytics, you also need to configure an external Identity Provider (IdP) and register a client with the appropriate scopes. 
+NOTE: To use JWT authentication with Operational Insights Enterprise, you also need to configure an external Identity Provider (IdP) and register a client with the appropriate scopes.
 For more information, see <<authenticate-using-jwt>>.
 --
 
-Capella Analytics::
+Operational Insights Capella::
 +
 --
-[#analytics-connection-details]
-For Capella Analytics, you need to obtain the public connection string, add an allowed IP address, and create cluster access credentials.
+[#capella-connection-details]
+For Operational Insights Capella, you need to obtain the public connection string, add an allowed IP address, and create cluster access credentials.
 
 . Sign in to the Capella UI as an `Organization Owner` or `Project Owner`.
-. Go to menu:Analytics[] and select your cluster from the list.
+. Go to menu:Operational Insights[] and select your cluster from the list.
 . Next, click menu:Settings[].
 . In the left-hand menu, click menu:Connection String[].
 . Make a note of the *Public Connection String*. 
@@ -216,7 +229,8 @@ Couchbase Server::
 +
 --
 [#server-connection-details]
-For Couchbase Server, you need to obtain the root certificate. 
+
+To get the cluster's root certificate:
 
 . Sign in to the Couchbase Server Web Console as an Administrator.
 . In the left-hand menu, select menu:Security[].
@@ -224,7 +238,7 @@ For Couchbase Server, you need to obtain the root certificate.
 . In the *Trusted Root Certificates* section, copy the certificate text starting from `BEGIN CERTIFICATE` to `END CERTIFICATE`.
 . Save the text to an accessible file location (for example, `C:\Users\user\certificate.txt`).
 
-You need this file when you configure the ODBC DSN.
+You need this path when you configure the ODBC DSN.
 --
 
 Capella Operational::
@@ -248,14 +262,39 @@ For Capella Operational, you need to obtain the public connection string, add an
 --
 ====
 
+== Certificate and Hostname Verification
+
+When you use SSL, the ODBC driver verifies your cluster certificate before signing in.
+The driver does this for all authentication methods: Basic, LDAP, Client Certificate, and JWT.
+
+The driver checks the Windows certificate store first.
+It uses your root certificate file in *Cluster Cert Path* only as a fallback, if Windows does not trust the certificate.
+
+* If Windows trusts the certificate, the driver continues to connect and does not check *Cluster Cert Path*.
+* If Windows does not trust the certificate, the driver checks the *Cluster Cert Path*.
+* If neither Windows nor the file in *Cluster Cert Path* trusts the certificate, the connection fails.
+
+The driver rejects certificates in the Windows *Untrusted Certificates* store, and root certificates restricted to purposes other than server authentication.
+
+The driver also verifies the hostname of each node that it connects to.
+The following addresses must match a hostname or IP address in the cluster certificate:
+
+* The *Address* specified in your DSN.
+* The node addresses returned by the cluster after connection, such as alternate addresses used with `network=external`. 
+
+If an address does not match, the connection fails with a hostname mismatch error.
+
+To skip this check, enter `verify_hostname=false` in the *Advanced Parameters* field of your DSN.
+The driver logs a warning, but still verifies the certificate.
+
 == Authenticate Using JWT
 
-From version 1.3 of the Power BI connector and ODBC driver, you can use JSON Web Token (JWT) authentication to connect to Enterprise Analytics 2.2 and later.
+You can use JSON Web Token (JWT) authentication to connect to Operational Insights Enterprise.
 
 JWT authentication uses an external Identity Provider (IdP) to issue a JWT access token.
 When you initiate a connection, the Power BI connector opens a browser window for you to log in to your IdP.
 After you log in, the connector retrieves the access token using the PKCE OAuth 2.0 protocol. 
-The connector passes this token to the ODBC driver, which authenticates your connection to Enterprise Analytics.
+The connector passes this token to the ODBC driver, which authenticates your connection to Operational Insights Enterprise.
 
 To use JWT authentication, you must configure the following:
 
@@ -310,14 +349,13 @@ The 32-bit version is incompatible with the connector and will not work correctl
 
 [tabs]
 ====
-
-Enterprise Analytics::
+Operational Insights Enterprise::
 +
 --
 . Open the *ODBC Data Source Administration* tool.
 . Go to menu:User DSN[Add].
 . Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
-. Select the data source as *Enterprise Analytics*. 
+. Select the data source as *Operational Insights Enterprise*. 
 . (Optional) To enable logging, select *Collect Logs*.  
 . Click btn:[Next]. 
 . Enter the following DSN details:
@@ -355,8 +393,10 @@ Based on the SSL mode and authentication method you select, the required fields 
 
 | `Enable`
 | `Basic`
-| Username, Password, Cluster Cert Path
-| Enter user credentials and the path to the root certificate you downloaded from <<ea-connection-details,Get Connection Details>>.
+| Username, Password, Cluster Cert Path (optional)
+| Enter user credentials.
+
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 
 | `Disable`
 | `LDAP`
@@ -367,29 +407,37 @@ For more information, see xref:enterprise-analytics:manage:manage-security/confi
 
 | `Enable`
 | `LDAP`
-| Username, Password, Cluster Cert Path 
-| Enter LDAP credentials and the path to the root certificate you downloaded from <<ea-connection-details,Get Connection Details>>.
+| Username, Password, Cluster Cert Path (optional)
+| Enter LDAP credentials.
+
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `Client Certificate`
-| Client Cert Path, Client Key Path, Cluster Cert Path
-| Enter paths to your client certificate, private key, and root certificate you downloaded from <<ea-connection-details,Get Connection Details>>.
+| Client Cert Path, Client Key Path, Cluster Cert Path (optional)
+| Enter the paths to your client certificate and private key.
+
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
 | `Enable`
 | `Client Certificate (Encrypted Key)`
-| Client Cert Path, Client Key Path, Key Password, Cluster Cert Path 
-| Enter paths to your certificates and encrypted key, including the key passphrase.   
+| Client Cert Path, Client Key Path, Key Password, Cluster Cert Path (optional)
+| Enter the paths to your client certificate and encrypted private key, and the key passphrase.
+
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 
 For more information, see xref:enterprise-analytics:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
 | `Enable`
 | `JWT`
-| Cluster Cert Path
-| Enter the path to the root certificate you downloaded from <<ea-connection-details,Get Connection Details>>.
+| Cluster Cert Path (optional)
+| Use JSON Web Token (JWT) authentication.  
+
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<enterprise-connection-details,Get Connection Details>>. 
 |===
 +
 NOTE: Providing the *Username* and *Password* in the DSN configuration is optional.
@@ -401,17 +449,20 @@ If no additional parameters are required, leave as the default.
 +
 If you're using an alternate (external) address, add the parameter 
 `network=external`.
++
+To turn off hostname verification, add the parameter `verify_hostname=false`. 
+For more information, see <<certificate-and-hostname-verification>>.
 
 . Click btn:[OK] to save the DSN and complete the setup.
 --
 
-Capella Analytics::
+Operational Insights Capella::
 +
 --
 . Open the *ODBC Data Source Administration* tool.
 . Go to menu:User DSN[Add].
 . Select the *Couchbase ODBC Driver* (either ANSI or Unicode) from the list, and then click btn:[Finish].
-. Select the data source as *Capella Analytics*. 
+. Select the data source as *Operational Insights Capella*. 
 . (Optional) To enable logging, select *Collect Logs*.  
 . Click btn:[Next]. 
 . Enter the following DSN details:
@@ -419,15 +470,15 @@ Capella Analytics::
 [horizontal]
 *Name:*:: A unique name for your data source.
 *Description:*:: (Optional) A description for your data source.
-*Connection String:*:: The exact connection string copied from <<analytics-connection-details,Get Connection Details>>.
+*Connection String:*:: The exact connection string copied from <<capella-connection-details,Get Connection Details>>.
 *Database*:: The database from which the data must be extracted.
 *Scope:*:: (Optional) The scope from which the data must be extracted. +
 For two-part scopes, use a `.` to separate the two parts. 
 For example, `travel-sample.inventory`. 
 +
 include::partial$common.adoc[tag="extra-spaces-warning"]
-*Username*:: The cluster access name created in <<analytics-connection-details,Get Connection Details>>.
-*Password*:: The password created in <<analytics-connection-details,Get Connection Details>>. +
+*Username*:: The cluster access name created in <<capella-connection-details,Get Connection Details>>.
+*Password*:: The password created in <<capella-connection-details,Get Connection Details>>. +
 NOTE: Providing the *Username* and *Password* here is optional.
 However, in the Power BI tool, you must provide these credentials when prompted.
 . Click btn:[OK] to save the DSN and complete the setup.
@@ -478,8 +529,10 @@ Based on the SSL mode and authentication method you select, the required fields 
 
 | `Enable`
 | `Basic`
-| Username, Password, Cluster Cert Path
-| Enter user credentials and the path to the root certificate you downloaded from <<server-connection-details,Get Connection Details>>.
+| Username, Password, Cluster Cert Path (optional)
+| Enter user credentials.
+
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
 
 | `Disable`
 | `LDAP`
@@ -490,22 +543,28 @@ For more information, see xref:server:manage:manage-security/configure-ldap.adoc
 
 | `Enable`
 | `LDAP`
-| Username, Password, Cluster Cert Path 
-| Enter LDAP credentials and the path to the root certificate you downloaded from <<server-connection-details,Get Connection Details>>.
+| Username, Password, Cluster Cert Path (optional)
+| Enter LDAP credentials.
+
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
 
 For more information, see xref:server:manage:manage-security/configure-ldap.adoc[Configure LDAP].
 
 | `Enable`
 | `Client Certificate`
-| Client Cert Path, Client Key Path, Cluster Cert Path
-| Enter paths to your client certificate, private key, and root certificate you downloaded from <<server-connection-details,Get Connection Details>>.
+| Client Cert Path, Client Key Path, Cluster Cert Path (optional)
+| Enter the paths to your client certificate and private key.
+
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
 
 For more information, see xref:server:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 
 | `Enable`
 | `Client Certificate (Encrypted Key)`
-| Client Cert Path, Client Key Path, Key Password, Cluster Cert Path 
-| Enter paths to your certificates and encrypted key, including the key passphrase.    
+| Client Cert Path, Client Key Path, Key Password, Cluster Cert Path (optional)
+| Enter the paths to your client certificate and encrypted private key, and the key passphrase.
+
+If your cluster uses a private or self-signed CA (not trusted by Windows), enter the path to the root certificate that you saved in <<server-connection-details,Get Connection Details>>.
 
 For more information, see xref:server:manage:manage-security/configure-client-certificates.adoc[Configure Client Certificates].
 |===
@@ -519,6 +578,10 @@ If no additional parameters are required, leave as the default.
 +
 If you're using an alternate (external) address, add the parameter 
 `network=external`.
++
+To turn off hostname verification, add the parameter `verify_hostname=false`. 
+For more information, see <<certificate-and-hostname-verification>>.
+
 . Click btn:[OK] to save the DSN and complete the setup.
 --
 
@@ -564,8 +627,8 @@ After you prepare tabular analytics views and define DSNs, use the Couchbase Pow
 --
 To prepare tabular analytics views, see:
 
-* xref:enterprise-analytics:sqlpp:5a_views.adoc#TAV[Tabular Analytics Views] for Enterprise Analytics
-* xref:analytics:sqlpp:5a_views.adoc#TAV[Tabular Analytics Views] for Capella Analytics
+* xref:enterprise-analytics:sqlpp:5a_views.adoc#TAV[Tabular Analytics Views] for Operational Insights Enterprise
+* xref:analytics:sqlpp:5a_views.adoc#TAV[Tabular Analytics Views] for Operational Insights Capella
 * xref:server:analytics:5a_views.adoc#tabular-analytics-views[Tabular Analytics Views] for Couchbase Server or Capella Operational
 --
 
@@ -576,7 +639,7 @@ To add data from Couchbase data sources to Power BI:
 . In Power BI Desktop, select menu:Get Data[].
 . Select *Couchbase Connector (Custom)*.
 . In the *ODBC DSN* field, enter the name of the DSN you created. 
-. [[step-4]] If you're using <<authenticate-using-jwt, JWT authentication>> with Enterprise Analytics, enter the following:
+. [[step-4]] If you're using <<authenticate-using-jwt, JWT authentication>> with Operational Insights Enterprise, enter the following:
 +
 --
 ** *Login URL*: The base OIDC discovery URL of your Identity Provider (IdP) realm.
@@ -598,7 +661,7 @@ For other authentication methods, leave these fields empty.
 a| Use this when: 
 
 * Your DSN uses `Basic` or `LDAP` authentication
-* You're connecting to Capella Analytics or Capella Operational.
+* You're connecting to Operational Insights Capella or Capella Operational.
 
 | Enter your username and password.
 
