@@ -268,7 +268,7 @@ When you use SSL, the ODBC driver verifies your cluster certificate before signi
 The driver does this for all authentication methods: Basic, LDAP, Client Certificate, and JWT.
 
 The driver checks the Windows certificate store first.
-It uses your root certificate file in *Cluster Cert Path* (required for private or self-signed CA) only as a fallback, if Windows does not trust the certificate.
+It uses your root certificate file in *Cluster Cert Path* only as a fallback, if Windows does not trust the certificate.
 
 * If Windows trusts the certificate, the driver continues to connect and does not check *Cluster Cert Path*.
 * If Windows does not trust the certificate, the driver checks the *Cluster Cert Path*.
@@ -276,9 +276,13 @@ It uses your root certificate file in *Cluster Cert Path* (required for private 
 
 The driver rejects certificates in the Windows *Untrusted Certificates* store, and root certificates restricted to purposes other than server authentication.
 
-In addition, the driver also performs a hostname verification.
-The *Address* in your DSN must match a hostname or IP address listed in the cluster certificate. 
-Otherwise, the connection fails with a hostname mismatch error.
+The driver also verifies the hostname of each node that it connects to.
+The following addresses must match a hostname or IP address in the cluster certificate:
+
+* The *Address* specified in your DSN.
+* The node addresses returned by the cluster after connection, such as alternate addresses used with `network=external`. 
+
+If an address does not match, the connection fails with a hostname mismatch error.
 
 To skip this check, enter `verify_hostname=false` in the *Advanced Parameters* field of your DSN.
 The driver logs a warning, but still verifies the certificate.
