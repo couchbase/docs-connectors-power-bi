@@ -129,9 +129,8 @@ openssl version
 
 To install the Couchbase ODBC driver:
 
-. Download `couchbase-odbc-2.0.104-win64.msi` from https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/ccouchbase-odbc-2.0.104-win64.msi[].
+. Download `couchbase-odbc-2.0.104-win64.msi` from https://packages.couchbase.com/releases/couchbase-odbc-driver/2.0/couchbase-odbc-2.0.104-win64.msi[].
 For more information, see xref:release-notes.adoc[Release Notes].
-//FIXME: Check and update the final build info once available. 
 
 . Double-click the file to open the *Couchbase ODBC Setup Wizard*.
 
@@ -142,9 +141,9 @@ This installation provides both ANSI and Unicode drivers.
 
 To install the Power BI Connector: 
 
-. Download `couchbase-powerbi-connector-2.0-103.mez` from https://packages.couchbase.com/releases/couchbase-powerbi-connector/2.0/couchbase-powerbi-connector-2.0.103.mez[]. 
+. Download `couchbase-powerbi-connector-2.0.103.mez` from 
+https://packages.couchbase.com/releases/couchbase-powerbi-connector/2.0/couchbase-powerbi-connector-2.0.103.mez[].
 For more information, see xref:release-notes.adoc[Release Notes].
-//FIXME: Check and update the final build info once available. 
 
 . Follow https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-connector-extensibility#custom-connectors[Microsoft's guide] on configuring a custom connector.
 
@@ -175,8 +174,11 @@ If you use SSL, the ODBC driver first checks your cluster certificate against th
 If your cluster uses a certificate from a public certificate authority (CA), such as an AWS load balancer certificate, Windows trusts it automatically.
 In this case, you do not need to provide a root certificate file. 
 
-If your cluster uses a private or self-signed CA, you must provide a root certificate file.
-Save the file locally and specify the file path in the *Cluster Cert Path* field in your DSN. 
+If your cluster uses a private or self-signed CA, do 1 of the following:
+
+* Add the root certificate to the Windows https://learn.microsoft.com/en-us/windows-hardware/drivers/install/trusted-root-certification-authorities-certificate-store[Trusted Root Certification Authorities Store^].
+* Save the root certificate file locally, and specify the file path in the *Cluster Cert Path* field of your DSN.
+
 For more information about how the ODBC driver verifies cluster certificates, see <<certificate-and-hostname-verification>>.
 
 [tabs]
