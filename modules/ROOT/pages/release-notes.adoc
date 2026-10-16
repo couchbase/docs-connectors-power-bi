@@ -19,7 +19,7 @@ The xref:index.adoc[Couchbase Power BI Connector] lets you connect Microsoft Pow
 +
 When you configure an ODBC Data Source Name (DSN), select the data source by its new name.
 
-* The ODBC driver now trusts the Windows certificate store.
+* The ODBC driver now trusts certificates in the Windows certificate store.
 You need to specify *Cluster Cert Path* only if Windows does not trust your cluster certificate.
 For more information, see xref:index.adoc#certificate-and-hostname-verification[Certificate and Hostname Verification].
 
